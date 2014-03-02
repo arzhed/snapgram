@@ -906,3 +906,15 @@ node_modules/jade/node_modules/with/package.json
 node_modules/jade/node_modules/with/vars.js
 node_modules/jade/package.json
 node_modules/jade/runtime.js
+snapgramApp/
+snapgramApp/package.json
+snapgramApp/app.js
+snapgramApp/public
+snapgramApp/public/stylesheets
+snapgramApp/public/stylesheets/bootstrap.css
+snapgramApp/public/stylesheets/style.css
+snapgramApp/views
+snapgramApp/views/index.jade
+snapgramApp/routes
+snapgramApp/routes/index.js
+snapgramApp/routes/user.js
