@@ -6,9 +6,21 @@ html
 	body
 		div.container
 			h1= title
-			form.form-signin
-				h2.form-signin-heading Already have an account ? Sign in
-				input.input-block-level(type='text', placeholder='Username')
-				input.input-block-level(type='password', placeholder='Password')
-				- var btnClass = ['btn', 'btn-large', 'btn-primary']
-				button(class=btnClass, type='submit') Sign in
+			div.container-fluid
+				div.row-fluid
+					div.span6
+						form.form-signin(action='signin',method='post')
+							h2.form-signin-heading Sign in
+							input.input-block-level(type='text', placeholder='Username' name='uname')
+							input.input-block-level(type='password', placeholder='Password' name='pwd')
+							- var btnClass = ['btn', 'btn-large', 'btn-primary']
+							button(class=btnClass, type='submit') Sign in
+					div.span6
+						form.form-signin(action='signup',method='post')
+							h2.form-signin-heading Register
+							input.input-block-level(type='text', placeholder='First Name' name='fname')
+							input.input-block-level(type='text', placeholder='Last Name' name='lname')
+							input.input-block-level(type='text', placeholder='Username' name='uname')
+							input.input-block-level(type='password', placeholder='Password' name='pwd')
+							- var btnClass = ['btn', 'btn-large', 'btn-primary']
+							button(class=btnClass, type='submit') Sign up
