@@ -1,0 +1,14 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+	body
+		div.container
+			h1= title
+			form.form-signin
+				h2.form-signin-heading Already have an account ? Sign in
+				input.input-block-level(type='text', placeholder='Username')
+				input.input-block-level(type='password', placeholder='Password')
+				- var btnClass = ['btn', 'btn-large', 'btn-primary']
+				button(class=btnClass, type='submit') Sign in

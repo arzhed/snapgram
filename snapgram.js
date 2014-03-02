@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var jade = require('jade');
 
 app.get('/', function(req, res){
   res.send('hello world');
