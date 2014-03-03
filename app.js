@@ -9,6 +9,9 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
+var signin = require('./routes/signin');
+var signup = require('./routes/signup');
+
 var app = express();
 
 // all environments
@@ -29,8 +32,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.post('/signin', routes.signin);
-app.post('/signup', routes.signup);
+app.post('/signin', signin.signin);
+app.post('/signup', signup.signup);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
