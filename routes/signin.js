@@ -24,14 +24,17 @@ exports.signin = function(req, res){
 
 	conn.query('SELECT pwd FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err) throw err;
-		console.log('The solution is: '+rows[0].password);
-		console.log(passwordHash.verify(password, rows[0].pwd));
+		if (rows[0] == undefined)
+			res.send(200,'wrong username');
+		else {
+			if(passwordHash.verify(password, rows[0].pwd))
+				res.send(200,'login successful')
+			else
+				res.send(200, 'wrong password')
+		}
 	});
 
 	conn.end();
-
-	res.send(200,'login successful')
-
 	
   //res.render('index', { title: 'Snapgram' });
 };
