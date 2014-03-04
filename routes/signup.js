@@ -24,15 +24,18 @@ exports.signup = function(req, res){
 	var password = req.body.pwd;
 	var hashedPassword = passwordHash.generate(password);
 
-
-	conn.query('INSERT INTO user(username, lname, fname, pwd) VALUES(?,?,?,?)', [user,lname,fname,hashedPassword], function(err, rows, fields) {
-  		if (err) {
-  			console.log(err);
-  		}
-	});
+	if(fname & lname & user & password) {
+		conn.query('INSERT INTO user(username, lname, fname, pwd) VALUES(?,?,?,?)', [user,lname,fname,hashedPassword], function(err, rows, fields) {
+	  		if (err) {
+	  			console.log(err);
+	  		}
+		});
+	}
+	else {
+		res.render('index', { title: 'Snapgram', wrongSignUp: 'Missing field' });
+	}
 
 	conn.end();
 
-	res.send(200, 'Bravo')
   //res.render('index', { title: 'Snapgram' });
 };

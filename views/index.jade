@@ -3,21 +3,24 @@ html
 	head
 		title= title
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
 		div.container
 			h1= title
 			div.container-fluid
 				div.row-fluid
 					div.span6
-						form.form-signin(action='signin',method='post')
+						form.form-signin(action='/signin',method='post')
 							h2.form-signin-heading Sign in
+							p.wrong= wrongSignIn
 							input.input-block-level(type='text', placeholder='Username' name='uname')
 							input.input-block-level(type='password', placeholder='Password' name='pwd')
 							- var btnClass = ['btn', 'btn-large', 'btn-primary']
 							button(class=btnClass, type='submit') Sign in
 					div.span6
-						form.form-signin(action='signup',method='post')
+						form.form-signin(action='/signup',method='post')
 							h2.form-signin-heading Register
+							p.wrong= wrongSignUp
 							input.input-block-level(type='text', placeholder='First Name' name='fname')
 							input.input-block-level(type='text', placeholder='Last Name' name='lname')
 							input.input-block-level(type='text', placeholder='Username' name='uname')
