@@ -2,22 +2,36 @@ doctype html
 html
 	head
 		title= title
+		script(type='text/javascript', src='/scripts/jquery.js')
+		script(type='text/javascript', src='/scripts/test.js')
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
+	header
+		nav(class='navbar navbar-default navbar-customize' role='navigation')
+			div.navbar-block
+				div.navbar-header
+					button(class='btn-home', type='button')
+						h2=title
 	body
 		div.container
-			h1= title
 			div.container-fluid
-				div.row-fluid
-					div.span6
+				div.row-fluid#signin
+					div.center-block
 						form.form-signin(action='/signin',method='post')
 							h2.form-signin-heading Sign in
 							p.wrong= wrongSignIn
 							input.input-block-level(type='text', placeholder='Username' name='uname')
 							input.input-block-level(type='password', placeholder='Password' name='pwd')
-							- var btnClass = ['btn', 'btn-large', 'btn-primary']
+							- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
 							button(class=btnClass, type='submit') Sign in
-					div.span6
+
+					div.center-block
+						h4 or
+						- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
+						button(class=btnClass, type='button', id='btnOptSignUp') Sign up for Snapgram!
+
+				div.row-fluid#signup
+					div.center-block
 						form.form-signin(action='/signup',method='post')
 							h2.form-signin-heading Register
 							p.wrong= wrongSignUp
@@ -25,5 +39,11 @@ html
 							input.input-block-level(type='text', placeholder='Last Name' name='lname')
 							input.input-block-level(type='text', placeholder='Username' name='uname')
 							input.input-block-level(type='password', placeholder='Password' name='pwd')
-							- var btnClass = ['btn', 'btn-large', 'btn-primary']
+							- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
 							button(class=btnClass, type='submit') Sign up
+
+					div.center-block
+						h4 or
+						- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
+						button(class=btnClass, type='button' id='btnOptSignIn') Sign in!
+

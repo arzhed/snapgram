@@ -1,6 +1,5 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1.2em "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 .wrong {
@@ -9,4 +8,42 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+h4 {
+	text-align: center;
+}
+
+.center-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 45%;
+}
+
+.navbar-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+}
+
+
+.btn-home{
+	border: none;
+	outline: none;
+	background: transparent;
+}
+
+.btn-home:hover{
+	background: green;
+}
+
+.btn-home:active{
+	outline: none;
+	background: mediumpurple;
+}
+
+.navbar-customize{
+	background:slategray;
 }
