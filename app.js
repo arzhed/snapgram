@@ -23,11 +23,13 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.multipart());
 app.use(express.methodOverride());
 app.use(express.cookieParser('S3CRE7'));
 app.use(express.cookieSession());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 // development only
@@ -40,6 +42,7 @@ app.post('/signin', signin.signin);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed)
+app.post('/upload',feed.upload)
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

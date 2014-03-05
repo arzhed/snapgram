@@ -8,7 +8,7 @@ exports.index = function(req, res){
 		res.render('index', { title: 'Snapgram' });
 	}
 	else{
-		res.render('feed');
+		res.redirect('/feed')
 	}
 
 };

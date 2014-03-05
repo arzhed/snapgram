@@ -14,7 +14,7 @@ exports.signin = function(req, res){
 	conn = mysql.createConnection({
 	  host: 'localhost',
 	  user: 'root',
-	  password: 'root',
+	  password: '',
 	  database: 'snapgram'
 	});
 	conn.connect();
