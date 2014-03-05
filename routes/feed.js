@@ -1,6 +1,7 @@
 exports.feed = function(req,res) {
-
-	var fs = require('fs');
+	res.render('feed', { name: req.session.user});
+	
+	/*var fs = require('fs');
 
 	fs.writeFile(__dirname + "/../views/feed.jade",
 		"h1 Hey there!",	
@@ -11,5 +12,5 @@ exports.feed = function(req,res) {
 		        res.render('layout');
 		    }
 		}
-	);
+	);*/
 }

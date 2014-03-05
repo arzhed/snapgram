@@ -14,7 +14,7 @@ exports.signin = function(req, res){
 	conn = mysql.createConnection({
 	  host: 'localhost',
 	  user: 'root',
-	  password: '',
+	  password: 'root',
 	  database: 'snapgram'
 	});
 	conn.connect();
@@ -27,6 +27,8 @@ exports.signin = function(req, res){
 		if (rows[0] == undefined)
 			res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });
 		else if(passwordHash.verify(password, rows[0].pwd)) {
+				req.session.user = user;
+				req.session.pass = password;
 				res.redirect('/feed');
 		}
 		else

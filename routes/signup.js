@@ -13,7 +13,7 @@ exports.signup = function(req, res){
 	conn = mysql.createConnection({
 	  host: 'localhost',
 	  user: 'root',
-	  password: '',
+	  password: 'root',
 	  database: 'snapgram'
 	});
 	conn.connect();

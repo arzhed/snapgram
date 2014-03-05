@@ -4,5 +4,11 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Snapgram' });
+	if (req.session.user == undefined || req.session.pass == undefined){
+		res.render('index', { title: 'Snapgram' });
+	}
+	else{
+		res.render('feed');
+	}
+
 };
