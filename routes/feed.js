@@ -8,13 +8,14 @@ exports.feed = function(req,res) {
 	});
 	conn.connect();
 
-/*
-	var queryImage = 'SELECT picture FROM photos WHERE uid=7';
+	var queryImage = 'SELECT picture FROM photos WHERE uid=1';
 	conn.query(queryImage,function(err,rows) {
-		console.log(rows[0].picture)
+		console.log(rows)
+		if(rows[0]) {
+			console.log('rows[0]')
+		}
+			//console.log('COUCOU' +rows[0])
 	});
-*/
-	res.render('layout', { name: req.session.user});
 	
 	var fs = require('fs');
 
@@ -24,7 +25,7 @@ exports.feed = function(req,res) {
 		    if(err) {
 		        console.log(err);
 		    } else {
-		        res.render('layout');
+		        res.render('layout', { name: req.session.user});
 		    }
 		}
 	);
@@ -39,14 +40,18 @@ exports.upload = function(req,res) {
 	  database: 'snapgram'
 	});
 	conn.connect();
-console.log(req.files.photoFile)
+
 	var type = req.files.photoFile.headers['content-type'];
 	if(type=='image/jpeg' || type=='image/png') {
-		conn.query('INSERT INTO photos(uid,picture) VALUES((SELECT uid FROM user WHERE username=?),LOAD_FILE(?))',['arzhed',req.files.photoFile.path], function(err,result){
+		console.log('type OK')
+		var date_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+		var toInsert = ['arzhed',date_time,req.files.photoFile.path];
+		var queryString = 'INSERT INTO photos(uid,time_uploaded,picture) VALUES((SELECT uid FROM user WHERE username=?),?,LOAD_FILE(?))'
+		conn.query(queryString,toInsert, function(err,result){
 			console.log(err)
 			//neat!
 		});
 
 	}
-	res.render('layout');
+	res.redirect('/feed');
 }
