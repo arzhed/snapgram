@@ -23,15 +23,22 @@ exports.signup = function(req, res){
 	var user = req.body.uname;
 	var password = req.body.pwd;
 	var hashedPassword = passwordHash.generate(password);
+	console.log(fname)
+	console.log(lname)
+	console.log(user)
+	console.log(password)
 
-	if(fname & lname & user & password) {
+
+	if(fname && lname && user && password) {
 		conn.query('INSERT INTO user(username, lname, fname, pwd) VALUES(?,?,?,?)', [user,lname,fname,hashedPassword], function(err, rows, fields) {
 	  		if (err) {
 	  			console.log(err);
+	  		} else {
+	  			res.redirect('/feed');
 	  		}
 		});
 	}
-	else {
+	else {		
 		res.render('index', { title: 'Snapgram', wrongSignUp: 'Missing field' });
 	}
 

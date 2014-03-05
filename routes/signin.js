@@ -1,7 +1,6 @@
 exports.signin = function(req, res){
-	var fs = require('fs');
+	
 	var passwordHash = require('password-hash');
-
 /*
 	mysql = require('mysql');
 	conn = mysql.createConnection({
@@ -28,20 +27,10 @@ exports.signin = function(req, res){
 		if (rows[0] == undefined)
 			res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });
 		else if(passwordHash.verify(password, rows[0].pwd)) {
-				///home/arzhed/Documents/SENG513/Project/snapgram/
-				fs.writeFile(__dirname + "/../views/feed.jade",
-					"h1 Hey there!",	
-					function(err) {
-					    if(err) {
-					        console.log(err);
-					    } else {
-					        console.log("The file was saved!");
-					        res.render('layout');
-					    }
-			});
+				res.redirect('/feed');
 		}
-			else
-				res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
+		else
+			res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
 	});
 
 	conn.end();
