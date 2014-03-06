@@ -52,8 +52,42 @@ h4 {
 
 .btn-home:hover, .btn-home:active{
 	outline: none;
-	background-color: rgba(0, 0, 0, 0.70);
+	background-color: rgba(0, 0, 0, 0.50);
 }
+
+.btn-links{
+	border: none;
+	outline: none;
+	background: transparent;
+	padding: 0.9em;
+
+}
+
+.btn-links:hover, .btn-links:active{
+	outline: none;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+
+.listLeftElements{
+	float: left;
+	margin-right: auto;
+}
+
+
+.listRightElements{
+	float: right;
+	margin-left: auto;
+}
+
+.navRight {
+	position: relative;
+	/* left: 0; */
+	display: block;
+	/* float: left; */
+	margin: 0 10px 0 0;
+}
+
+
 
 #signin{
 	background-color: rgba(220, 220, 220, 0.50);

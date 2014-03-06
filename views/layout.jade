@@ -13,12 +13,19 @@ html
 					-var ulClass = ['nav', 'nav-pills']
 					ul(class=ulClass)
 						li
-							a(href='/') SNAPGRAM
+							a(href='/')
+								button(class='btn-home', type='submit')
+									h2=title
+					-var ulClass = ['nav', 'pull-right', 'nav-pills']
+					ul(class=ulClass)
 						li
 							a(href='/feed')
-								span= name
+								button(class='btn-links', type='submit')
+									h5= name
 						li
-							a(href='/signout') Log Out
+							a(href='/signout')
+								button(class='btn-links', type='submit')
+									h5 Sign Out
 		h1
 
 					
