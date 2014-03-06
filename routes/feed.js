@@ -32,10 +32,10 @@ exports.feed = function(req,res) {
 							+'<a href="/users/'+rows[i].uid+'">'
 							+rows[i].username+'</a></div>';				
 			}
-			res.render('layout', { name: req.session.user, html : feedPhotos});
+			res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 		});
-
-}
+	}
+};
 
 
 
@@ -53,8 +53,8 @@ exports.stream = function(req,res) {
 		});
 		conn.connect();
 
-		var parsed = req.url.split('/')
-		var uid = parsed[parsed.length-1]
+		var parsed = req.url.split('/');
+		var uid = parsed[parsed.length-1];
 
 		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
 							+'FROM photos p NATURAL JOIN user u WHERE uid=?';
@@ -71,4 +71,4 @@ exports.stream = function(req,res) {
 			res.render('layout', { name: req.session.user, html : feedPhotos});
 		});
 	}
-}
+};
