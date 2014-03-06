@@ -11,3 +11,12 @@ exports.index = function(req, res){
 		res.redirect('/feed')
 	}
 };
+
+exports.formSignUp = function(req,res){
+	if (req.session.user == undefined || req.session.uid == undefined || req.session.pwd == undefined){
+		
+	}
+	else{
+		res.redirect('/feed');
+	}
+}

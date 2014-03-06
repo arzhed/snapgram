@@ -34,48 +34,16 @@ exports.feed = function(req,res) {
 							+'<a href="/users/'+rows[i].uid+'">'
 							+rows[i].username+'</a></div>';				
 			}
+<<<<<<< HEAD
 			res.render('feed', { name: req.session.user, html : feedPhotos});
+=======
+			res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
+>>>>>>> Adesh
 		});
 	}
-}
+};
 
-exports.upload = function(req,res) {
-	if (req.session.user == undefined || req.session.pass == undefined){
-		res.redirect('/');
-	}
-	else {
-		mysql = require('mysql');
-		conn = mysql.createConnection({
-			host: 'web2.cpsc.ucalgary.ca',
-			user: 's513_apsbanva',
-			password: '10037085',
-			database: 's513_apsbanva'
-		});
-		conn.connect();
 
-		var fs= require('fs-extra') //FIRST: $npm install fs-extra
-
-		var type = req.files.photoFile.headers['content-type'];
-		var extension = type.split('/')[1]
-		if(type=='image/jpeg' || type=='image/png') {
-			var date_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-			console.log('FILE: '+req.files.photoFile)
-			console.log('PATH: '+req.files.photoFile.path)
-			var user = req.session.user
-			var toInsert = [user,extension];
-			var queryString = 'INSERT INTO photos(uid,time_uploaded,type) VALUES((SELECT uid FROM user WHERE username=?),now(),?)'
-			conn.query(queryString,toInsert, function(err,result){
-				if(err)
-					console.log(err)
-				else {
-					fs.copy(req.files.photoFile.path, __dirname + '/../pictures/' + user +'/'+result.insertId+'.'+ extension)
-				}
-			});
-
-		}
-		res.redirect('/feed');
-	}
-}
 
 exports.stream = function(req,res) {
 	if (req.session.user == undefined || req.session.pass == undefined){
@@ -91,8 +59,8 @@ exports.stream = function(req,res) {
 		});
 		conn.connect();
 
-		var parsed = req.url.split('/')
-		var uid = parsed[parsed.length-1]
+		var parsed = req.url.split('/');
+		var uid = parsed[parsed.length-1];
 
 		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
 							+'FROM photos p NATURAL JOIN user u WHERE uid=?';
@@ -109,4 +77,4 @@ exports.stream = function(req,res) {
 			res.render('layout', { name: req.session.user, html : feedPhotos});
 		});
 	}
-}
+};

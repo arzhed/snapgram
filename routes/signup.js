@@ -1,7 +1,6 @@
 exports.signup = function(req, res){
 	var passwordHash = require('password-hash');
 	var fs = require('fs')
-
 	mysql = require('mysql');
 	conn = mysql.createConnection({
 		host: 'web2.cpsc.ucalgary.ca',

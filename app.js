@@ -13,6 +13,7 @@ var signin = require('./routes/signin');
 var signup = require('./routes/signup');
 var feed = require('./routes/feed');
 var signout = require('./routes/signout');
+var index = require('./routes/index');
 
 var app = express();
 
@@ -37,14 +38,18 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/users/new', index.formSignUp)
 app.post('/signin', signin.signin);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed)
-app.post('/upload',feed.upload)
+//app.post('/upload',feed.upload)
 app.get(/\/users\/\d+/, feed.stream)
 app.get('/signout',signout.signout);
+<<<<<<< HEAD
 
+=======
+>>>>>>> Adesh
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
