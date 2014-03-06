@@ -1,34 +1,34 @@
 exports.feed = function(req,res) {
 	mysql = require('mysql');
 	conn = mysql.createConnection({
-	  host: 'localhost',
-	  user: 'root',
-	  password: '',
-	  database: 'snapgram'
+	  host: 'web2.cpsc.ucalgary.ca',
+	  user: 's513_apsbanva',
+	  password: '10037085',
+	  database: 's513_apsbanva'
 	});
 	conn.connect();
 
-	var queryImage = 'SELECT picture FROM photos WHERE uid=1';
+	/*var queryImage = 'SELECT picture FROM photos WHERE uid=1';
 	conn.query(queryImage,function(err,rows) {
 		console.log(rows)
 		if(rows[0]) {
 			console.log('rows[0]')
 		}
 			//console.log('COUCOU' +rows[0])
-	});
+	});*/
 	
-	var fs = require('fs');
+	/*var fs = require('fs');
 
 	fs.writeFile(__dirname + "/../views/feed.jade",
 		"h1 Hey there!",	
 		function(err) {
 		    if(err) {
 		        console.log(err);
-		    } else {
-		        res.render('layout', { name: req.session.user});
-		    }
+		    } else {*/
+	res.render('layout', { name: req.session.user});
+		    /*}
 		}
-	);
+	);*/
 }
 
 exports.upload = function(req,res) {

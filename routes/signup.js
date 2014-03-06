@@ -1,6 +1,6 @@
 exports.signup = function(req, res){
 	var passwordHash = require('password-hash');
-/*
+
 	mysql = require('mysql');
 	conn = mysql.createConnection({
 	  host: 'web2.cpsc.ucalgary.ca',
@@ -8,14 +8,14 @@ exports.signup = function(req, res){
 	  password: '10037085',
 	  database: 's513_apsbanva'
 	});
-*/
+/*
 	mysql = require('mysql');
 	conn = mysql.createConnection({
 	  host: 'localhost',
 	  user: 'root',
 	  password: '',
 	  database: 'snapgram'
-	});
+	});*/
 	conn.connect();
 
 	var fname = req.body.fname;
@@ -34,6 +34,9 @@ exports.signup = function(req, res){
 	  		if (err) {
 	  			console.log(err);
 	  		} else {
+	  			req.session.user = user;
+				//req.session.pass = rows[0].pwd;
+				//req.session.uid = rows[0].uid;
 	  			res.redirect('/feed');
 	  		}
 		});
