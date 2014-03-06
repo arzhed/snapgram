@@ -1,4 +1,5 @@
 exports.feed = function(req,res) {
+
 	if (req.session.user == undefined || req.session.pass == undefined){
 		res.redirect('/');
 	}

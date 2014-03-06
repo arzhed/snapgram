@@ -25,6 +25,9 @@ exports.signup = function(req, res){
 	  		} else {
 	  			fs.mkdirSync(__dirname + '/../pictures/'+result.insertId);
 	  			res.redirect('/');
+	  			req.session.user = user;
+	  			req.session.password = hashedPassword
+	  			res.redirect('/feed');
 	  		}
 		});
 	}
@@ -33,6 +36,4 @@ exports.signup = function(req, res){
 	}
 
 	conn.end();
-
-  //res.render('index', { title: 'Snapgram' });
 };
