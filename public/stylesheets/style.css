@@ -7,6 +7,11 @@ body {
 	color: red;
 }
 
+.imag {
+	display: inline-block;
+	margin : 5px;
+}
+
 a {
   color: #00B7FF;
 }
