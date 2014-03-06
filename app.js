@@ -13,6 +13,7 @@ var signin = require('./routes/signin');
 var signup = require('./routes/signup');
 var feed = require('./routes/feed');
 var signout = require('./routes/signout');
+var index = require('./routes/index');
 
 var app = express();
 
@@ -39,6 +40,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/users/new', index.formSignUp)
 app.post('/signin', signin.signin);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
