@@ -1,5 +1,11 @@
 body {
-  font: 1.2em "Lucida Grande", Helvetica, Arial, sans-serif;
+	font: 1.2em "Lucida Grande", Helvetica, Arial, sans-serif;
+	background-image:url('../backgrounds/5.jpg');
+	background-color: #f3f5f4;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	z-index: -10;
 }
 
 .wrong {
@@ -7,7 +13,7 @@ body {
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
 }
 
 h4 {
@@ -19,15 +25,16 @@ h4 {
 	margin-left: auto;
 	margin-right: auto;
 	width: 45%;
+	background-color: rgba(220, 220, 220, 0.50);
+	padding: 1.2em;
 }
 
 .navbar-block {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 75%;
+	width: 85%;
 }
-
 
 .btn-home{
 	border: none;
@@ -35,15 +42,11 @@ h4 {
 	background: transparent;
 }
 
-.btn-home:hover{
-	background: green;
-}
-
-.btn-home:active{
+.btn-home:hover, .btn-home:active{
 	outline: none;
-	background: mediumpurple;
+	background-color: rgba(0, 0, 0, 0.70);
 }
 
 .navbar-customize{
-	background:slategray;
+	background-color: rgba(220, 220, 220, 0.50);
 }
