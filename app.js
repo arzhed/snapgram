@@ -42,9 +42,9 @@ app.get('/users/new', index.formSignUp)
 app.post('/signin', signin.signin);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
-app.get('/feed',feed.feed)
+app.get('/feed',feed.feed);
 //app.post('/upload',feed.upload)
-app.get(/\/users\/\d+/, feed.stream)
+app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
 
 http.createServer(app).listen(app.get('port'), function(){

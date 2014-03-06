@@ -25,7 +25,9 @@ exports.signin = function(req, res){
 				res.redirect('/feed');
 		}
 		else
-			res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
+			res.set('errorMessage','Missing Field');
+			res.redirect('/users/new');
+			//res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
 	});
 
 	conn.end();
