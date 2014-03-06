@@ -4,17 +4,10 @@ exports.signin = function(req, res){
 
 	mysql = require('mysql');
 	conn = mysql.createConnection({
-<<<<<<< HEAD
-	  host: 'web2.cpsc.ucalgary.ca',
-	  user: 's513_apsbanva',
-	  password: '10037085',
-	  database: 's513_apsbanva'
-=======
 		host: 'web2.cpsc.ucalgary.ca',
 		user: 's513_apsbanva',
 		password: '10037085',
 		database: 's513_apsbanva'
->>>>>>> Adesh
 	});
 	conn.connect();
 

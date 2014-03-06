@@ -32,18 +32,12 @@ exports.feed = function(req,res) {
 							+'<a href="' + filePath + '">'
 							+'<img src="' + filePath +'" width = 200 alt="image ici"/></a></br>'
 							+'<a href="/users/'+rows[i].uid+'">'
-							+rows[i].username+'</a></div>';				
+							+rows[i].username+'</a></div>';
 			}
-<<<<<<< HEAD
-			res.render('feed', { name: req.session.user, html : feedPhotos});
-=======
 			res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
->>>>>>> Adesh
 		});
 	}
 };
-
-
 
 exports.stream = function(req,res) {
 	if (req.session.user == undefined || req.session.pass == undefined){
@@ -74,7 +68,7 @@ exports.stream = function(req,res) {
 							+'<a href="/users/'+rows[i].uid+'">'
 							+rows[i].username+'</a></div>';				
 			}
-			res.render('layout', { name: req.session.user, html : feedPhotos});
+			res.render('layout', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 		});
 	}
 };

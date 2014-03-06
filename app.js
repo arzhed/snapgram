@@ -46,10 +46,7 @@ app.get('/feed',feed.feed)
 //app.post('/upload',feed.upload)
 app.get(/\/users\/\d+/, feed.stream)
 app.get('/signout',signout.signout);
-<<<<<<< HEAD
 
-=======
->>>>>>> Adesh
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
