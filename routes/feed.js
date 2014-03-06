@@ -68,7 +68,7 @@ exports.stream = function(req,res) {
 							+'<a href="/users/'+rows[i].uid+'">'
 							+rows[i].username+'</a></div>';				
 			}
-			res.render('layout', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
+			res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 		});
 	}
 };
