@@ -24,7 +24,7 @@ exports.feed = function(req,res) {
 		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {		
 			var feedPhotos = '';
 			for(var i=0; i<rows.length; i++) {
-				feedPhotos += '<img src="/../pictures/'+ rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type +'" width = 200 alt="image ici"/>'
+				feedPhotos += '<img src="pictures/'+ rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type +'" width = 200 alt="image ici"/>'
 				
 			}
 			res.render('layout', { name: req.session.user, html : feedPhotos});

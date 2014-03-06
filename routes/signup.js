@@ -23,7 +23,7 @@ exports.signup = function(req, res){
 	  		if (err) {
 	  			console.log(err);
 	  		} else {
-	  			fs.mkdirSync(__dirname + '/../pictures/'+result.insertId);
+	  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
 	  			res.redirect('/');
 	  			req.session.user = user;
 	  			req.session.password = hashedPassword
