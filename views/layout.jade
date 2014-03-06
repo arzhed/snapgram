@@ -5,19 +5,6 @@ html
 		script(type='text/javascript', src='/scripts/jquery.js')
 		script(type='text/javascript', src='/scripts/test.js')
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-<<<<<<< HEAD
-	body
-		div.container(id="upload")
-			h1 Hey there, your username is 
-				span= name
-			form(action="/upload", method="post", enctype="multipart/form-data")
-				h2 Upload
-				p.wrong= wrongFile
-				input(type='file', name='photoFile')
-				- var btnClass = ['btn', 'btn-large', 'btn-primary']
-				button(class=btnClass, type='submit') Upload
-			div!= html
-=======
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	header
 		nav(class='navbar navbar-default navbar-customize' role='navigation')
@@ -40,6 +27,3 @@ html
 								button(class='btn-links', type='submit')
 									h5 Sign Out
 		h1
-
-					
->>>>>>> Adesh

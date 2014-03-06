@@ -22,8 +22,10 @@ exports.feed = function(req,res) {
 							+'JOIN photos p ON f.followee = p.uid '
 							+'WHERE a.username=?'
 							+'ORDER BY time_uploaded DESC';
-		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {		
+		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {	
+			console.log('queryString')	
 			var feedPhotos = '';
+			console.log(rows)
 			for(var i=0; i<rows.length; i++) {
 				var filePath = 'pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
 				feedPhotos += '<div class="imag">'
@@ -32,7 +34,7 @@ exports.feed = function(req,res) {
 							+'<a href="/users/'+rows[i].uid+'">'
 							+rows[i].username+'</a></div>';				
 			}
-			res.render('layout', { name: req.session.user, html : feedPhotos});
+			res.render('feed', { name: req.session.user, html : feedPhotos});
 		});
 	}
 }
