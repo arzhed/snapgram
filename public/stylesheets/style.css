@@ -1,6 +1,12 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font: 1.2em "Lucida Grande", Helvetica, Arial, sans-serif;
+	background-image:url('../backgrounds/5.jpg');
+	background-color: #f3f5f4;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	z-index: -10;
+	margin-top: 4em;
 }
 
 .wrong {
@@ -13,5 +19,108 @@ body {
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
+}
+
+h4 {
+	text-align: center;
+}
+
+.center-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 45%;
+}
+
+.navbar-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 85%;
+}
+
+.navbar-customize{
+	background-color: rgba(220, 220, 220, 0.50);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	width: 100%;
+}
+
+.btn-home{
+	border: none;
+	outline: none;
+	background: transparent;
+}
+
+.btn-home:hover, .btn-home:active{
+	outline: none;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+
+.btn-links{
+	border: none;
+	outline: none;
+	background: transparent;
+	padding: 0.9em;
+
+}
+
+.btn-links:hover, .btn-links:active{
+	outline: none;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+
+.listLeftElements{
+	float: left;
+	margin-right: auto;
+}
+
+
+.listRightElements{
+	float: right;
+	margin-left: auto;
+}
+
+.navRight {
+	position: relative;
+	/* left: 0; */
+	display: block;
+	/* float: left; */
+	margin: 0 10px 0 0;
+}
+
+
+
+#signin{
+	background-color: rgba(220, 220, 220, 0.50);
+	padding: 2em 0em 2em 0em;
+ }
+
+#signup{
+	background-color: rgba(220, 220, 220, 0.50);
+	padding: 2em 0em 2em 0em;
+}
+
+#parentWidth{
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+}
+
+#childWidth{
+	width: 140%;
+	margin-left: -20%;
+}
+
+#btnOptSignIn{
+	width: 140%;
+	margin-left: -20%;
+}
+
+#btnOptSignUp{
+	width: 140%;
+	margin-left: -20%;
 }

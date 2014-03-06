@@ -11,7 +11,8 @@ var path = require('path');
 
 var signin = require('./routes/signin');
 var signup = require('./routes/signup');
-var feed = require('./routes/feed')
+var feed = require('./routes/feed');
+var signout = require('./routes/signout');
 
 var app = express();
 
@@ -30,8 +31,6 @@ app.use(express.cookieSession());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -44,6 +43,7 @@ app.get('/users', user.list);
 app.get('/feed',feed.feed)
 app.post('/upload',feed.upload)
 app.get(/\/users\/\d+/, feed.stream)
+app.get('/signout',signout.signout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

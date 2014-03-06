@@ -1,8 +1,11 @@
 doctype html
 html  
 	head
-		title Snapgram
+		title= title
+		script(type='text/javascript', src='/scripts/jquery.js')
+		script(type='text/javascript', src='/scripts/test.js')
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+<<<<<<< HEAD
 	body
 		div.container(id="upload")
 			h1 Hey there, your username is 
@@ -14,3 +17,29 @@ html
 				- var btnClass = ['btn', 'btn-large', 'btn-primary']
 				button(class=btnClass, type='submit') Upload
 			div!= html
+=======
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	header
+		nav(class='navbar navbar-default navbar-customize' role='navigation')
+			div.navbar-block
+				div.navbar-header
+					-var ulClass = ['nav', 'nav-pills']
+					ul(class=ulClass)
+						li
+							a(href='/')
+								button(class='btn-home', type='submit')
+									h2=title
+					-var ulClass = ['nav', 'pull-right', 'nav-pills']
+					ul(class=ulClass)
+						li
+							a(href='/feed')
+								button(class='btn-links', type='submit')
+									h5= name
+						li
+							a(href='/signout')
+								button(class='btn-links', type='submit')
+									h5 Sign Out
+		h1
+
+					
+>>>>>>> Adesh
