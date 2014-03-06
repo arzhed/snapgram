@@ -14,10 +14,10 @@ html
 						h2=title
 	body
 		div.container
-			div.container-fluid
+			div.container-fluid#parentWidth
 				div.row-fluid#signin
 					div.center-block
-						form.form-signin(action='/signin',method='post')
+						form.form-signin(action='/signin', method='post', id='childWidth')
 							h2.form-signin-heading Sign in
 							p.wrong= wrongSignIn
 							input.input-block-level(type='text', placeholder='Username' name='uname')
@@ -32,7 +32,7 @@ html
 
 				div.row-fluid#signup
 					div.center-block
-						form.form-signin(action='/signup',method='post')
+						form.form-signin(action='/signup',method='post', id='childWidth')
 							h2.form-signin-heading Register
 							p.wrong= wrongSignUp
 							input.input-block-level(type='text', placeholder='First Name' name='fname')
