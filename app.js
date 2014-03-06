@@ -11,7 +11,8 @@ var path = require('path');
 
 var signin = require('./routes/signin');
 var signup = require('./routes/signup');
-var feed = require('./routes/feed')
+var feed = require('./routes/feed');
+var signout = require('./routes/signout');
 
 var app = express();
 
@@ -41,8 +42,9 @@ app.get('/', routes.index);
 app.post('/signin', signin.signin);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
-app.get('/feed',feed.feed)
-app.post('/upload',feed.upload)
+app.get('/feed',feed.feed);
+app.post('/upload',feed.upload);
+app.get('/signout',signout.signout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
