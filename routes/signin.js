@@ -14,13 +14,14 @@ exports.signin = function(req, res){
 	var user = req.body.uname;
 	var password = req.body.pwd;
 
-	conn.query('SELECT pwd FROM user WHERE username=?', [user], function(err, rows, fields) {
+	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err) throw err;
 		if (rows[0] == undefined)
 			res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });
 		else if(passwordHash.verify(password, rows[0].pwd)) {
 				req.session.user = user;
-				req.session.pass = password;
+				req.session.uid = rows[0].uid;
+				req.session.pwd = rows[0].pwd;
 				res.redirect('/feed');
 		}
 		else

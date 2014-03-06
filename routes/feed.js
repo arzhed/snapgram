@@ -14,20 +14,20 @@ exports.feed = function(req,res) {
 		console.log(rows[0].picture)
 	});
 */
-	res.render('layout', { name: req.session.user});
+	res.render('feed', { name: req.session.user, title: 'SNAPGRAM'});
 	
-	var fs = require('fs');
+	//var fs = require('fs');
 
-	fs.writeFile(__dirname + "/../views/feed.jade",
+/*	fs.writeFile(__dirname + "/../views/feed.jade",
 		"h1 Hey there!",	
 		function(err) {
 		    if(err) {
 		        console.log(err);
-		    } else {
-		        res.render('layout');
-		    }
+		    } else {*/
+	//res.render('layout', {  });
+		    /*}
 		}
-	);
+	);*/
 }
 
 exports.upload = function(req,res) {
