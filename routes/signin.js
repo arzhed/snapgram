@@ -20,8 +20,8 @@ exports.signin = function(req, res){
 			res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });
 		else if(passwordHash.verify(password, rows[0].pwd)) {
 				req.session.user = user;
+				req.session.pass = rows[0].pwd;
 				req.session.uid = rows[0].uid;
-				req.session.pwd = rows[0].pwd;
 				res.redirect('/feed');
 		}
 		else

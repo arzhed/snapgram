@@ -1,53 +1,74 @@
 exports.feed = function(req,res) {
-	mysql = require('mysql');
-	conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});
-	conn.connect();
+	if (req.session.user == undefined || req.session.pass == undefined){
+		res.redirect('/');
+	}
+	else {
+		mysql = require('mysql');
+		conn = mysql.createConnection({
+			host: 'web2.cpsc.ucalgary.ca',
+			user: 's513_apsbanva',
+			password: '10037085',
+			database: 's513_apsbanva'
+		});
+		conn.connect();
 
-/*
-	var queryImage = 'SELECT picture FROM photos WHERE uid=7';
-	conn.query(queryImage,function(err,rows) {
-		console.log(rows[0].picture)
-	});
-*/
-	res.render('feed', { name: req.session.user, title: 'SNAPGRAM'});
-	
-	//var fs = require('fs');
-
-/*	fs.writeFile(__dirname + "/../views/feed.jade",
-		"h1 Hey there!",	
-		function(err) {
-		    if(err) {
-		        console.log(err);
-		    } else {*/
-	//res.render('layout', {  });
-		    /*}
-		}
-	);*/
-}
-
-exports.upload = function(req,res) {
-	mysql = require('mysql');
-	conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});
-	conn.connect();
-
-	console.log(req.files.photoFile);
-	var type = req.files.photoFile.headers['content-type'];
-	if(type=='image/jpeg' || type=='image/png') {
-		conn.query('INSERT INTO photos(uid,picture) VALUES((SELECT uid FROM user WHERE username=?),LOAD_FILE(?))',['arzhed',req.files.photoFile.path], function(err,result){
-			console.log(err)
-			//neat!
+		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
+							+'FROM photos p NATURAL JOIN user u WHERE username=? '
+							+'UNION '
+							+'SELECT p.pid, f.followee, b.username, p.time_uploaded, p.type '
+							+'FROM follows f '
+							+'JOIN user a ON f.follower = a.uid '
+							+'JOIN user b ON f.followee = b.uid '
+							+'JOIN photos p ON f.followee = p.uid '
+							+'WHERE a.username=?'
+							+'ORDER BY time_uploaded DESC';
+		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {		
+			var feedPhotos = '';
+			for(var i=0; i<rows.length; i++) {
+				var filePath = 'pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
+				feedPhotos += '<div class="imag">'
+							+'<a href="' + filePath + '">'
+							+'<img src="' + filePath +'" width = 200 alt="image ici"/></a></br>'
+							+'<a href="/users/'+rows[i].uid+'">'
+							+rows[i].username+'</a></div>';				
+			}
+			res.render('layout', { name: req.session.user, html : feedPhotos});
 		});
 
+}
+
+
+
+exports.stream = function(req,res) {
+	if (req.session.user == undefined || req.session.pass == undefined){
+		res.redirect('/');
 	}
-	res.render('layout');
+	else {
+		mysql = require('mysql');
+		conn = mysql.createConnection({
+			host: 'web2.cpsc.ucalgary.ca',
+			user: 's513_apsbanva',
+			password: '10037085',
+			database: 's513_apsbanva'
+		});
+		conn.connect();
+
+		var parsed = req.url.split('/')
+		var uid = parsed[parsed.length-1]
+
+		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
+							+'FROM photos p NATURAL JOIN user u WHERE uid=?';
+		conn.query(queryImage,[uid], function(err,rows) {		
+			var feedPhotos = '';
+			for(var i=0; i<rows.length; i++) {
+				var filePath = '/pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
+				feedPhotos += '<div class="imag">'
+							+'<a href="' + filePath + '">'
+							+'<img src="' + filePath +'" width = 200 alt="image ici"/></a></br>'
+							+'<a href="/users/'+rows[i].uid+'">'
+							+rows[i].username+'</a></div>';				
+			}
+			res.render('layout', { name: req.session.user, html : feedPhotos});
+		});
+	}
 }
