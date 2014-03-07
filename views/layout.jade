@@ -15,9 +15,13 @@ html
 						li
 							a(href='/feed')
 								button(class='btn-home', type='submit')
-									h2= title
+									h3= title
 					-var ulClass = ['nav', 'pull-right', 'nav-pills']
 					ul(class=ulClass)
+						li
+							a(href='/feed')
+								button(class='btn-links', type='submit')
+									h5 Feed
 						li
 							div(class='btn-group pull-right')
 								button(type="button" class="btn btn-upload dropdown-toggle btn-links"
@@ -32,7 +36,7 @@ html
 										button(class=btnClass, type='submit') Upload
 
 						li
-							a(href='/feed')
+							a(href='/user')
 								button(class='btn-links', type='submit')
 									h5= name
 						li

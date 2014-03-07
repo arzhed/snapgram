@@ -13,17 +13,16 @@ html
 					ul(class=ulClass)
 						li
 							button(class='btn-home', type='button')
-								h2= title
+								h3= title
 									a(href='/')
 	body
 		div.container
 			div.container-fluid#parentWidth
-				div.row-fluid#signin
+				div.row-fluid#signDefault
 					div.center-block
 						form.form-signin(action='/sessions/new', method='get', id='childWidth')
 							- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
 							button(class=btnClass, type='submit') Sign in
-				div.row-fluid#signup
 					div.center-block
 						form.form-signin(action='/users/new',method='get', id='childWidth')
 							button(class=btnClass, type='submit') Sign up

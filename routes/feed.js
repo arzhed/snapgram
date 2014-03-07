@@ -23,21 +23,17 @@ exports.feed = function(req,res) {
 							+'WHERE a.username=?'
 							+'ORDER BY time_uploaded DESC';
 							//+'LIMIT 0,30';
-		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {	
-			console.log('queryString')
+		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {
 			var feedPhotos = '';
-			console.log(rows)
 			for(var i=0; i<rows.length; i++) {
 				var filePath = 'pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
 				var time = getTimeAgo(rows[i].time_uploaded);
-				console.log(time);
-				feedPhotos += '<div class="imag">'
+				feedPhotos += '<div class="imgBox">'
 							+'<a href="' + filePath + '">'
-							+'<img src="' + filePath +'" width = 200 alt="image ici"/></a></br>'
-							+'<a href="/users/'+rows[i].uid+'">'
-							+rows[i].username+'</a>'
+							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
+							+'<a href="/users/'+rows[i].uid+'"></br>'
+							+rows[i].username+'</a></br>'
 							+'<span class="time">'+time+'</span>'+'</div>';
-
 			}
 			res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 		});
@@ -45,7 +41,7 @@ exports.feed = function(req,res) {
 };
 
 exports.upload = function(req,res) {
-	if (req.session.user == undefined || req.session.pass == undefined){
+	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
 		res.redirect('/');
 	}
 	else {
@@ -70,7 +66,6 @@ exports.upload = function(req,res) {
 					console.log(err);
 				else {
 					fs.copy(req.files.photoFile.path, __dirname + '/../public/pictures/' + req.session.uid +'/'+result.insertId+'.'+ extension);
-					console.log(req.files.photoFile.path, __dirname + '/../public/pictures/' + req.session.uid +'/'+result.insertId+'.'+ extension);
 				}
 			});
 		}
@@ -79,7 +74,7 @@ exports.upload = function(req,res) {
 }
 
 exports.stream = function(req,res) {
-	if (req.session.user == undefined || req.session.pass == undefined){
+	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
 		res.redirect('/');
 	}
 	else {
@@ -96,16 +91,19 @@ exports.stream = function(req,res) {
 		var uid = parsed[parsed.length-1];
 
 		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
-							+'FROM photos p NATURAL JOIN user u WHERE uid=?';
-		conn.query(queryImage,[uid], function(err,rows) {		
+							+'FROM photos p NATURAL JOIN user u WHERE uid=?'
+							+'ORDER BY time_uploaded DESC';
+		conn.query(queryImage,[uid], function(err,rows) {
 			var feedPhotos = '';
 			for(var i=0; i<rows.length; i++) {
 				var filePath = '/pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
-				feedPhotos += '<div class="imag">'
+				var time = getTimeAgo(rows[i].time_uploaded);
+				feedPhotos += '<div class="imgBox">'
 							+'<a href="' + filePath + '">'
-							+'<img src="' + filePath +'" width = 200 alt="image ici"/></a></br>'
-							+'<a href="/users/'+rows[i].uid+'">'
-							+rows[i].username+'</a></div>';				
+							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
+							+'<a href="/users/'+rows[i].uid+'"></br>'
+							+rows[i].username+'</a></br>'
+							+'<span class="time">'+time+'</span>'+'</div>';
 			}
 			res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 		});

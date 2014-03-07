@@ -1,21 +1,46 @@
 body {
-	font: 1.2em "Lucida Grande", Helvetica, Arial, sans-serif;
-	background-image:url('../backgrounds/5.jpg');
+	font: 1em "Lucida Grande", Helvetica, Arial, sans-serif;
+	background-image:url('../backgrounds/3.jpg');
 	background-color: #f3f5f4;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	z-index: -10;
-	margin-top: 4em;
+	margin-top: 5em;
 }
 
 .wrong {
 	color: red;
 }
 
-.imag {
+.imgBox {
 	display: inline-block;
-	margin : 5px;
+	margin : 10px;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.65);
+	align-content: center;
+	text-align: center;
+	color: white;
+	-webkit-transition: background-color 500ms ease;
+	-moz-transition: background-color 500ms ease;
+	-o-transition: background-color 500ms ease;
+	transition: background-color 500ms ease;
+}
+
+.imgBox:hover{
+	background-color: rgba(0, 0, 0, 1);
+}
+
+img{
+	background-color: rgba(0, 0, 0, 1);
+	-webkit-transition: opacity 500ms ease;
+	-moz-transition: opacity 500ms ease;
+	-o-transition: opacity 500ms ease;
+	transition: opacity 500ms ease;
+}
+
+.imgBox:hover img {
+	opacity: 0.75;
 }
 
 a{
@@ -78,6 +103,10 @@ h4 {
 	border: none;
 	outline: none;
 	background: transparent;
+	-webkit-transition: background-color 500ms ease;
+	-moz-transition: background-color 500ms ease;
+	-o-transition: background-color 500ms ease;
+	transition: background-color 500ms ease;
 }
 
 .btn-home:hover, .btn-home:active{
@@ -90,7 +119,11 @@ h4 {
 	outline: none;
 	background: transparent;
 	padding: 0.9em;
-
+	min-width: 6.5em;
+	-webkit-transition: background-color 500ms ease;
+	-moz-transition: background-color 500ms ease;
+	-o-transition: background-color 500ms ease;
+	transition: background-color 500ms ease;
 }
 
 .btn-links:hover, .btn-links:active{
@@ -100,6 +133,10 @@ h4 {
 
 .btn-group > .btn:first-child {
 	border-radius: 0;
+	-webkit-transition: background-color 500ms ease;
+	-moz-transition: background-color 500ms ease;
+	-o-transition: background-color 500ms ease;
+	transition: background-color 500ms ease;
 }
 
 .navbar .btn, .navbar .btn-group{
@@ -112,6 +149,10 @@ h4 {
 	box-shadow: none;
 	border: none;
 	outline: none;
+	-webkit-transition: background-color 500ms ease;
+	-moz-transition: background-color 500ms ease;
+	-o-transition: background-color 500ms ease;
+	transition: background-color 500ms ease;
 }
 
 .btn-upload:hover, .btn-upload:active, .btn-upload:focus{
@@ -153,6 +194,11 @@ h4 {
 #signup{
 	background-color: rgba(220, 220, 220, 0.50);
 	padding: 2em 0em 2em 0em;
+}
+
+#signDefault{
+	background-color: rgba(220, 220, 220, 0.50);
+	padding: 2em 0em 1.5em 0em;
 }
 
 #parentWidth{
