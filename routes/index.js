@@ -5,7 +5,7 @@
 
 exports.index = function(req, res){
 	if (req.session.user == undefined || req.session.uid == undefined || req.session.pwd == undefined){
-		res.redirect('/users/new');
+		res.render('index', {title: 'SNAPGRAM'});
 	}
 	else{
 		res.redirect('/feed');
@@ -14,7 +14,9 @@ exports.index = function(req, res){
 
 exports.formSignUp = function(req,res){
 	if (req.session.user == undefined || req.session.uid == undefined || req.session.pwd == undefined){
-		res.render('signup', {title: 'SNAPGRAM'});
+		var errorMsg = req.get('errorMessage');
+		console.log('mess ::  ' + errorMsg);
+		res.render('signup', {title: 'SNAPGRAM', wrongSignUp: errorMsg });
 	}
 	else{
 		res.redirect('/feed');
