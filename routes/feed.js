@@ -67,9 +67,10 @@ exports.upload = function(req,res) {
 			var queryString = 'INSERT INTO photos(uid,time_uploaded,type) VALUES((SELECT uid FROM user WHERE username=?),now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
 				if(err)
-					console.log(err)
+					console.log(err);
 				else {
-					fs.copy(req.files.photoFile.path, __dirname + '/../pictures/' + user +'/'+result.insertId+'.'+ extension)
+					fs.copy(req.files.photoFile.path, __dirname + '/../public/pictures/' + req.session.uid +'/'+result.insertId+'.'+ extension);
+					console.log(req.files.photoFile.path, __dirname + '/../public/pictures/' + req.session.uid +'/'+result.insertId+'.'+ extension);
 				}
 			});
 		}

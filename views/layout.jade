@@ -19,13 +19,18 @@ html
 					-var ulClass = ['nav', 'pull-right', 'nav-pills']
 					ul(class=ulClass)
 						li
-							div.btn-group
+							div(class='btn-group pull-right')
 								button(type="button" class="btn btn-upload dropdown-toggle btn-links"
 								data-toggle="dropdown")
 									h5 Upload
-								ul(class="dropdown-menu" role="menu")
-									li
-										h5= name
+								div#uploadDiv(class="dropdown-menu" role="menu")
+									form(action="/upload", method="post", enctype="multipart/form-data")
+										p.wrong= wrongFile
+										input(id='uploadInput',type='file', name='photoFile')
+										- var btnClass = ['btn', 'btn-large', 'btn-primary']
+										br
+										button(class=btnClass, type='submit') Upload
+
 						li
 							a(href='/feed')
 								button(class='btn-links', type='submit')

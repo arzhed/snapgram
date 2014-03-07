@@ -110,18 +110,39 @@ h4 {
 	color: black;
 	text-shadow: none;
 	box-shadow: none;
+	border: none;
+	outline: none;
 }
 
-.btn-upload:hover, .btn-upload:active{
+.btn-upload:hover, .btn-upload:active, .btn-upload:focus{
 	color: black;
 	outline: none;
 	background-color: rgba(0, 0, 0, 0.50);
 }
 
-.btn-group.open .btn.dropdown-toggle{
+.btn-group.open .btn.dropdown-toggle {
 	color: black;
 	outline: none;
 	background-color: rgba(0, 0, 0, 0.50);
+}
+
+#uploadDiv{
+	min-width: 300px;
+	padding: 1.5em;
+	color: white;
+	border: none;
+	outline: none;
+	background-color: rgba(0, 0, 0, 0.75);
+	border-radius: 0;
+	align-content: center;
+	margin: 0;
+	text-align: center;
+}
+
+#uploadInput{
+	padding: 1em;
+	border: 1px solid white;
+	margin-bottom: 2.5em;
 }
 
 #signin{
