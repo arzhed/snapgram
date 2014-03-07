@@ -3,6 +3,7 @@ html
 	head
 		title= title
 		script(type='text/javascript', src='/scripts/jquery.js')
+		script(type='text/javascript', src='/scripts/bootstrap.js')
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	header
@@ -17,6 +18,14 @@ html
 									h2= title
 					-var ulClass = ['nav', 'pull-right', 'nav-pills']
 					ul(class=ulClass)
+						li
+							div.btn-group
+								button(type="button" class="btn btn-upload dropdown-toggle btn-links"
+								data-toggle="dropdown")
+									h5 Upload
+								ul(class="dropdown-menu" role="menu")
+									li
+										h5= name
 						li
 							a(href='/feed')
 								button(class='btn-links', type='submit')

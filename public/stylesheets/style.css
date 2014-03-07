@@ -98,6 +98,32 @@ h4 {
 	background-color: rgba(0, 0, 0, 0.50);
 }
 
+.btn-group > .btn:first-child {
+	border-radius: 0;
+}
+
+.navbar .btn, .navbar .btn-group{
+	margin: 0;
+}
+
+.btn-upload{
+	color: black;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.btn-upload:hover, .btn-upload:active{
+	color: black;
+	outline: none;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+
+.btn-group.open .btn.dropdown-toggle{
+	color: black;
+	outline: none;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+
 #signin{
 	background-color: rgba(220, 220, 220, 0.50);
 	padding: 2em 0em 2em 0em;
