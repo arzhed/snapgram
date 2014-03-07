@@ -15,8 +15,10 @@ exports.signin = function(req, res){
 	var password = req.body.pwd;
 
 	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
-  		if (err) throw err;
-		if (rows[0] == undefined){
+  		if (err){
+  			throw err;
+  		}
+		else if (rows[0] == undefined){
 			req.session.errorMessage = 'Username not found';
 			res.redirect('/sessions/new');
 			//res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });	
