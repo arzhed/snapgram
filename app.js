@@ -14,7 +14,8 @@ var signup = require('./routes/signup');
 var feed = require('./routes/feed');
 var signout = require('./routes/signout');
 var index = require('./routes/index');
-var oops = require('./routes/oops')
+var oops = require('./routes/oops');
+var internalError = require('./routes/internalError');
 
 var app = express();
 
@@ -35,6 +36,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next){
 	res.status(404).redirect('/oops');
 });
+/*app.use(function(req, res, next){
+	res.status(500).redirect('/oops');
+});*/
 
 // development only
 if ('development' == app.get('env')) {
@@ -54,6 +58,7 @@ app.get(/users\/\d+\/unfollow/, user.unfollow)
 app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
 app.get('/oops',oops.oops);
+app.get('/internalError', internalError.error500);
 
 
 http.createServer(app).listen(app.get('port'), function(){
