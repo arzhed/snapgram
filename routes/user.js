@@ -54,5 +54,6 @@ exports.follows = function(req,res) {
 				console.log(err)
 			else
 				res.redirect('/users/'+followeeId)
-		}
+		})
+	}
 }
