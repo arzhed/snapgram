@@ -24,12 +24,13 @@ html
 									h3= title
 					-var ulClass = ['nav', 'pull-right', 'nav-pills']
 					ul(class=ulClass)
+						li!= follow
 						li
 							a(href='/')
 								button(class='btn-links', type='submit')
 									h5 Home
 						li
-							a(href='/list')
+							a(href='/users')
 								button(class='btn-links', type='submit')
 									h5 Users
 						li

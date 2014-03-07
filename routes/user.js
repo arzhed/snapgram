@@ -25,7 +25,7 @@ exports.list = function(req, res){
 	}
 }
 
-exports.follows = function(req,res) {
+exports.follow = function(req,res) {
 	console.log('yiyi')
 	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
 		res.redirect('/');
@@ -39,7 +39,6 @@ exports.follows = function(req,res) {
 			database: 's513_apsbanva'
 		});
 		conn.connect();
-		console.log('yo')
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]
@@ -50,7 +49,36 @@ exports.follows = function(req,res) {
 			if(err)
 				console.log(err)
 			else
-				console.log('yoyoyoyoo')
+				res.redirect('/users/'+followeeId)
+		})
+	}
+}
+
+exports.unfollow = function(req,res) {
+	console.log('yiyi')
+	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
+		res.redirect('/');
+	}
+	else {
+		mysql = require('mysql');
+		conn = mysql.createConnection({
+			host: 'web2.cpsc.ucalgary.ca',
+			user: 's513_apsbanva',
+			password: '10037085',
+			database: 's513_apsbanva'
+		});
+		conn.connect();
+
+		var parsedUrl = req.url.split('/');
+		var followeeId = parsedUrl[parsedUrl.length - 2]
+
+		var insertUnfollowTime = 'UPDATE follows SET end=now() WHERE follower=? AND followee=? ';
+		var usersId = [req.session.uid,followeeId]
+		conn.query(insertUnfollowTime, usersId, function(err,rows) {
+			console.log('unfollow:'+rows[0])
+			if(err)
+				console.log(err)
+			else
 				res.redirect('/users/'+followeeId)
 		})
 	}
