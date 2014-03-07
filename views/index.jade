@@ -20,32 +20,10 @@ html
 			div.container-fluid#parentWidth
 				div.row-fluid#signin
 					div.center-block
-						form.form-signin(action='/signin', method='post', id='childWidth')
-							h2.form-signin-heading Sign in
-							p.wrong= wrongSignIn
-							input.input-block-level(type='text', placeholder='Username' name='uname')
-							input.input-block-level(type='password', placeholder='Password' name='pwd')
-							- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
+						form.form-signin(action='/sessions/new', method='get', id='childWidth')
+							- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
 							button(class=btnClass, type='submit') Sign in
-
-					div.center-block
-						h4 or
-						- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
-						button(class=btnClass, type='button', id='btnOptSignUp') Sign up for Snapgram!
-
 				div.row-fluid#signup
 					div.center-block
-						form.form-signin(action='/signup',method='post', id='childWidth')
-							h2.form-signin-heading Register
-							p.wrong= wrongSignUp
-							input.input-block-level(type='text', placeholder='First Name' name='fname')
-							input.input-block-level(type='text', placeholder='Last Name' name='lname')
-							input.input-block-level(type='text', placeholder='Username' name='uname')
-							input.input-block-level(type='password', placeholder='Password' name='pwd')
-							- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
+						form.form-signin(action='/users/new',method='get', id='childWidth')
 							button(class=btnClass, type='submit') Sign up
-
-					div.center-block
-						h4 or
-						- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
-						button(class=btnClass, type='button' id='btnOptSignIn') Sign in!

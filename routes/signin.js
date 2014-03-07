@@ -16,16 +16,23 @@ exports.signin = function(req, res){
 
 	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err) throw err;
-		if (rows[0] == undefined)
-			res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });
+		if (rows[0] == undefined){
+			req.session.errorMessage = 'Username not found';
+			res.redirect('/sessions/new');
+			//res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });	
+		}
 		else if(passwordHash.verify(password, rows[0].pwd)) {
 				req.session.user = user;
 				req.session.pass = rows[0].pwd;
 				req.session.uid = rows[0].uid;
 				res.redirect('/feed');
 		}
-		else
-			res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
+		else{
+			req.session.errorMessage = 'Wrong password';
+			res.redirect('/sessions/new');
+			//res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
+		}
+
 	});
 
 	conn.end();

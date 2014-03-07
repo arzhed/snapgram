@@ -38,7 +38,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users/new', index.formSignUp)
+app.get('/sessions/new', index.formSignIn);
+app.get('/users/new', index.formSignUp);
 app.post('/signin', signin.signin);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
