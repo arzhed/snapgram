@@ -1,5 +1,5 @@
 exports.feed = function(req,res) {
-	if (req.session.user == undefined || req.session.pass == undefined){
+	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined){
 		res.redirect('/');
 	}
 	else {
@@ -24,7 +24,7 @@ exports.feed = function(req,res) {
 							+'ORDER BY time_uploaded DESC';
 							//+'LIMIT 0,30';
 		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {	
-			console.log('queryString')	
+			console.log('queryString')
 			var feedPhotos = '';
 			console.log(rows)
 			for(var i=0; i<rows.length; i++) {
