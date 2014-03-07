@@ -20,15 +20,26 @@ exports.signup = function(req, res){
 		
 		conn.query('INSERT INTO user(username, lname, fname, pwd) VALUES(?,?,?,?)', [user,lname,fname,hashedPassword], function(err, result) {
 	  		if (err) {
-	  			console.log('hello1');
 	  			console.log(err);
 	  		} else {
-	  			console.log('hello');
-	  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
+	  			connGetPwd = mysql.createConnection({
+					host: 'web2.cpsc.ucalgary.ca',
+					user: 's513_apsbanva',
+					password: '10037085',
+					database: 's513_apsbanva'
+				});
+	  			connGetPwd.connect();
+	  			connGetPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
+	  				if (err) {
+	  					console.log(err);
+	  				} else {
+			  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
+						req.session.pwd = rows[0].pwd;
+	  				}
+	  			});
 	  			req.session.user = user;
-	  			req.session.password = hashedPassword;
-	  			res.redirect('/');
-	  			//res.redirect('/feed');
+	  			req.session.uid = result.insertId;
+			  	res.redirect('/feed');
 	  		}
 		});
 	}
