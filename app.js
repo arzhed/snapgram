@@ -14,6 +14,7 @@ var signup = require('./routes/signup');
 var feed = require('./routes/feed');
 var signout = require('./routes/signout');
 var index = require('./routes/index');
+var oops = require('./routes/oops')
 
 var app = express();
 
@@ -31,6 +32,9 @@ app.use(express.cookieParser('S3CRE7'));
 app.use(express.cookieSession());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next){
+	res.status(404).redirect('/oops');
+});
 
 // development only
 if ('development' == app.get('env')) {
@@ -47,6 +51,7 @@ app.get('/feed',feed.feed);
 app.post('/upload',feed.upload)
 app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
+app.get('/oops',oops.oops);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
