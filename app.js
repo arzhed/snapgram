@@ -52,6 +52,7 @@ app.post('/upload',feed.upload)
 app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
 app.get('/oops',oops.oops);
+app.get(/users\/\d+/follow)
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
