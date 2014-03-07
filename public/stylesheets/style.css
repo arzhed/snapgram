@@ -18,7 +18,7 @@ body {
 	margin : 5px;
 }
 
-a {
+a{
 	color: #00B7FF;
 }
 
@@ -49,6 +49,31 @@ h4 {
 	width: 100%;
 }
 
+.navRight {
+	position: relative;
+	display: block;
+}
+
+.navPadding{
+	padding: 0;
+	margin: 0;
+}
+
+.navbar .nav > li > a {
+	padding: 0;
+	margin: 0;
+}
+
+.listLeftElements{
+	float: left;
+	margin-right: auto;
+}
+
+.listRightElements{
+	float: right;
+	margin-left: auto;
+}
+
 .btn-home{
 	border: none;
 	outline: none;
@@ -72,27 +97,6 @@ h4 {
 	outline: none;
 	background-color: rgba(0, 0, 0, 0.50);
 }
-
-.listLeftElements{
-	float: left;
-	margin-right: auto;
-}
-
-
-.listRightElements{
-	float: right;
-	margin-left: auto;
-}
-
-.navRight {
-	position: relative;
-	/* left: 0; */
-	display: block;
-	/* float: left; */
-	margin: 0 10px 0 0;
-}
-
-
 
 #signin{
 	background-color: rgba(220, 220, 220, 0.50);
