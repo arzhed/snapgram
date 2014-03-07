@@ -20,13 +20,15 @@ exports.signup = function(req, res){
 		
 		conn.query('INSERT INTO user(username, lname, fname, pwd) VALUES(?,?,?,?)', [user,lname,fname,hashedPassword], function(err, result) {
 	  		if (err) {
+	  			console.log('hello1');
 	  			console.log(err);
 	  		} else {
+	  			console.log('hello');
 	  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
-	  			res.redirect('/');
 	  			req.session.user = user;
-	  			req.session.password = hashedPassword
-	  			res.redirect('/feed');
+	  			req.session.password = hashedPassword;
+	  			res.redirect('/');
+	  			//res.redirect('/feed');
 	  		}
 		});
 	}
