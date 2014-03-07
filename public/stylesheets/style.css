@@ -55,7 +55,6 @@ h4 {
 	text-align: center;
 }
 
-
 .center-block {
 	display: block;
 	margin-left: auto;
@@ -170,6 +169,23 @@ h4 {
 	color: black;
 	outline: none;
 	background-color: rgba(0, 0, 0, 0.50);
+}
+
+.btn-signOut:hover, .btn-signOut:active{
+	outline: none;
+	background-color: rgba(255, 0, 0, 0.85);
+}
+
+.btn-disabled{
+	border: none;
+	outline: none;
+	background: transparent;
+	padding: 0.9em;
+	min-width: 6.5em;
+}
+
+.btn-disabled:hover, .btn-disabled:active, .btn-disabled:focus{
+	cursor: auto;
 }
 
 #uploadDiv{

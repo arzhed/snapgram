@@ -25,6 +25,10 @@ html
 					-var ulClass = ['nav', 'pull-right', 'nav-pills']
 					ul(class=ulClass)
 						li
+							a(href='/')
+								button(class='btn-links', type='submit')
+									h5 Home
+						li
 							a(href='/feed')
 								button(class='btn-links', type='submit')
 									h5 Feed
@@ -42,10 +46,9 @@ html
 										button(class=btnClass, type='submit') Upload
 
 						li
-							a(href='/user')
-								button(class='btn-links', type='submit')
-									h5= name
+							button(class='btn-disabled disabled', type='submit')
+								h5= name
 						li
 							a(href='/signout')
-								button(class='btn-links', type='submit')
+								button(class='btn-links btn-signOut', type='submit')
 									h5 Sign Out
