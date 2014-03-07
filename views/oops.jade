@@ -1,0 +1,35 @@
+doctype html
+html
+	head
+		title= title
+		script(type='text/javascript', src='/scripts/jquery.js')
+		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(type='text/javascript').
+				var totalCount = 3;
+				$(function() {
+					var num = Math.ceil( Math.random() * totalCount);
+					document.body.background = '../backgrounds/'+num+'.jpg';
+				});
+	header
+		nav(class='navbar navbar-default navbar-customize' role='navigation')
+			div.navbar-block
+				div.navbar-header
+					-var ulClass = ['nav', 'nav-pills']
+					ul(class=ulClass)
+						li
+							button(class='btn-home', type='button')
+								h3= title
+									a(href='/')
+	body
+		div.container
+			div.container-fluid#parentWidth
+				div.row-fluid#signDefault
+					div.center-block
+							div.row-fluid
+								h1 You just got
+								h1 404'd
+								br
+							form.form-signin(action='/',method='get')
+								- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
+								button(class=btnClass, type='submit') Take me back!
