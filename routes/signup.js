@@ -31,7 +31,7 @@ exports.signup = function(req, res){
 		});
 	}
 	else {
-		res.set('errorMessage','Mising field');
+		req.session.errorMessage = 'Missing field';
 		res.redirect('/users/new');
 		//res.render('signup', { title: 'SNAPGRAM', wrongSignUp: 'Missing field' });
 	}
