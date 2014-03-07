@@ -49,10 +49,11 @@ app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed);
 app.post('/upload',feed.upload)
+app.get(/users\/\d+\/follow/, user.follows)
 app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
 app.get('/oops',oops.oops);
-app.get(/users\/\d+\/follow/, user.follows)
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
