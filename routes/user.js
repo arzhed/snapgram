@@ -20,7 +20,7 @@ exports.list = function(req, res){
 				userList += '<a href="/users/' + rows[i].uid
 							+'">'+rows[i].username +'</a></br>';
 			}
-			res.render('feed', {html : userList})
+			res.render('feed', {html : userList, title : 'SNAPGRAM'})
 		});
 	}
 }

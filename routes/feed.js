@@ -89,21 +89,23 @@ exports.stream = function(req,res) {
 
 		var parsed = req.url.split('/');
 		var followeeUid = parsed[parsed.length-1];
+		var followButton = ''
 
-		var followButton = '<a href="/users/'+followeeUid;;
-
-		var attributes = [req.session.uid,followeeUid]
-		var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end'
-		conn.query(unfollowQuery,attributes,function(err,rows){
-			console.log('FOLLOWS relation?'+rows[0]+' '+typeof rows[0])
-			if(rows[0] != undefined && rows[0].end == '0000-00-00 00:00:00') {
-				followButton += '/unfollow"><button class="btn-links" type="submit"><h5>UNFOLLOW</h5></button></a>';
-			}
-			else {
-				followButton += '/follow"><button class="btn-links" type="submit"><h5>FOLLOW</h5></button></a>'
-			}
-			
-		})
+		if(parseInt(followeeUid)!=req.session.uid) {
+			followButton = '<a href="/users/'+followeeUid;;
+			var attributes = [req.session.uid,followeeUid]
+			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end'
+			conn.query(unfollowQuery,attributes,function(err,rows){
+				console.log('FOLLOWS relation?'+rows[0]+' '+typeof rows[0])
+				if(rows[0] != undefined && rows[0].end == '0000-00-00 00:00:00') {
+					followButton += '/unfollow"><button class="btn-links" type="submit"><h5>UNFOLLOW</h5></button></a>';
+				}
+				else {
+					followButton += '/follow"><button class="btn-links" type="submit"><h5>FOLLOW</h5></button></a>'
+				}
+				
+			})
+		}
 
 		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
 							+'FROM photos p NATURAL JOIN user u WHERE uid=?'
