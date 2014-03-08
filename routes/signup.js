@@ -1,3 +1,4 @@
+var sessions = require('./sessionIds');
 exports.signup = function(req, res){
 	var passwordHash = require('password-hash');
 	var fs = require('fs')
@@ -44,6 +45,10 @@ exports.signup = function(req, res){
 						req.session.pwd = rows[0].pwd;
 						req.session.user = user;
 	  					req.session.uid = result.insertId;
+	  					var sessionId = Math.round(Math.random()*10000);
+						sessions.sessionIds.push(sessionId);
+						console.log(sessions.sessionIds);
+						req.session.sessionId = sessionId;
 			  			res.redirect('/feed');
 	  				}
 	  			});

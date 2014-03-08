@@ -32,6 +32,7 @@ exports.signin = function(req, res){
 				var sessionId = Math.round(Math.random()*10000);
 				sessions.sessionIds.push(sessionId);
 				console.log(sessions.sessionIds);
+				req.session.sessionId = sessionId;
 				//(app.get(sessions)).push(sessionId);
 				res.redirect('/');
 		}
