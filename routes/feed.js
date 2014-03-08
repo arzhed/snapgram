@@ -88,12 +88,29 @@ exports.stream = function(req,res) {
 		conn.connect();
 
 		var parsed = req.url.split('/');
-		var uid = parsed[parsed.length-1];
+		var followeeUid = parsed[parsed.length-1];
+		var followButton = ''
+
+		if(parseInt(followeeUid)!=req.session.uid) {
+			followButton = '<a href="/users/'+followeeUid;;
+			var attributes = [req.session.uid,followeeUid]
+			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end'
+			conn.query(unfollowQuery,attributes,function(err,rows){
+				console.log('FOLLOWS relation?'+rows[0]+' '+typeof rows[0])
+				if(rows[0] != undefined && rows[0].end == '0000-00-00 00:00:00') {
+					followButton += '/unfollow"><button class="btn-links" type="submit"><h5>UNFOLLOW</h5></button></a>';
+				}
+				else {
+					followButton += '/follow"><button class="btn-links" type="submit"><h5>FOLLOW</h5></button></a>'
+				}
+				
+			})
+		}
 
 		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
 							+'FROM photos p NATURAL JOIN user u WHERE uid=?'
 							+'ORDER BY time_uploaded DESC';
-		conn.query(queryImage,[uid], function(err,rows) {
+		conn.query(queryImage,[followeeUid], function(err,rows) {
 			var feedPhotos = '';
 			for(var i=0; i<rows.length; i++) {
 				var filePath = '/pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
@@ -105,7 +122,7 @@ exports.stream = function(req,res) {
 							+rows[i].username+'</a></br>'
 							+'<span class="time">'+time+'</span>'+'</div>';
 			}
-			res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
+			res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos, follow:followButton});
 		});
 	}
 };

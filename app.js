@@ -53,7 +53,8 @@ app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed);
 app.post('/upload',feed.upload)
-app.get(/users\/\d+\/follow/, user.follows)
+app.get(/users\/\d+\/follow/, user.follow)
+app.get(/users\/\d+\/unfollow/, user.unfollow)
 app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
 app.get('/oops',oops.oops);
