@@ -1,0 +1,16 @@
+include layout
+body
+	div.container
+		div.container-fluid#parentWidth
+			div.row-fluid#signDefault
+					div#uploadDiv
+						form(action="/photos/create", method="post", enctype="multipart/form-data")
+							p.wrong= wrongFile
+							input(id='uploadInput',type='file', name='photoFile')
+							- var btnClass = ['btn', 'btn-large', 'btn-primary']
+							br
+							button(class=btnClass, type='submit') Upload
+						h4 or
+						form.form-signin(action='/bulk',method='get', id='childWidth')
+							- var btnClass = ['btn', 'btn-large', 'btn-default']
+							button(class=btnClass, type='submit') Bulk Upload?

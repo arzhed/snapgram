@@ -1,2 +1,25 @@
 include layout
-
+body
+	div.container
+		div.container-fluid#parentWidth
+			div.row-fluid#signDefault
+				div#uploadDiv
+					form.form-signin(action='/bulk/clear?password=:password',method='get')
+						- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
+						button(class=btnClass, type='submit') Clear Database
+					br
+					br
+					form(action="/bulk/users?password=:password", method="post", enctype="multipart/form-data")
+						p.wrong= wrongFile
+						input(id='uploadInput',type='file', name='photoFile')
+						- var btnClass = ['btn', 'btn-large', 'btn-primary']
+						br
+						button(class=btnClass, type='submit') Bulk Upload Users
+					br
+					br
+					form(action="/bulk/users?password=:password", method="post", enctype="multipart/form-data")
+						p.wrong= wrongFile
+						input(id='uploadInput',type='file', name='photoFile')
+						- var btnClass = ['btn', 'btn-large', 'btn-primary']
+						br
+						button(class=btnClass, type='submit') Bulk Upload Streams

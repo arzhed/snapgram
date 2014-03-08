@@ -21,20 +21,20 @@ html
 							button(class='btn-home', type='button')
 								h3=title
 									a(href='/')
-	body
-		div.container
-			div.container-fluid#parentWidth
-				div.row-fluid#signin
-					div.center-block
-						form.form-signin(action='/sessions/create', method='post', id='childWidth')
-							h2.form-signin-heading Sign in
-							p.wrong= wrongSignIn
-							input.input-block-level(type='text', placeholder='Username' name='uname')
-							input.input-block-level(type='password', placeholder='Password' name='pwd')
-							- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
-							button(class=btnClass, type='submit') Sign in
-					div.center-block
-						h4 or
-						form.form-signin(action='/users/new',method='get', id='childWidth')
-							- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
-							button(class=btnClass, type='submit') Sign up
+body
+	div.container
+		div.container-fluid#parentWidth
+			div.row-fluid#signin
+				div.center-block
+					form.form-signin(action='/signin', method='post', id='childWidth')
+						h2.form-signin-heading Sign in
+						p.wrong= wrongSignIn
+						input.input-block-level(type='text', placeholder='Username' name='uname')
+						input.input-block-level(type='password', placeholder='Password' name='pwd')
+						- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
+						button(class=btnClass, type='submit') Sign in
+				div.center-block
+					h4 or
+					form.form-signin(action='/users/new',method='get', id='childWidth')
+						- var btnClass = ['btn', 'btn-large', 'btn-default', 'btn-block']
+						button(class=btnClass, type='submit') Sign up
