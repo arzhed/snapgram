@@ -11,15 +11,15 @@ body
 					br
 					form(action="/bulk/users?password=:password", method="post", enctype="multipart/form-data")
 						p.wrong= wrongFile
-						input(id='uploadInput',type='file', name='photoFile')
+						input(type='file', name='usersInput')
 						- var btnClass = ['btn', 'btn-large', 'btn-primary']
 						br
 						button(class=btnClass, type='submit') Bulk Upload Users
 					br
 					br
-					form(action="/bulk/users?password=:password", method="post", enctype="multipart/form-data")
+					form(action="/bulk/streams?password=:password", method="post", enctype="multipart/form-data")
 						p.wrong= wrongFile
-						input(id='uploadInput',type='file', name='photoFile')
+						input(type='file', name='streamsInput')
 						- var btnClass = ['btn', 'btn-large', 'btn-primary']
 						br
 						button(class=btnClass, type='submit') Bulk Upload Streams

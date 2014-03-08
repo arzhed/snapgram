@@ -65,9 +65,9 @@ app.get('/signout',signout.signout);
 app.get('/notFound',notFound.notFound);
 app.get('/internalError', internalError.internalError);
 app.get('/bulk', bulk.bulk);
-app.get('/bulk/clear?password=:password', bulk.clear);
-app.post('/bulk/users?password=:password', bulk.users);
-app.post('/bulk/streams?password=:password', bulk.streams);
+app.get('/bulk/clear', bulk.clear);
+app.post('/bulk/users', bulk.users);
+app.post('/bulk/streams', bulk.streams);
 
 
 http.createServer(app).listen(app.get('port'), function(){

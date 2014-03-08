@@ -1,5 +1,4 @@
-{
-"user":[
+{"user":[
 	{"id":1,	"name":"jill",	"follows":[3,4,5],	"password":"abcdef"},
 	{"id":2,	"name":"bill",	"follows":[2,4,5,11],	"password":"abcdef"},
 	{"id":3,	"name":"kill",	"follows":[3,4,5],	"password":"abcdef"},
@@ -12,9 +11,7 @@
 	{"id":10,	"name":"gill",	"follows":[2,4,5,11],	"password":"abcdef"},
 	{"id":11,	"name":"zill",	"follows":[3,4,5],	"password":"abcdef"},
 	{"id":12,	"name":"sill",	"follows":[2,4,5,11],	"password":"abcdef"}
-
- ]
-}
+]}
 
 
 
