@@ -16,7 +16,8 @@ exports.signin = function(req, res){
 
 	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err){
-  			throw err;
+  			res.status(500).redirect('/internalError');
+  			//throw err;
   		}
 		else if (rows[0] == undefined){
 			req.session.errorMessage = 'Username not found';
