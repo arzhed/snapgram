@@ -1,3 +1,3 @@
-exports.error500 = function(req,res){
-	res.render('500');
+exports.internalError = function(req,res){
+	res.render('500', {title: 'SNAPGRAM'});
 }

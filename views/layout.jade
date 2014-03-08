@@ -38,18 +38,9 @@ html
 								button(class='btn-links', type='submit')
 									h5 Feed
 						li
-							div(class='btn-group pull-right')
-								button(type="button" class="btn btn-upload dropdown-toggle btn-links"
-								data-toggle="dropdown")
+							a(href='/photos/new')
+								button(class='btn-links', type='submit')
 									h5 Upload
-								div#uploadDiv(class="dropdown-menu" role="menu")
-									form(action="/upload", method="post", enctype="multipart/form-data")
-										p.wrong= wrongFile
-										input(id='uploadInput',type='file', name='photoFile')
-										- var btnClass = ['btn', 'btn-large', 'btn-primary']
-										br
-										button(class=btnClass, type='submit') Upload
-
 						li
 							button(class='btn-disabled disabled', type='submit')
 								h5= name
