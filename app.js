@@ -55,6 +55,7 @@ app.post('/users/create', signup.signup);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed);
+app.get(/\/feed?page=\d+/,feed.feed);
 app.get('/photos/new',upload.newPicture)
 app.post('/photos/create',feed.upload)
 app.get(/users\/\d+\/follow/, user.follow)
