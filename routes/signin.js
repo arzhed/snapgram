@@ -1,3 +1,4 @@
+var sessions = require('./sessionIds');
 exports.signin = function(req, res){
 	
 	var passwordHash = require('password-hash');
@@ -28,6 +29,10 @@ exports.signin = function(req, res){
 				req.session.user = user;
 				req.session.pwd = rows[0].pwd;
 				req.session.uid = rows[0].uid;
+				var sessionId = Math.round(Math.random()*10000);
+				sessions.sessionIds.push(sessionId);
+				console.log(sessions.sessionIds);
+				//(app.get(sessions)).push(sessionId);
 				res.redirect('/');
 		}
 		else{
