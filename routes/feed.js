@@ -45,7 +45,7 @@ exports.feed = function(req,res) {
 						+'<span class="time">'+time+'</span>'+'</div>';
 				}
 				var page = limit/30+1
-				feedPhotos += '<br><a href="/feed/?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>'
+				feedPhotos += '<br><a href="/feed?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>'
 				res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 			}
 		});
