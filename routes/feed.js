@@ -12,30 +12,33 @@ exports.feed = function(req,res) {
 		});
 		conn.connect();
 
-		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
-							+'FROM photos p NATURAL JOIN user u WHERE username=? '
-							+'UNION '
-							+'SELECT p.pid, f.followee, b.username, p.time_uploaded, p.type '
-							+'FROM follows f '
-							+'JOIN user a ON f.follower = a.uid '
-							+'JOIN user b ON f.followee = b.uid '
-							+'JOIN photos p ON f.followee = p.uid '
-							+'WHERE a.username=?'
-							+'ORDER BY time_uploaded DESC';
-							//+'LIMIT 0,30';
-		conn.query(queryImage,[req.session.user,req.session.user], function(err,rows) {
-			var feedPhotos = '';
-			for(var i=0; i<rows.length; i++) {
-				var filePath = 'pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
-				var time = getTimeAgo(rows[i].time_uploaded);
-				feedPhotos += '<div class="imgBox">'
-							+'<a href="' + filePath + '">'
-							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
-							+'<a href="/users/'+rows[i].uid+'"></br>'
-							+rows[i].username+'</a></br>'
-							+'<span class="time">'+time+'</span>'+'</div>';
+		var queryImage = 'select distinct p.pid, p.uid, p.type, p.time_uploaded, u.username FROM follows f '
+			+'JOIN photos p ON f.followee = p.uid JOIN user u ON u.uid = f.followee '
+			+'WHERE f.follower=? AND ((p.time_uploaded<f.end AND p.time_uploaded>f.start) '
+			+'OR (f.end="0000-00-00 00:00:00" AND p.time_uploaded>f.start)) '
+			+'UNION '
+			+'SELECT q.pid, q.uid, q.type, q.time_uploaded, u.username FROM photos q '
+			+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
+			+'ORDER BY time_uploaded DESC '
+			+'LIMIT 0,30';
+		conn.query(queryImage,[req.session.uid, req.session.uid], function(err,pictures) {
+			if(err)
+				console.log(err)
+			else {
+				var feedPhotos = '';
+				for(var i=0;i<pictures.length;i++) {
+					var filePath = 'pictures/' + pictures[i].uid +'/'
+						+ pictures[i].pid +'.'+ pictures[i].type;
+					var time = getTimeAgo(pictures[i].time_uploaded)				
+					feedPhotos += '<div class="imgBox">'
+						+'<a href="' + filePath + '">'
+						+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
+						+'<a href="/users/'+pictures[i].uid+'"></br>'
+						+pictures[i].username+'</a></br>'
+						+'<span class="time">'+time+'</span>'+'</div>';
+				}
+				res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 			}
-			res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 		});
 	}
 };
