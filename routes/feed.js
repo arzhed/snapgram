@@ -105,11 +105,13 @@ exports.stream = function(req,res) {
 		var followButton = ''
 
 		if(parseInt(followeeUid)!=req.session.uid) {
-			followButton = '<a href="/users/'+followeeUid;;
+			followButton = '<a href="/users/'+followeeUid;
 			var attributes = [req.session.uid,followeeUid]
-			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end'
+			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end';
 			conn.query(unfollowQuery,attributes,function(err,rows){
-				console.log('FOLLOWS relation?'+rows[0]+' '+typeof rows[0])
+				if(rows == ''){
+					res.redirect('/notFound');
+				}
 				if(rows[0] != undefined && rows[0].end == '0000-00-00 00:00:00') {
 					followButton += '/unfollow"><button class="btn-links" type="submit"><h5>UNFOLLOW</h5></button></a>';
 				}

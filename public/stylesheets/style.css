@@ -25,6 +25,7 @@ body {
 	-moz-transition: background-color 500ms ease;
 	-o-transition: background-color 500ms ease;
 	transition: background-color 500ms ease;
+	min-width: 400px;
 }
 
 .imgBox:hover{

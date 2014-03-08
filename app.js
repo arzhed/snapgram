@@ -35,7 +35,7 @@ app.use(express.cookieParser('S3CRE7'));
 app.use(express.cookieSession({ path: '/', httpOnly: true, maxAge: 3600000 }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(req, res, next){
+app.use(function(err, req, res, next){
 	res.status(404).redirect('/notFound');
 });
 app.use(function(err, req, res, next){
