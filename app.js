@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next){
 	res.status(404).redirect('/notFound');
 });
-app.use(function(req, res, next){
+app.use(function(err, req, res, next){
 	res.status(500).redirect('/internalError');
 });
 
