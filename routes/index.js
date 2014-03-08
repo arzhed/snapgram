@@ -1,10 +1,10 @@
-
+var sessions = require('./sessionIds');
 /*
  * GET home page.
  */
 
 exports.index = function(req, res){
-	if (req.session.user == undefined || req.session.uid == undefined || req.session.pwd == undefined){
+	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)){
 		//res.writeHead(200);
 		res.render('index', {title: 'SNAPGRAM'});
 	}
@@ -14,13 +14,9 @@ exports.index = function(req, res){
 };
 
 exports.formSignUp = function(req,res){
-	if (req.session.user == undefined || req.session.uid == undefined || req.session.pwd == undefined){
+	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)){
 		var errorMsg = req.session.errorMessage;
 		delete req.session.errorMessage;
-		//res.set('Status','200');
-		//res.writeHead(200);
-		//res.status(200);
-		//console.log(res.statusCode);
 		res.render('signup', {title: 'SNAPGRAM', wrongSignUp: errorMsg });
 	}
 	else{
@@ -29,7 +25,7 @@ exports.formSignUp = function(req,res){
 };
 
 exports.formSignIn = function(req,res){
-	if (req.session.user == undefined || req.session.uid == undefined || req.session.pwd == undefined){
+	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)){
 		var errorMsg = req.session.errorMessage;
 		delete req.session.errorMessage;
 		//res.set('Status','200');

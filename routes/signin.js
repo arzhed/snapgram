@@ -27,12 +27,12 @@ exports.signin = function(req, res){
 		}
 		else if(passwordHash.verify(password, rows[0].pwd)) {
 				req.session.user = user;
-				req.session.pwd = rows[0].pwd;
 				req.session.uid = rows[0].uid;
 				var sessionId = Math.round(Math.random()*10000);
 				sessions.sessionIds.push(sessionId);
 				console.log(sessions.sessionIds);
 				req.session.sessionId = sessionId;
+				console.log(req.session.sessionId);
 				//(app.get(sessions)).push(sessionId);
 				res.redirect('/');
 		}

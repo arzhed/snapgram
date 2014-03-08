@@ -42,7 +42,6 @@ exports.signup = function(req, res){
 	  					console.log(err);
 	  				} else {
 			  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
-						req.session.pwd = rows[0].pwd;
 						req.session.user = user;
 	  					req.session.uid = result.insertId;
 	  					var sessionId = Math.round(Math.random()*10000);
