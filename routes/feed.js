@@ -142,7 +142,8 @@ exports.stream = function(req,res) {
 
 function getTimeAgo(timestamp) {
 	var diff = new Date()-timestamp;
-
+	var moment = require('moment');
+	var  fixedDate = moment.unix(timestamp).format('YYYY-MM-DD')
 	if(diff< 60000) {
 		return 'a few seconds ago';
 	}
@@ -156,7 +157,7 @@ function getTimeAgo(timestamp) {
 		return Math.floor(diff/86400000)+' day(s) ago';
 	}
 	else { 
-		return 'Posted on '+ older;
+		return 'Posted on ' + fixedDate;
 	}
 
 }

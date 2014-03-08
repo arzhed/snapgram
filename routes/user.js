@@ -17,10 +17,12 @@ exports.list = function(req, res){
 		var queryImage = 'SELECT username, uid FROM user';
 		conn.query(queryImage, function(err,rows) {
 			var userList = '';
+			userList += '</br>';
 			for(var i=0;i<rows.length;i++){
 				userList += '<a href="/users/' + rows[i].uid
 							+'">'+rows[i].username +'</a></br>';
 			}
+			userList += '</br>';
 			res.render('feed', {html : userList, title : 'SNAPGRAM'})
 		});
 	}
