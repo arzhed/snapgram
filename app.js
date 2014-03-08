@@ -36,9 +36,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next){
 	res.status(404).redirect('/oops');
 });
-/*app.use(function(req, res, next){
-	res.status(500).redirect('/oops');
-});*/
+app.use(function(req, res, next){
+	res.status(500).redirect('/internalError');
+});
 
 // development only
 if ('development' == app.get('env')) {
