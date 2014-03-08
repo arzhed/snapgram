@@ -69,15 +69,6 @@ app.get('/bulk/clear?password=:password', bulk.clear);
 app.post('/bulk/users?password=:password', bulk.users);
 app.post('/bulk/streams?password=:password', bulk.streams);
 
-var array = [];
-array.push('haha');
-array.push('hoho');
-array.push('hihi');
-console.log(array);
-var index = array.indexOf('haha');
-console.log(index);
-array.splice(index,1);
-console.log(array);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

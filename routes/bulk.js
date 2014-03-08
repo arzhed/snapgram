@@ -1,5 +1,6 @@
+var sessions = require('./sessionIds');
 exports.bulk = function(req, res){
-	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
+	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect('/');
 	}
 	else{

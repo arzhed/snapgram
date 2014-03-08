@@ -46,7 +46,6 @@ exports.signup = function(req, res){
 	  					req.session.uid = result.insertId;
 	  					var sessionId = Math.round(Math.random()*10000);
 						sessions.sessionIds.push(sessionId);
-						console.log(sessions.sessionIds);
 						req.session.sessionId = sessionId;
 			  			res.redirect('/feed');
 	  				}

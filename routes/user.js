@@ -1,5 +1,6 @@
+var sessions = require('./sessionIds');
 exports.list = function(req, res){
-  if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
+  if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect('/');
 	}
 	else {
@@ -27,7 +28,7 @@ exports.list = function(req, res){
 
 exports.follow = function(req,res) {
 	console.log('yiyi')
-	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
+	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect('/');
 	}
 	else {
@@ -56,7 +57,7 @@ exports.follow = function(req,res) {
 
 exports.unfollow = function(req,res) {
 	console.log('yiyi')
-	if (req.session.user == undefined || req.session.pwd == undefined || req.session.uid==undefined) {
+	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect('/');
 	}
 	else {
