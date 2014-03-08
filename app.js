@@ -45,6 +45,7 @@ app.get('/', routes.index);
 app.get('/sessions/new', index.formSignIn);
 app.get('/users/new', index.formSignUp);
 app.post('/signin', signin.signin);
+app.post('/users/create', signup.signup);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed);
