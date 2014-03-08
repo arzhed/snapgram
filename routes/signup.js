@@ -19,12 +19,14 @@ exports.signup = function(req, res){
 	if(fname && lname && user && password) {
 		
 		conn.query('INSERT INTO user(username, lname, fname, pwd) VALUES(?,?,?,?)', [user,lname,fname,hashedPassword], function(err, result) {
-	  		if (err.errno === 1062) {
-				req.session.errorMessage = 'Username already exists';
-				res.redirect('/users/new');
-	  		} 
-			else if (err) {
-	  			console.log(err);
+			if (err) {
+	  			if (err.errno === 1062) {
+					req.session.errorMessage = 'Username already exists';
+					res.redirect('/users/new');
+	  			} 
+	  			else {
+	  				console.log(err);
+	  			}
 	  		}
 	  		else {
 	  			connGetPwd = mysql.createConnection({
@@ -40,11 +42,11 @@ exports.signup = function(req, res){
 	  				} else {
 			  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
 						req.session.pwd = rows[0].pwd;
+						req.session.user = user;
+	  					req.session.uid = result.insertId;
+			  			res.redirect('/feed');
 	  				}
 	  			});
-	  			req.session.user = user;
-	  			req.session.uid = result.insertId;
-			  	res.redirect('/feed');
 	  		}
 		});
 	}

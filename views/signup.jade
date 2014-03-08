@@ -26,7 +26,7 @@ html
 			div.container-fluid#parentWidth
 				div.row-fluid#signup
 					div.center-block
-						form.form-signin(action='/signup',method='post', id='childWidth')
+						form.form-signin(action='/users/create',method='post', id='childWidth')
 							h2.form-signin-heading Register
 							p.wrong= wrongSignUp
 							input.input-block-level(type='text', placeholder='First Name' name='fname')
