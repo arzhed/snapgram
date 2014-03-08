@@ -12,6 +12,13 @@ exports.feed = function(req,res) {
 		});
 		conn.connect();
 
+		var url = require('url')
+		var urlc = url.parse(req.url)
+		if(urlc.query)
+			var limit = parseInt(urlc.query.split('=')[1]*30);
+		else
+			var limit = 30
+
 		var queryImage = 'select distinct p.pid, p.uid, p.type, p.time_uploaded, u.username FROM follows f '
 			+'JOIN photos p ON f.followee = p.uid JOIN user u ON u.uid = f.followee '
 			+'WHERE f.follower=? AND ((p.time_uploaded<f.end AND p.time_uploaded>f.start) '
@@ -20,8 +27,8 @@ exports.feed = function(req,res) {
 			+'SELECT q.pid, q.uid, q.type, q.time_uploaded, u.username FROM photos q '
 			+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
 			+'ORDER BY time_uploaded DESC '
-			+'LIMIT 0,30';
-		conn.query(queryImage,[req.session.uid, req.session.uid], function(err,pictures) {
+			+'LIMIT 0,?';
+		conn.query(queryImage,[req.session.uid, req.session.uid, limit], function(err,pictures) {
 			if(err)
 				console.log(err)
 			else {
@@ -37,6 +44,8 @@ exports.feed = function(req,res) {
 						+pictures[i].username+'</a></br>'
 						+'<span class="time">'+time+'</span>'+'</div>';
 				}
+				var page = limit/30+1
+				feedPhotos += '<br><a href="/feed/?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>'
 				res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 			}
 		});
@@ -124,7 +133,7 @@ exports.stream = function(req,res) {
 							+'<a href="/users/'+rows[i].uid+'"></br>'
 							+rows[i].username+'</a></br>'
 							+'<span class="time">'+time+'</span>'+'</div>';
-			}
+			}			
 			res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos, follow:followButton});
 		});
 	}
