@@ -40,6 +40,8 @@ exports.clear = function(req,res){
 			console.log(err);
 	});
 
+	conn.end();
+
 }
 
 exports.users = function(req,res){
@@ -100,8 +102,9 @@ exports.users = function(req,res){
 				});
 			}
 		}
-	}
 
+	}
+	conn.end();
 	res.redirect('/feed');
 }
 
@@ -149,6 +152,6 @@ exports.streams = function(req,res){
 
 		}
 	}
-
+	conn.end();
 	res.redirect('/feed');
 }

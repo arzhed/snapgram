@@ -50,6 +50,7 @@ exports.feed = function(req,res) {
 				res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 			}
 		});
+		conn.end();
 	}
 };
 
@@ -82,6 +83,7 @@ exports.upload = function(req,res) {
 				}
 			});
 		}
+		conn.end();
 		res.redirect('/feed');
 	}
 }
@@ -139,6 +141,7 @@ exports.stream = function(req,res) {
 			}			
 			res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos, follow:followButton});
 		});
+		conn.end();
 	}
 };
 

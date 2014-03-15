@@ -25,6 +25,7 @@ exports.list = function(req, res){
 			userList += '</br>';
 			res.render('feed', {html : userList, title : 'SNAPGRAM'})
 		});
+		conn.end();
 	}
 }
 
@@ -54,6 +55,7 @@ exports.follow = function(req,res) {
 			else
 				res.redirect('/users/'+followeeId)
 		})
+		conn.end();
 	}
 }
 
@@ -84,5 +86,6 @@ exports.unfollow = function(req,res) {
 			else
 				res.redirect('/users/'+followeeId)
 		})
+		conn.end();
 	}
 }
