@@ -59,6 +59,7 @@ exports.upload = function(req,res) {
 		res.redirect('/');
 	}
 	else {
+		console.log(req);
 		mysql = require('mysql');
 		conn = mysql.createConnection({
 			host: 'web2.cpsc.ucalgary.ca',
