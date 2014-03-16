@@ -1,4 +1,28 @@
 var sessions = require('./sessionIds');
+
+function getTimeAgo(timestamp){
+	var diff = new Date()-timestamp;
+	var moment = require('moment');
+	var  fixedDate = moment.unix(timestamp).format('YYYY-MM-DD')
+	if(diff< 60000) {
+		return 'a few seconds ago';
+	}
+	else if(diff <3600000) {
+		return (Math.floor(diff/1000/60)+' minute(s) ago');
+	}
+	else if(diff<86400000) {
+		return (Math.floor(diff/3600000)+' hour(s) ago');
+	}
+	else if(diff<3600000*24*31) {
+		return Math.floor(diff/86400000)+' day(s) ago';
+	}
+	else { 
+		return 'Posted on ' + fixedDate;
+	}
+}
+
+exports.getTimeAgo = getTimeAgo;
+
 exports.feed = function(req,res) {
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)){
 		res.redirect('/');
@@ -146,24 +170,3 @@ exports.stream = function(req,res) {
 	}
 };
 
-function getTimeAgo(timestamp) {
-	var diff = new Date()-timestamp;
-	var moment = require('moment');
-	var  fixedDate = moment.unix(timestamp).format('YYYY-MM-DD')
-	if(diff< 60000) {
-		return 'a few seconds ago';
-	}
-	else if(diff <3600000) {
-		return (Math.floor(diff/1000/60)+' minute(s) ago');
-	}
-	else if(diff<86400000) {
-		return (Math.floor(diff/3600000)+' hour(s) ago');
-	}
-	else if(diff<3600000*24*31) {
-		return Math.floor(diff/86400000)+' day(s) ago';
-	}
-	else { 
-		return 'Posted on ' + fixedDate;
-	}
-
-}
