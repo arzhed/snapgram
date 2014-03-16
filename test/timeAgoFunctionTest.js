@@ -3,9 +3,12 @@ var functionTimeAgo = require('../routes/feed');
 
 
 describe("Test for function calculating difference between date and now", function(){
-	it("test for shit", function(){
-		var timestamp = new Date("October 13, 1975 11:13:00");
-		console.log(timestamp);
-		console.log(functionTimeAgo.getTimeAgo(timestamp));
+	it("Passes if timestamp is past", function(){
+		var timestamp = new Date("May 21, 2014 11:13:00");
+
+		var actual = functionTimeAgo.getTimeAgo(timestamp);
+		var expected = "Timestamp in the future!??";
+
+		assert.notEqual(actual, expected);
 	});
 });

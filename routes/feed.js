@@ -2,6 +2,9 @@ var sessions = require('./sessionIds');
 
 function getTimeAgo(timestamp){
 	var diff = new Date()-timestamp;
+	if(diff < 0){
+		return 'Timestamp in the future!??';
+	}
 	var moment = require('moment');
 	var  fixedDate = moment.unix(timestamp).format('YYYY-MM-DD')
 	if(diff< 60000) {
