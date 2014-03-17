@@ -130,7 +130,7 @@ exports.upload = function(req,res) {
 }
 
 exports.stream = function(req,res) {
-	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
+	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0) {
 		res.redirect('/');
 	}
 	else {
@@ -152,10 +152,7 @@ exports.stream = function(req,res) {
 			var attributes = [req.session.uid,followeeUid]
 			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end';
 			conn.query(unfollowQuery,attributes,function(err,rows){
-				if(rows == ''){
-					res.redirect('/notFound');
-				}
-				if(rows[0] != undefined && rows[0].end == '0000-00-00 00:00:00') {
+				if(rows.length > 0 && rows[0].end == '0000-00-00 00:00:00') {
 					followButton += '/unfollow"><button class="btn-links" type="submit"><h5>UNFOLLOW</h5></button></a>';
 				}
 				else {
