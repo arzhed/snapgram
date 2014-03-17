@@ -44,12 +44,13 @@ exports.signup = function(req, res){
 			  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
 						req.session.user = user;
 	  					req.session.uid = result.insertId;
+	  					req.session.pwd = hashedPassword;
 	  					var sessionId = Math.round(Math.random()*10000);
 						sessions.sessionIds.push(sessionId);
 						req.session.sessionId = sessionId;
 			  			res.redirect('/feed');
 	  				}
-	  			});
+	  			});	  			
 	  			connGetPwd.end();
 	  		}
 		});
