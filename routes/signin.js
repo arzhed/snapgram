@@ -14,6 +14,7 @@ exports.signin = function(req, res){
 
 	var user = req.body.uname;
 	var password = req.body.pwd;
+	var hashedPassword = passwordHash.generate(password);
 
 	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err){
@@ -28,10 +29,11 @@ exports.signin = function(req, res){
 		else if(passwordHash.verify(password, rows[0].pwd)) {
 				req.session.user = user;
 				req.session.uid = rows[0].uid;
+				req.session.pwd = hashedPassword;
 				var sessionId = Math.round(Math.random()*10000);
 				sessions.sessionIds.push(sessionId);
 				req.session.sessionId = sessionId;
-				//(app.get(sessions)).push(sessionId);
+				//(app.get(sessions)).push(sessionId);				
 				res.redirect('/');
 		}
 		else{
