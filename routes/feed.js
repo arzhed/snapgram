@@ -28,21 +28,21 @@ exports.getTimeAgo = getTimeAgo;
 
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
-	var conn = mysql.createConnection({
+	var db = mysql.createConnection({
 		host: 'web2.cpsc.ucalgary.ca',
 		user: 's513_apsbanva',
 		password: '10037085',
 		database: 's513_apsbanva'
 	});	
-	conn.connect();
+	db.connect();
 
 	var uid = req.session.uid;
 	var pwd = req.session.pwd;
 	
-	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
+	db.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
 		if(err)
 			console.log(err)
-		else if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1) || result.length < 1 ){
+		else if (sessions.sessionIds.indexOf(req.session.sessionId) < 0 || result.length < 1 ){
 			console.log('wtf')
 			console.log(sessions.sessionIds.indexOf(req.session.sessionId))
 			console.log(result)
@@ -57,14 +57,7 @@ exports.feed = function(req,res) {
 				var limit = parseInt(urlc.query.split('=')[1]*30);
 			else
 				var limit = 30
-			
-			var db = mysql.createConnection({
-				host: 'web2.cpsc.ucalgary.ca',
-				user: 's513_apsbanva',
-				password: '10037085',
-				database: 's513_apsbanva'
-			});	
-			db.connect();
+
 			var queryImage = 'select distinct p.pid, p.uid, p.type, p.time_uploaded, u.username FROM follows f '
 				+'JOIN photos p ON f.followee = p.uid JOIN user u ON u.uid = f.followee '
 				+'WHERE f.follower=? AND ((p.time_uploaded<f.end AND p.time_uploaded>f.start) '
@@ -95,10 +88,10 @@ exports.feed = function(req,res) {
 					res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
 				}
 			});
-			db.end();
 		}
+		db.end();
 	});
-	conn.end();
+	
 };
 
 exports.upload = function(req,res) {

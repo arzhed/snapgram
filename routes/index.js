@@ -4,7 +4,7 @@ var sessions = require('./sessionIds');
  */
 
 exports.index = function(req, res){
-	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)){
+	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0){
 		//res.writeHead(200);
 		res.render('index', {title: 'SNAPGRAM'});
 	}
@@ -14,7 +14,7 @@ exports.index = function(req, res){
 };
 
 exports.formSignUp = function(req,res){
-	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)){
+	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0){
 		var errorMsg = req.session.errorMessage;
 		delete req.session.errorMessage;
 		res.render('signup', {title: 'SNAPGRAM', wrongSignUp: errorMsg });

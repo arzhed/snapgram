@@ -14,7 +14,6 @@ exports.signin = function(req, res){
 
 	var user = req.body.uname;
 	var password = req.body.pwd;
-	var hashedPassword = passwordHash.generate(password);
 
 	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err){
@@ -22,21 +21,24 @@ exports.signin = function(req, res){
   			//throw err;
   		}
 		else if (rows[0] == undefined){
-			req.session.errorMessage = 'Username not found';
+			console.log('Wrong password or username')
+			req.session.errorMessage = 'Wrong password or username';
 			res.redirect('/sessions/new');
 			//res.render('index', { title: 'Snapgram', wrongSignIn: 'Username not found' });	
 		}
 		else if(passwordHash.verify(password, rows[0].pwd)) {
 				req.session.user = user;
 				req.session.uid = rows[0].uid;
-				req.session.pwd = hashedPassword;
+				req.session.pwd = rows[0].pwd;
 				var sessionId = Math.round(Math.random()*10000);
 				sessions.sessionIds.push(sessionId);
 				req.session.sessionId = sessionId;
+				console.log('yo')
 				//(app.get(sessions)).push(sessionId);				
-				res.redirect('/');
+				res.redirect('/feed');
 		}
 		else{
+			console.log('Wrong password')
 			req.session.errorMessage = 'Wrong password';
 			res.redirect('/sessions/new');
 			//res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
