@@ -1,7 +1,7 @@
 var sessions = require('./sessionIds');
 
-function getTimeAgo(timestamp){
-	var diff = new Date()-timestamp;
+function getTimeAgo(actualDate,timestamp){
+	var diff = actualDate-timestamp;
 	if(diff < 0){
 		return 'Timestamp in the future!';
 	}
@@ -75,7 +75,7 @@ exports.feed = function(req,res) {
 					for(var i=0;i<pictures.length;i++) {						
 						var filePath = 'pictures/' + pictures[i].uid +'/'
 							+ pictures[i].pid +'.'+ pictures[i].type;
-						var time = getTimeAgo(pictures[i].time_uploaded)				
+						var time = getTimeAgo(new Date(), pictures[i].time_uploaded)				
 						feedPhotos += '<div class="imgBox">'
 							+'<a href="' + filePath + '">'
 							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
@@ -169,7 +169,7 @@ exports.stream = function(req,res) {
 			var feedPhotos = '';
 			for(var i=0; i<rows.length; i++) {
 				var filePath = '/pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
-				var time = getTimeAgo(rows[i].time_uploaded);
+				var time = getTimeAgo(new Date(), rows[i].time_uploaded);
 				feedPhotos += '<div class="imgBox">'
 							+'<a href="' + filePath + '">'
 							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
