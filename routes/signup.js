@@ -1,15 +1,11 @@
 var sessions = require('./sessionIds');
+var dbconnection = require('./dbConnection');
+
 exports.signup = function(req, res){
 	var passwordHash = require('password-hash');
 	var fs = require('fs')
 	mysql = require('mysql');
-	conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});
-	conn.connect();
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 	var fname = req.body.fname;
 	var lname = req.body.lname;
@@ -30,14 +26,9 @@ exports.signup = function(req, res){
 	  			}
 	  		}
 	  		else {
-	  			connGetPwd = mysql.createConnection({
-					host: 'web2.cpsc.ucalgary.ca',
-					user: 's513_apsbanva',
-					password: '10037085',
-					database: 's513_apsbanva'
-				});
-	  			connGetPwd.connect();
-	  			connGetPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
+				var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+
+	  			connPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
 	  				if (err) {
 	  					console.log(err);
 	  				} else {
@@ -51,7 +42,7 @@ exports.signup = function(req, res){
 			  			res.redirect('/feed');
 	  				}
 	  			});	  			
-	  			connGetPwd.end();
+	  			connPwd.end();
 	  		}
 		});
 	}

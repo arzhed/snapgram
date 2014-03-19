@@ -1,4 +1,5 @@
 var sessions = require('./sessionIds');
+var dbconnection = require('./dbConnection');
 
 function getTimeAgo(actualDate,timestamp){
 	var diff = actualDate-timestamp;
@@ -28,18 +29,12 @@ exports.getTimeAgo = getTimeAgo;
 
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
-	var db = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});	
-	db.connect();
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 	var uid = req.session.uid;
 	var pwd = req.session.pwd;
 	
-	db.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
+	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
 		if(err)
 			console.log(err)
 		else if (sessions.sessionIds.indexOf(req.session.sessionId) < 0 || result.length < 1 ){
@@ -67,7 +62,7 @@ exports.feed = function(req,res) {
 				+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
 				+'ORDER BY time_uploaded DESC '
 				+'LIMIT 0,?';
-			db.query(queryImage,[req.session.uid, req.session.uid, limit], function(err,pictures) {
+			conn.query(queryImage,[req.session.uid, req.session.uid, limit], function(err,pictures) {
 				if(err)
 					console.log(err)
 				else {					
@@ -89,8 +84,9 @@ exports.feed = function(req,res) {
 				}
 			});
 		}
-		db.end();
+		conn.end();
 	});
+
 	
 };
 
@@ -101,13 +97,7 @@ exports.upload = function(req,res) {
 	else {
 		console.log(req);
 		mysql = require('mysql');
-		conn = mysql.createConnection({
-			host: 'web2.cpsc.ucalgary.ca',
-			user: 's513_apsbanva',
-			password: '10037085',
-			database: 's513_apsbanva'
-		});
-		conn.connect();
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
 		var type = req.files.photoFile.headers['content-type'];
@@ -135,13 +125,7 @@ exports.stream = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		conn = mysql.createConnection({
-			host: 'web2.cpsc.ucalgary.ca',
-			user: 's513_apsbanva',
-			password: '10037085',
-			database: 's513_apsbanva'
-		});
-		conn.connect();
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 		var parsed = req.url.split('/');
 		var followeeUid = parsed[parsed.length-1];

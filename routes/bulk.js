@@ -1,4 +1,6 @@
 var sessions = require('./sessionIds');
+var dbconnection = require('./dbConnection');
+
 exports.bulk = function(req, res){
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect('/');
@@ -8,17 +10,11 @@ exports.bulk = function(req, res){
 	}
 };
 
+
 exports.clear = function(req,res){
 	mysql = require('mysql');
 
-	conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});
-
-	conn.connect();
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 	//truncate all tables
 	var queryString1 = 'TRUNCATE TABLE s513_apsbanva.user';
@@ -47,14 +43,7 @@ exports.clear = function(req,res){
 exports.users = function(req,res){
 	mysql = require('mysql');
 
-	conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});
-
-	conn.connect();
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 	var type = req.files.usersInput.headers['content-type'];
 
@@ -111,14 +100,7 @@ exports.users = function(req,res){
 exports.streams = function(req,res){
 	mysql = require('mysql');
 
-	conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});
-
-	conn.connect();
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 	var type = req.files.streamsInput.headers['content-type'];
 

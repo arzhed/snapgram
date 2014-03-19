@@ -1,4 +1,5 @@
 var sessions = require('./sessionIds');
+var dbconnection = require('./dbConnection');
 /*
  * GET home page.
  */
@@ -26,13 +27,7 @@ exports.formSignUp = function(req,res){
 
 exports.formSignIn = function(req,res){
 	var mysql = require('mysql');
-	var conn = mysql.createConnection({
-		host: 'web2.cpsc.ucalgary.ca',
-		user: 's513_apsbanva',
-		password: '10037085',
-		database: 's513_apsbanva'
-	});	
-	conn.connect();
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 	var uid = req.session.uid;
 	var pwd = req.session.pwd;
