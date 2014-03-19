@@ -1,17 +1,13 @@
 var sessions = require('./sessionIds');
+var dbconnection = require('./dbConnection');
+
 exports.list = function(req, res){
   if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect('/');
 	}
 	else {
 		mysql = require('mysql');
-		conn = mysql.createConnection({
-			host: 'web2.cpsc.ucalgary.ca',
-			user: 's513_apsbanva',
-			password: '10037085',
-			database: 's513_apsbanva'
-		});
-		conn.connect();
+	  var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 
 		var queryImage = 'SELECT username, uid FROM user';
@@ -36,13 +32,7 @@ exports.follow = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		conn = mysql.createConnection({
-			host: 'web2.cpsc.ucalgary.ca',
-			user: 's513_apsbanva',
-			password: '10037085',
-			database: 's513_apsbanva'
-		});
-		conn.connect();
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]
@@ -66,13 +56,7 @@ exports.unfollow = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		conn = mysql.createConnection({
-			host: 'web2.cpsc.ucalgary.ca',
-			user: 's513_apsbanva',
-			password: '10037085',
-			database: 's513_apsbanva'
-		});
-		conn.connect();
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]

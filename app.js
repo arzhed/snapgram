@@ -56,15 +56,14 @@ app.post('/signup', signup.signup);
 app.get('/users', user.list);
 app.get('/feed',feed.feed);
 app.get(/\/feed?page=\d+/,feed.feed);
-app.get('/photos/new',upload.newPicture)
-app.post('/photos/create',feed.upload)
-app.get(/users\/\d+\/follow/, user.follow)
-app.get(/users\/\d+\/unfollow/, user.unfollow)
+app.get('/photos/new',upload.newPicture);
+app.post('/photos/create',feed.upload);
+app.get(/users\/\d+\/follow/, user.follow);
+app.get(/users\/\d+\/unfollow/, user.unfollow);
 app.get(/\/users\/\d+/, feed.stream);
 app.get('/signout',signout.signout);
 app.get('/notFound',notFound.notFound);
 app.get('/internalError', internalError.internalError);
-app.get('/bulk', bulk.bulk);
 app.get('/bulk/clear', bulk.clear);
 app.post('/bulk/users', bulk.users);
 app.post('/bulk/streams', bulk.streams);
