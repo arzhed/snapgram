@@ -6,7 +6,6 @@ exports.signup = function(req, res){
 	var fs = require('fs')
 	mysql = require('mysql');
 	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-
 	var fname = req.body.fname;
 	var lname = req.body.lname;
 	var user = req.body.uname;
@@ -27,7 +26,7 @@ exports.signup = function(req, res){
 	  		}
 	  		else {
 				var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-
+					//if(typeof(conn) != 'string'){
 	  			connPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
 	  				if (err) {
 	  					console.log(err);
@@ -41,16 +40,15 @@ exports.signup = function(req, res){
 						req.session.sessionId = sessionId;
 			  			res.redirect('/feed');
 	  				}
-	  			});	  			
+	  			});
 	  			connPwd.end();
 	  		}
 		});
+		conn.end();
 	}
 	else {
 		req.session.errorMessage = 'Missing field';
 		res.redirect('/users/new');
 		//res.render('signup', { title: 'SNAPGRAM', wrongSignUp: 'Missing field' });
 	}
-
-	conn.end();
 };

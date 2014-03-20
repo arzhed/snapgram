@@ -30,10 +30,9 @@ exports.getTimeAgo = getTimeAgo;
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
 	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-
 	var uid = req.session.uid;
 	var pwd = req.session.pwd;
-	
+
 	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
 		if(err)
 			console.log(err)
@@ -86,7 +85,6 @@ exports.feed = function(req,res) {
 		}
 		conn.end();
 	});
-
 	
 };
 
