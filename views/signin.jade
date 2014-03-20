@@ -32,7 +32,7 @@ body
 						input.input-block-level(type='text', placeholder='Username' name='uname')
 						input.input-block-level(type='password', placeholder='Password' name='pwd')
 						- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
-						button(class=btnClass, type='submit') Sign in
+						button(class=btnClass, type='submit' name='signinButton') Sign in
 				div.center-block
 					h4 or
 					form.form-signin(action='/users/new',method='get', id='childWidth')

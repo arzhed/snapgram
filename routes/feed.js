@@ -37,12 +37,7 @@ exports.feed = function(req,res) {
 		if(err)
 			console.log(err)
 		else if (sessions.sessionIds.indexOf(req.session.sessionId) < 0 || result.length < 1 ){
-			console.log('wtf')
-			console.log(sessions.sessionIds.indexOf(req.session.sessionId))
-			console.log(result)
-			console.log(uid)
-			console.log(pwd)
-			res.redirect('/sessions/new');
+			res.redirect(302,'/sessions/new');
 		}
 		else {
 			var url = require('url')
