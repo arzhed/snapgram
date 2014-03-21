@@ -3,10 +3,6 @@ var http = require('http');
 var fs = require('fs');
 
 /*
- app.get('/bulk/clear', bulk.clear);
- app.post('/bulk/users', bulk.users);
- app.post('/bulk/streams', bulk.streams);
-
 //make a function into bulk.js for inserting users into DB
 //test for file existing
 //test for .json extension
@@ -18,6 +14,31 @@ var fs = require('fs');
 
 describe("Test for Bulk Upload Functionality", function(){
 /*
+	it("Passes if database is cleared", function(){
+		var options = {
+			hostname: '127.0.0.1',
+			port: 8250,
+			path: '/bulk/clear?password=:password',
+			method: 'GET'
+		};
+
+		var req = http.request(options, function(res) {
+			console.log('STATUS: ' + res.statusCode);
+			console.log('HEADERS: ' + JSON.stringify(res.headers));
+			res.setEncoding('utf8');
+			res.on('data', function (chunk) {
+				console.log('BODY: ' + chunk);
+			});
+		});
+
+		req.on('error', function(e) {
+			console.log('problem with request: ' + e.message);
+		});
+
+		req.end();
+	});
+
+
 	it("Passes if database is updated with users JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -26,13 +47,10 @@ describe("Test for Bulk Upload Functionality", function(){
 			method: 'POST'
 		};
 
-
+ */
 		var req = http.request(options, function(res) {
-			//console.log('STATUS: ' + res.statusCode);
-			//console.log('HEADERS: ' + JSON.stringify(res.headers));
 			res.setEncoding('utf8');
 			res.on('data', function (chunk) {
-				//console.log('BODY: ' + chunk);
 			});
 		});
 		req.setHeader("Content-Type", "application/json");
@@ -50,7 +68,7 @@ describe("Test for Bulk Upload Functionality", function(){
 		//console.log(req);
 		req.end();
 	});
-
+/*
 	it("Passes if database is updated with stream JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -80,28 +98,5 @@ describe("Test for Bulk Upload Functionality", function(){
 		req.end();
 
 	});
-*/
-	it("Passes if database is cleared", function(){
-		var options = {
-			hostname: '127.0.0.1',
-			port: 8250,
-			path: '/bulk/clear?password=:password',
-			method: 'GET'
-		};
 
-		var req = http.request(options, function(res) {
-			console.log('STATUS: ' + res.statusCode);
-			console.log('HEADERS: ' + JSON.stringify(res.headers));
-			res.setEncoding('utf8');
-			res.on('data', function (chunk) {
-				console.log('BODY: ' + chunk);
-			});
-		});
-
-		req.on('error', function(e) {
-			console.log('problem with request: ' + e.message);
-		});
-
-		req.end();
-	});
 });

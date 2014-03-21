@@ -99,11 +99,13 @@ exports.upload = function(req,res) {
 
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
 		var type = req.files.photoFile.headers['content-type'];
-		var extension = type.split('/')[1]
+		var name = req.files.photoFile.headers['content-disposition'].split("=")[2].replace(/"/g, '');
+		var localPath = __dirname + '/../public/pictures/' + req.session.uid +'/'+name;
+		console.log(localPath);
 		if(type=='image/jpeg' || type=='image/png') {
 			var user = req.session.user
-			var toInsert = [user,extension];
-			var queryString = 'INSERT INTO photos(uid,time_uploaded,type) VALUES((SELECT uid FROM user WHERE username=?),now(),?)'
+			var toInsert = [user,localPath];
+			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES((SELECT uid FROM user WHERE username=?),now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
 					console.log(err);
@@ -111,7 +113,7 @@ exports.upload = function(req,res) {
 					res.redirect('/internalError');
 				}
 				else {
-					fs.copy(req.files.photoFile.path, __dirname + '/../public/pictures/' + req.session.uid +'/'+result.insertId+'.'+ extension);
+					fs.copy(req.files.photoFile.path, localPath);
 				}
 			});
 		}
