@@ -15,7 +15,7 @@
 		 user: user,
 		 password: password,
 		 database: database,
-		 connectTimeout: 600000
+		 connectTimeout: 300000
 	 });
 
 	 //db.end();

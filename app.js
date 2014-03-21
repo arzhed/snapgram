@@ -53,7 +53,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/sessions/new', index.formSignIn);
 app.get('/users/new', index.formSignUp);
-app.post('/signin', signin.signin);
+app.post('/sessions/create', signin.signin);
 app.post('/users/create', signup.signup);
 app.post('/signup', signup.signup);
 app.get('/users', user.list);
