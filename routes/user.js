@@ -12,14 +12,20 @@ exports.list = function(req, res){
 
 		var queryImage = 'SELECT username, uid FROM user';
 		conn.query(queryImage, function(err,rows) {
-			var userList = '';
-			userList += '</br>';
-			for(var i=0;i<rows.length;i++){
-				userList += '<a href="/users/' + rows[i].uid
-							+'">'+rows[i].username +'</a></br>';
-			}
-			userList += '</br>';
-			res.render('feed', {html : userList, title : 'SNAPGRAM'})
+			if (err) {
+				console.log(err);
+				res.status(500);
+				res.redirect('/internalError');
+	  		} else {
+	  			var userList = '';
+				userList += '</br>';
+				for(var i=0;i<rows.length;i++){
+					userList += '<a href="/users/' + rows[i].uid
+								+'">'+rows[i].username +'</a></br>';
+				}
+				userList += '</br>';
+				res.render('feed', {html : userList, title : 'SNAPGRAM'})
+	  		}
 		});
 		conn.end();
 	}
@@ -40,9 +46,11 @@ exports.follow = function(req,res) {
 		var insertFollow = 'INSERT INTO follows(follower,followee,start) VALUES(?,?,now())';
 		var usersId = [req.session.uid,followeeId]
 		conn.query(insertFollow, usersId, function(err,rows) {
-			if(err)
-				console.log(err)
-			else
+			if (err) {
+				console.log(err);
+				res.status(500);
+				res.redirect('/internalError');
+	  		} else
 				res.redirect('/users/'+followeeId)
 		})
 		conn.end();
@@ -65,9 +73,11 @@ exports.unfollow = function(req,res) {
 		var usersId = [req.session.uid,followeeId]
 		conn.query(insertUnfollowTime, usersId, function(err,rows) {
 			console.log('unfollow:'+rows[0])
-			if(err)
-				console.log(err)
-			else
+			if (err) {
+				console.log(err);
+				res.status(500);
+				res.redirect('/internalError');
+	  		} else
 				res.redirect('/users/'+followeeId)
 		})
 		conn.end();

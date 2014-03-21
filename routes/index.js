@@ -33,7 +33,12 @@ exports.formSignIn = function(req,res){
 	var pwd = req.session.pwd;
 
 	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?',[uid,pwd], function(err,result) {
-		if (sessions.sessionIds.indexOf(req.session.sessionId)< 0 || result.length < 1){
+		if(err){
+			console.log(err);
+  			res.status(500);
+			res.redirect('/internalError');
+		}
+		else if (sessions.sessionIds.indexOf(req.session.sessionId)< 0 || result.length < 1){
 			var errorMsg = req.session.errorMessage;
 			delete req.session.errorMessage;
 			//res.set('Status','200');
