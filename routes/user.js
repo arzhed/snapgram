@@ -3,7 +3,7 @@ var dbconnection = require('./dbConnection');
 
 exports.list = function(req, res){
   if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
-		res.redirect('/');
+		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
@@ -34,7 +34,7 @@ exports.list = function(req, res){
 exports.follow = function(req,res) {
 	console.log('yiyi')
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
-		res.redirect('/');
+		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
@@ -60,7 +60,7 @@ exports.follow = function(req,res) {
 exports.unfollow = function(req,res) {
 	console.log('yiyi')
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
-		res.redirect('/');
+		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');

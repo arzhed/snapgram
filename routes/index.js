@@ -10,7 +10,7 @@ exports.index = function(req, res){
 		res.render('index', {title: 'SNAPGRAM'});
 	}
 	else{
-		res.redirect('/feed');
+		res.redirect(302, '/feed');
 	}
 };
 
@@ -21,7 +21,7 @@ exports.formSignUp = function(req,res){
 		res.render('signup', {title: 'SNAPGRAM', wrongSignUp: errorMsg });
 	}
 	else{
-		res.redirect('/feed');
+		res.redirect(302, '/feed');
 	}
 };
 
@@ -47,7 +47,7 @@ exports.formSignIn = function(req,res){
 			res.render('signin', {title: 'SNAPGRAM', wrongSignIn: errorMsg });
 		}
 		else{
-			res.redirect('/feed');
+			res.redirect(302, '/feed');
 		}
 	})
 };

@@ -91,7 +91,7 @@ exports.feed = function(req,res) {
 
 exports.upload = function(req,res) {
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
-		res.redirect('/');
+		res.redirect(302, '/sessions/new');
 	}
 	else {
 		console.log(req);
@@ -123,7 +123,7 @@ exports.upload = function(req,res) {
 
 exports.stream = function(req,res) {
 	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0) {
-		res.redirect('/');
+		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
