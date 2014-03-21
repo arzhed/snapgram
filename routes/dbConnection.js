@@ -25,5 +25,5 @@
 	return db;
 
  }
- var dbconnection = mySqlConnection('whatever','s513_apsbanva','10037085','s513_apsbanva');
+ var dbconnection = mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
  exports.mySqlConnection = mySqlConnection;

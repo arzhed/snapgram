@@ -20,7 +20,7 @@ describe('/sessions/new', function(){
       req.end()
     })
 
-    it('should redirect from /feed to /sessions/new',function(done){
+    it('should redirect from /photos/new to /sessions/new',function(done){
       var options = {
         host: 'localhost',
         port: 8250,
