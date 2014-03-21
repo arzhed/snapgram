@@ -22,18 +22,27 @@ exports.clear = function(req,res){
 	var queryString3 = 'TRUNCATE TABLE s513_apsbanva.photos';
 
 	conn.query(queryString1, function(err,result){
-		if(err)
+		if(err){
 			console.log(err);
+  			res.status(500);
+			res.redirect('/internalError');
+		}
 	});
 
 	conn.query(queryString2, function(err,result){
-		if(err)
+		if(err){
 			console.log(err);
+  			res.status(500);
+			res.redirect('/internalError');
+		}
 	});
 
 	conn.query(queryString3, function(err,result){
-		if(err)
+		if(err){
 			console.log(err);
+  			res.status(500);
+			res.redirect('/internalError');
+		}
 	});
 
 	conn.end();
@@ -74,8 +83,11 @@ exports.users = function(req,res){
 			var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
 
 			conn.query(queryString,toInsert, function(err,result){
-				if(err)
+				if(err){
 					console.log(err);
+  					res.status(500);
+					res.redirect('/internalError');
+				}
 			});
 
 			// FOLLOWS TABLE
@@ -108,8 +120,10 @@ exports.streams = function(req,res){
 		var moment = require('moment');
 		var fs = require('fs');
 		var content = fs.readFileSync(req.files.streamsInput.path, 'binary', function (err,data) {
-			if (err) {
-				return console.log(err);
+			if(err){
+				console.log(err);
+	  			res.status(500);
+				res.redirect('/internalError');
 			}
 		});
 
@@ -128,8 +142,11 @@ exports.streams = function(req,res){
 			var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,type) VALUES(?,?,?,?)';
 
 			conn.query(queryString,toInsert, function(err,result){
-				if(err)
+				if(err){
 					console.log(err);
+		  			res.status(500);
+					res.redirect('/internalError');
+				}
 			});
 
 		}

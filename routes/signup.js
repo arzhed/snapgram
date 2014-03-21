@@ -21,7 +21,9 @@ exports.signup = function(req, res){
 					res.redirect('/users/new');
 	  			} 
 	  			else {
-	  				console.log(err);
+					console.log(err);
+		  			res.status(500);
+					res.redirect('/internalError');
 	  			}
 	  		}
 	  		else {
@@ -30,6 +32,8 @@ exports.signup = function(req, res){
 	  			connPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
 	  				if (err) {
 	  					console.log(err);
+		  				res.status(500);
+						res.redirect('/internalError');
 	  				} else {
 			  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
 						req.session.user = user;

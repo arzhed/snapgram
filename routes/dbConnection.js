@@ -28,9 +28,11 @@
 	 	} else if(err === null) {
 	 		callback(db);
 	 	}*/
-	 	if(err){
+	 	/*if(err){
+	 		
+	 		console.log(err);
 	 		throw err;
-	 	}
+	 	}*/
 	 });
 	 return db;
 };
