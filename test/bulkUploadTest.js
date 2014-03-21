@@ -1,7 +1,6 @@
 var assert = require("assert");
 var http = require('http');
 var fs = require('fs');
-var bulk = require('../routes/bulk');
 
 /*
  app.get('/bulk/clear', bulk.clear);
@@ -18,7 +17,7 @@ var bulk = require('../routes/bulk');
 */
 
 describe("Test for Bulk Upload Functionality", function(){
-	/*
+/*
 	it("Passes if database is updated with users JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -51,7 +50,7 @@ describe("Test for Bulk Upload Functionality", function(){
 		//console.log(req);
 		req.end();
 	});
-*/
+
 	it("Passes if database is updated with stream JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -81,7 +80,7 @@ describe("Test for Bulk Upload Functionality", function(){
 		req.end();
 
 	});
-/*
+*/
 	it("Passes if database is cleared", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -105,5 +104,4 @@ describe("Test for Bulk Upload Functionality", function(){
 
 		req.end();
 	});
-	*/
 });
