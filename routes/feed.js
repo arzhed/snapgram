@@ -50,12 +50,12 @@ exports.feed = function(req,res) {
 			else
 				var limit = 30
 
-			var queryImage = 'select distinct p.pid, p.uid, p.type, p.time_uploaded, u.username FROM follows f '
+			var queryImage = 'SELECT DISTINCT p.path, p.uid, p.time_uploaded, u.username FROM follows f '
 				+'JOIN photos p ON f.followee = p.uid JOIN user u ON u.uid = f.followee '
 				+'WHERE f.follower=? AND ((p.time_uploaded<f.end AND p.time_uploaded>f.start) '
 				+'OR (f.end="0000-00-00 00:00:00" AND p.time_uploaded>f.start)) '
 				+'UNION '
-				+'SELECT q.pid, q.uid, q.type, q.time_uploaded, u.username FROM photos q '
+				+'SELECT q.path, q.uid, q.time_uploaded, u.username FROM photos q '
 				+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
 				+'ORDER BY time_uploaded DESC '
 				+'LIMIT 0,?';
@@ -68,8 +68,7 @@ exports.feed = function(req,res) {
 				else {					
 					var feedPhotos = '';
 					for(var i=0;i<pictures.length;i++) {						
-						var filePath = 'pictures/' + pictures[i].uid +'/'
-							+ pictures[i].pid +'.'+ pictures[i].type;
+						var filePath = pictures[i].path;
 						var time = getTimeAgo(new Date(), pictures[i].time_uploaded)				
 						feedPhotos += '<div class="imgBox">'
 							+'<a href="' + filePath + '">'
@@ -153,7 +152,7 @@ exports.stream = function(req,res) {
 			})
 		}
 
-		var queryImage = 'SELECT p.pid, u.uid, u.username, p.time_uploaded, p.type '
+		var queryImage = 'SELECT p.path, u.uid, u.username, p.time_uploaded '
 							+'FROM photos p RIGHT JOIN user u ON p.uid = u.uid WHERE u.uid=?'
 							+'ORDER BY time_uploaded DESC';
 		conn.query(queryImage,[followeeUid], function(err,rows) {
@@ -170,7 +169,7 @@ exports.stream = function(req,res) {
 				var feedPhotos = '';
 				if(!(rows[0].pid === null)){
 					for(var i=0; i<rows.length; i++) {
-						var filePath = '/pictures/' + rows[i].uid +'/'+ rows[i].pid +'.'+ rows[i].type;
+						var filePath = rows[i].path;
 						var time = getTimeAgo(new Date(), rows[i].time_uploaded);
 						feedPhotos += '<div class="imgBox">'
 									+'<a href="' + filePath + '">'
