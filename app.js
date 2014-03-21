@@ -35,16 +35,19 @@ app.use(express.cookieParser('S3CRE7'));
 app.use(express.cookieSession({ path: '/', httpOnly: true, maxAge: 3600000 }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(err, req, res, next){
-	res.status(404).redirect('/notFound');
+app.use(function(req, res){
+	res.status(404);
+	res.redirect('/notFound');
 });
-app.use(function(err, req, res, next){
-	res.status(500).redirect('/internalError');
+app.use(function(error, req, res, next){
+	console.log(error);
+	res.status(500);
+	res.redirect('/internalError');
 });
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  //app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
@@ -67,7 +70,6 @@ app.get('/internalError', internalError.internalError);
 app.get('/bulk/clear', bulk.clear);
 app.post('/bulk/users', bulk.users);
 app.post('/bulk/streams', bulk.streams);
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -13,10 +13,12 @@ exports.signin = function(req, res){
 
 	conn.query('SELECT pwd,uid FROM user WHERE username=?', [user], function(err, rows, fields) {
   		if (err){
-  			res.status(500).redirect('/internalError');
-  			//throw err;
+  			console.log(err);
+  			res.status(500);
+			res.redirect('/internalError');
   		}
 		else if (rows[0] == undefined){
+			
 			console.log('Wrong password or username')
 			req.session.errorMessage = 'Wrong password or username';
 			res.redirect('/sessions/new');
@@ -29,7 +31,6 @@ exports.signin = function(req, res){
 				var sessionId = Math.round(Math.random()*10000);
 				sessions.sessionIds.push(sessionId);
 				req.session.sessionId = sessionId;
-				console.log('yo')
 				//(app.get(sessions)).push(sessionId);				
 				res.redirect('/feed');
 		}
