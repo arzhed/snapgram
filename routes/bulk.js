@@ -60,22 +60,17 @@ exports.users = function(req,res){
 		mysql = require('mysql');
 
 		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-
-		var type = req.files.usersInput.headers['content-type'];
-
+	
+		var type = req.headers['content-type'];
 		if (type=='application/json'){
 
-			var passwordHash = require('password-hash');
-			var fs = require('fs');
-			var content = fs.readFileSync(req.files.usersInput.path, 'binary', function (err,data) {
-				if (err) {
-					return console.log(err);
-				}
-			});
+		var passwordHash = require('password-hash');
 
-			var jsonContent = JSON.parse(content)["user"];
-			var index;
-			for(index = 0; index < jsonContent.length; index++){
+		var jsonContent = JSON.parse(JSON.stringify(req.body));
+
+		var index;
+
+		for(index = 0; index < jsonContent.length; index++){
 
 				// USER TABLE
 				var id = jsonContent[index]["id"];
@@ -92,15 +87,15 @@ exports.users = function(req,res){
 				conn.query(queryString,toInsert, function(err,result){
 					if(err){
 						console.log(err);
-	  					res.status(500);
+						res.status(500);
 						res.redirect('/internalError');
 					}
 				});
-
+	
 				// FOLLOWS TABLE
 				var follows = jsonContent[index]["follows"];
 				var i, j;
-
+	
 				for(i = 0; i < follows.length; i++){
 					var toInsert =[id, follows[i]];
 					var queryString = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
@@ -109,11 +104,11 @@ exports.users = function(req,res){
 							console.log(err);
 					});
 				}
-			}
 
 		}
 		conn.end();
 		res.redirect('/feed');
+		}
 	}
 }
 
@@ -125,12 +120,29 @@ exports.streams = function(req,res){
 
 		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
-		var type = req.files.streamsInput.headers['content-type'];
+	var type = req.headers['content-type'];
 
-		if (type=='application/json'){
-			var moment = require('moment');
-			var fs = require('fs');
-			var content = fs.readFileSync(req.files.streamsInput.path, 'binary', function (err,data) {
+	if (type=='application/json'){
+
+		var moment = require('moment');
+
+		var jsonContent = JSON.parse(JSON.stringify(req.body));
+
+		var index;
+
+		for(index = 0; index < jsonContent.length; index++){
+
+			// USER TABLE
+			var pid = jsonContent[index]["id"];
+			var uid = jsonContent[index]["user_id"];
+			var type = jsonContent[index]["path"].split('.')[1];
+			var timestamp = jsonContent[index]["timestamp"];
+			var datetime = moment.unix(timestamp).format('YYYY-MM-DD HH:mm:ss');
+
+			var toInsert =[pid, uid, datetime, type];
+			var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,type) VALUES(?,?,?,?)';
+
+			conn.query(queryString,toInsert, function(err,result){
 				if(err){
 					console.log(err);
 		  			res.status(500);
@@ -138,29 +150,6 @@ exports.streams = function(req,res){
 				}
 			});
 
-			var jsonContent = JSON.parse(content)["photos"];
-			var index;
-			for(index = 0; index < jsonContent.length; index++){
-
-				// USER TABLE
-				var pid = jsonContent[index]["id"];
-				var uid = jsonContent[index]["user_id"];
-				var type = jsonContent[index]["path"].split('.')[1];
-				var timestamp = jsonContent[index]["timestamp"];
-				var datetime = moment.unix(timestamp).format('YYYY-MM-DD HH:mm:ss');
-
-				var toInsert =[pid, uid, datetime, type];
-				var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,type) VALUES(?,?,?,?)';
-
-				conn.query(queryString,toInsert, function(err,result){
-					if(err){
-						console.log(err);
-			  			res.status(500);
-						res.redirect('/internalError');
-					}
-				});
-
-			}
 		}
 		conn.end();
 		res.redirect('/feed');

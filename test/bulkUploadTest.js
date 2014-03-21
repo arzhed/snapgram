@@ -18,6 +18,7 @@ var bulk = require('../routes/bulk');
 */
 
 describe("Test for Bulk Upload Functionality", function(){
+	/*
 	it("Passes if database is updated with users JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -50,7 +51,7 @@ describe("Test for Bulk Upload Functionality", function(){
 		//console.log(req);
 		req.end();
 	});
-/*
+*/
 	it("Passes if database is updated with stream JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -60,21 +61,27 @@ describe("Test for Bulk Upload Functionality", function(){
 		};
 
 		var req = http.request(options, function(res) {
-			console.log('STATUS: ' + res.statusCode);
-			console.log('HEADERS: ' + JSON.stringify(res.headers));
 			res.setEncoding('utf8');
 			res.on('data', function (chunk) {
-				console.log('BODY: ' + chunk);
 			});
 		});
-
+		req.setHeader("Content-Type", "application/json");
 		req.on('error', function(e) {
 			console.log('problem with request: ' + e.message);
 		});
 
-		req.end();
-	});
+		var content = fs.readFileSync('public/bulk/photos.json', 'binary', function (err,data) {
+			if (err) {
+				return console.log(err);
+			}
+		});
 
+		req.write(content);
+		//console.log(req);
+		req.end();
+
+	});
+/*
 	it("Passes if database is cleared", function(){
 		var options = {
 			hostname: '127.0.0.1',
