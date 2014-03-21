@@ -93,7 +93,6 @@ exports.upload = function(req,res) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
-		console.log(req);
 		mysql = require('mysql');
 		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
@@ -101,10 +100,12 @@ exports.upload = function(req,res) {
 		var type = req.files.photoFile.headers['content-type'];
 		var name = req.files.photoFile.headers['content-disposition'].split("=")[2].replace(/"/g, '');
 		var localPath = __dirname + '/../public/pictures/' + req.session.uid +'/'+name;
+		var queryPath = 'pictures/' + req.session.uid +'/'+name;
 		console.log(localPath);
+		console.log(queryPath);
 		if(type=='image/jpeg' || type=='image/png') {
 			var user = req.session.user
-			var toInsert = [user,localPath];
+			var toInsert = [user,queryPath];
 			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES((SELECT uid FROM user WHERE username=?),now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
