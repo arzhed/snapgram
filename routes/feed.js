@@ -125,6 +125,7 @@ exports.upload = function(req,res) {
 
 exports.stream = function(req,res) {
 	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0) {
+		console.log('/users/1')
 		res.redirect(302, '/sessions/new');
 	}
 	else {
