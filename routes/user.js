@@ -32,7 +32,6 @@ exports.list = function(req, res){
 }
 
 exports.follow = function(req,res) {
-	console.log('yiyi')
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
@@ -58,7 +57,6 @@ exports.follow = function(req,res) {
 }
 
 exports.unfollow = function(req,res) {
-	console.log('yiyi')
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
@@ -71,8 +69,7 @@ exports.unfollow = function(req,res) {
 
 		var insertUnfollowTime = 'UPDATE follows SET end=now() WHERE follower=? AND followee=? ';
 		var usersId = [req.session.uid,followeeId]
-		conn.query(insertUnfollowTime, usersId, function(err,rows) {
-			console.log('unfollow:'+rows[0])
+		conn.query(insertUnfollowTime, usersId, function(err,rows) {		
 			if (err) {
 				console.log(err);
 				res.status(500);

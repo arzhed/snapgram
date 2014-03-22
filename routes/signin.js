@@ -1,6 +1,7 @@
 var sessions = require('./sessionIds');
 var dbconnection = require('./dbConnection');
 
+
 exports.signin = function(req, res){
 	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0){
 		var passwordHash = require('password-hash');

@@ -2,7 +2,7 @@ var assert = require("assert")
 var http = require('http')
 var Browser = require("zombie")
 //var fs = require('fs')
-var browser = new Browser();
+
 
 
 describe('/sessions/new', function(){
@@ -79,18 +79,14 @@ describe('/sessions/new', function(){
 
 
     before(function(){
-      //this.browser = new Browser()
+      this.browser = new Browser();
     })
-
-    it('should sign in, be redirected "/feed", then "GET /users" and not be redirected', function(done){
+    it('should sign in (check username/password), be redirected to "/feed", then "GET /users" and not be redirected', function(done){
+      var browser = this.browser
       browser.visit('http://localhost:8250/sessions/new',  function(err){
-        console.log('STATUS '+browser.statusCode)
-        console.log(browser.location)
-        console.log(browser.location.pathname)
         browser.fill('uname','arzhed')
           .fill('pwd','arzhed')
           .pressButton('signinButton',function(){
-            console.log('Button pressed!!')
             assert.equal(browser.statusCode,200)
             assert.equal(browser.location.pathname,'/feed')
             browser.visit('http://localhost:8250/users',  function(){
@@ -99,22 +95,71 @@ describe('/sessions/new', function(){
               done()
             })
           })
-        //console.log(browser.statusCode)
-        //console.log(browser.location)
-/*
-        fs.writeFile("./logTest", browser.resources.dump(), function(err) {
-          if(err) {
-              console.log(err);
-          } else {
-              console.log("The file was saved!");
-          }
-        }); 
-
-{ debug: true, runScripts: false },
-
-*/
       })
     });
+
+    it('cookie stored in Zombie browser : "GET /sessions/new redirected to /feed', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/sessions/new',  function(err){
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/feed')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /feed not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/feed',  function(err){
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/feed')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/2" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/2',  function(err){
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/users/2')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/2/follow" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/2/follow',  function(err){
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/users/2')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/2/unfollow" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/2/unfollow',  function(err){
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/users/2')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /photos/new" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/photos/new',  function(err){
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/photos/new')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/100000" 404', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/100000',  function(err){
+        assert.equal(browser.statusCode,404);
+        assert.equal(browser.location.pathname,'/notFound')
+        done()
+      })
+    });     
 
   });
 });
