@@ -2,6 +2,7 @@ var http = require('http');
 var fs = require('fs');
 
 var bulkScript = function() {
+	/*
 		var options1 = {
 			hostname: '127.0.0.1',
 			port: 8250,
@@ -24,8 +25,6 @@ var bulkScript = function() {
 
 		req1.end();
 		console.log('clear finished');
-
-	/*
 
 
 		var options2 = {
@@ -56,9 +55,11 @@ var bulkScript = function() {
 		req2.end();
 		console.log('users finished');
 
-*/
 
-/*
+
+	 */
+
+
 
 		var options3 = {
 			hostname: '127.0.0.1',
@@ -77,7 +78,7 @@ var bulkScript = function() {
 			console.log('problem with request: ' + e.message);
 		});
 
-		var content3 = fs.readFileSync('../bulk/photos.json', 'binary', function (err,data) {
+		var content3 = fs.readFileSync('../bulk/photos2.json', 'binary', function (err,data) {
 			if (err) {
 				return console.log(err);
 			}
@@ -86,6 +87,6 @@ var bulkScript = function() {
 		req3.write(content3);
 		req3.end();
 		console.log('photos finished');
-*/
+
 }
 bulkScript();

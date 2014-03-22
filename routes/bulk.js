@@ -77,6 +77,10 @@ exports.users = function(req,res){
 			var toInsert =[id, username, lname, fname, hashedPassword];
 			var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
 
+			if(!fs.existsSync(__dirname + '/../public/pictures/'+uid)){
+				fs.mkdirSync(__dirname + '/../public/pictures/'+uid);
+			}
+
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
 					console.log(err);
@@ -112,6 +116,7 @@ exports.streams = function(req,res){
 
 	if (type=='application/json'){
 
+		var fs = require('fs-extra');
 		var moment = require('moment');
 
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
@@ -123,12 +128,21 @@ exports.streams = function(req,res){
 			// USER TABLE
 			var pid = jsonContent[index]["id"];
 			var uid = jsonContent[index]["user_id"];
-			var type = jsonContent[index]["path"].split('.')[1];
+			var path = jsonContent[index]["path"];
 			var timestamp = jsonContent[index]["timestamp"];
-			var datetime = moment.unix(timestamp).format('YYYY-MM-DD HH:mm:ss');
+			var datetime = moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
 
-			var toInsert =[pid, uid, datetime, type];
-			var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,type) VALUES(?,?,?,?)';
+			var pathSplit = path.split('/');
+			var filename = pathSplit[pathSplit.length-1];
+			var localPath = 'pictures/' + uid +'/'+filename;
+			var fullPath = __dirname + '/../public/pictures/' + uid +'/'+filename;
+			var toInsert =[pid, uid, datetime, localPath];
+			var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,path) VALUES(?,?,?,?)';
+
+			if(!fs.existsSync(__dirname + '/../public/pictures/'+uid)){
+				fs.mkdirSync(__dirname + '/../public/pictures/'+uid);
+			}
+			fs.copy(path, fullPath);
 
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
