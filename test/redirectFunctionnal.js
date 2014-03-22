@@ -34,6 +34,48 @@ describe('/sessions/new', function(){
       req.end()
     })
 
+    it('should redirect from /users/1 to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/users/1',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
+    it('should redirect from /users/200/follow to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/users/200/follow',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
+    it('should redirect from /users/3000/unfollow to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/users/3000/unfollow',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
 /*
     before(function(){
       this.browser = new Browser({site :'http://localhost:8250', debug: true })
@@ -53,6 +95,6 @@ describe('/sessions/new', function(){
         }); 
       })
     });*/
-  })
+  });
 });
 

@@ -44,10 +44,8 @@ exports.clear = function(req,res){
             res.status(500);
 			res.redirect('/internalError');
 		}
+		conn.end();
 	});
-
-	conn.end();
-
 }
 
 exports.users = function(req,res){
@@ -59,47 +57,47 @@ exports.users = function(req,res){
 	var type = req.headers['content-type'];
 	if (type=='application/json'){
 
-	var passwordHash = require('password-hash');
+		var passwordHash = require('password-hash');
 
-	var jsonContent = JSON.parse(JSON.stringify(req.body));
+		var jsonContent = JSON.parse(JSON.stringify(req.body));
 
-	var index;
+		var index;
 
-	for(index = 0; index < jsonContent.length; index++){
+		for(index = 0; index < jsonContent.length; index++){
 
-		// USER TABLE
-		var id = jsonContent[index]["id"];
-		var username = jsonContent[index]["name"];
-		var fname = jsonContent[index]["name"];
-		var lname = jsonContent[index]["name"];
+			// USER TABLE
+			var id = jsonContent[index]["id"];
+			var username = jsonContent[index]["name"];
+			var fname = jsonContent[index]["name"];
+			var lname = jsonContent[index]["name"];
 
-		var password = jsonContent[index]["password"];
-		var hashedPassword = passwordHash.generate(password);
+			var password = jsonContent[index]["password"];
+			var hashedPassword = passwordHash.generate(password);
 
-		var toInsert =[id, username, lname, fname, hashedPassword];
-		var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
+			var toInsert =[id, username, lname, fname, hashedPassword];
+			var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
 
-		conn.query(queryString,toInsert, function(err,result){
-			if(err){
-				console.log(err);
-			}
-		});
-
-		// FOLLOWS TABLE
-		var follows = jsonContent[index]["follows"];
-		var i, j;
-
-		for(i = 0; i < follows.length; i++){
-			var toInsert =[id, follows[i]];
-			var queryString = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
 			conn.query(queryString,toInsert, function(err,result){
-				if(err)
+				if(err){
 					console.log(err);
+				}
 			});
+
+			// FOLLOWS TABLE
+			var follows = jsonContent[index]["follows"];
+			var i, j;
+
+			for(i = 0; i < follows.length; i++){
+				var toInsert =[id, follows[i]];
+				var queryString = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
+				conn.query(queryString,toInsert, function(err,result){
+					if(err)
+						console.log(err);
+				});
+			}
 		}
-	}
-	conn.end();
-	res.redirect('/feed');
+		conn.end();
+		res.redirect('/feed');
 	}
 
 }
