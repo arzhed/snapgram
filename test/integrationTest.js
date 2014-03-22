@@ -22,11 +22,11 @@ describe('Integration testing', function() {
           				assert.equal(browser.statusCode,200);
           				assert.equal(browser.location.pathname,'/photos/new');
           				console.log('DIRNAME '+__dirname)
-          				browser.attach('photoFile', __dirname+'/integrationTest.jpg')
+          				browser.attach('photoFile', __dirname+'/integrationTest.png')
           					.pressButton('uploadButton', function(){
           						assert.equal(browser.statusCode,200)
 	      						assert.equal(browser.location.pathname,'/feed')
-          						assert(browser.html('.imgBox').match(/<img src=\"pictures\/101\/integrationTest\.jpg\" width=\"400\" alt=\"image ici\" \/><\/a><br \/><a href=\"101\"><br \/>prmoreira<\/a><br \/><span class=\"time\">a few seconds ago<\/span>/))
+          						assert(browser.html('.imgBox').match(/<img src=\"pictures\/101\/integrationTest\.png\" width=\"400\" alt=\"image ici\" \/><\/a><br \/><a href=\"101\"><br \/>prmoreira<\/a><br \/><span class=\"time\">a few seconds ago<\/span>/))
 	      						done();
       						})
           			});
