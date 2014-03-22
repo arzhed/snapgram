@@ -7,7 +7,8 @@
 		 user: user,
 		 password: password,
 		 database: database,
-		 connectTimeout: 300000
+		 connectTimeout: 60000,
+		 globalTimeout: 60000
 	 });
 
 	 //db.end();

@@ -44,6 +44,7 @@ app.use(function(error, req, res, next){
 	res.status(500);
 	res.redirect('/internalError');
 });
+app.use(express.bodyParser());
 
 // development only
 if ('development' == app.get('env')) {

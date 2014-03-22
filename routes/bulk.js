@@ -135,14 +135,14 @@ exports.streams = function(req,res){
 			var pathSplit = path.split('/');
 			var filename = pathSplit[pathSplit.length-1];
 			var localPath = 'pictures/' + uid +'/'+filename;
-			var fullPath = __dirname + '/../public/pictures/' + uid +'/'+filename;
+			__dirname + '/../public/pictures/' + uid +'/'+filename;
 			var toInsert =[pid, uid, datetime, localPath];
 			var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,path) VALUES(?,?,?,?)';
 
 			if(!fs.existsSync(__dirname + '/../public/pictures/'+uid)){
 				fs.mkdirSync(__dirname + '/../public/pictures/'+uid);
 			}
-			fs.copy(path, fullPath);
+			fs.copy(path, localPath);
 
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
