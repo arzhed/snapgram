@@ -101,6 +101,7 @@ exports.upload = function(req,res) {
 		var name = req.files.photoFile.headers['content-disposition'].split("=")[2].replace(/"/g, '');
 		var localPath = __dirname + '/../public/pictures/' + req.session.uid +'/'+name;
 		var queryPath = 'pictures/' + req.session.uid +'/'+name;
+
 		if(type=='image/jpeg' || type=='image/png') {
 			var user = req.session.user
 			var toInsert = [user,queryPath];
