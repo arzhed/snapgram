@@ -73,7 +73,7 @@ exports.feed = function(req,res) {
 						feedPhotos += '<div class="imgBox">'
 							+'<a href="' + filePath + '">'
 							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
-							+'<a href="/users/'+pictures[i].uid+'"></br>'
+							+'<a href="'+pictures[i].uid+'"></br>'
 							+pictures[i].username+'</a></br>'
 							+'<span class="time">'+time+'</span>'+'</div>';
 					}
@@ -136,7 +136,7 @@ exports.stream = function(req,res) {
 		var followButton = ''
 
 		if(parseInt(followeeUid)!=req.session.uid) {
-			followButton = '<a href="/users/'+followeeUid;
+			followButton = '<a href="'+followeeUid;
 			var attributes = [req.session.uid,followeeUid]
 			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end';
 			conn.query(unfollowQuery,attributes,function(err,rows){
@@ -173,11 +173,12 @@ exports.stream = function(req,res) {
 				if(!(rows[0].pid === null)){
 					for(var i=0; i<rows.length; i++) {
 						var filePath = rows[i].path;
+						console.log(filePath);
 						var time = getTimeAgo(new Date(), rows[i].time_uploaded);
 						feedPhotos += '<div class="imgBox">'
-									+'<a href="' + filePath + '">'
-									+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
-									+'<a href="/users/'+rows[i].uid+'"></br>'
+									+'<a href="../' + filePath + '">'
+									+'<img src="../' + filePath +'" width = 400 alt="image ici"/></a></br>'
+									+'<a href="'+rows[i].uid+'"></br>'
 									+rows[i].username+'</a></br>'
 									+'<span class="time">'+time+'</span>'+'</div>';
 					}	
