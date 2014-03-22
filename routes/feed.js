@@ -101,8 +101,6 @@ exports.upload = function(req,res) {
 		var name = req.files.photoFile.headers['content-disposition'].split("=")[2].replace(/"/g, '');
 		var localPath = __dirname + '/../public/pictures/' + req.session.uid +'/'+name;
 		var queryPath = 'pictures/' + req.session.uid +'/'+name;
-		console.log(localPath);
-		console.log(queryPath);
 		if(type=='image/jpeg' || type=='image/png') {
 			var user = req.session.user
 			var toInsert = [user,queryPath];
@@ -125,7 +123,6 @@ exports.upload = function(req,res) {
 
 exports.stream = function(req,res) {
 	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0) {
-		console.log('/users/1')
 		res.redirect(302, '/sessions/new');
 	}
 	else {
@@ -160,7 +157,6 @@ exports.stream = function(req,res) {
 							+'FROM photos p RIGHT JOIN user u ON p.uid = u.uid WHERE u.uid=?'
 							+'ORDER BY time_uploaded DESC';
 		conn.query(queryImage,[followeeUid], function(err,rows) {
-			console.log(rows);
 			if(err){
 				console.log(err);
 	  			res.status(500);
@@ -174,7 +170,6 @@ exports.stream = function(req,res) {
 				if(!(rows[0].pid === null)){
 					for(var i=0; i<rows.length; i++) {
 						var filePath = rows[i].path;
-						console.log(filePath);
 						var time = getTimeAgo(new Date(), rows[i].time_uploaded);
 						feedPhotos += '<div class="imgBox">'
 									+'<a href="../' + filePath + '">'
