@@ -1,7 +1,8 @@
 var assert = require("assert")
 var http = require('http')
-//var Browser = require("zombie")
+var Browser = require("zombie")
 //var fs = require('fs')
+var browser = new Browser();
 
 
 describe('/sessions/new', function(){
@@ -76,16 +77,31 @@ describe('/sessions/new', function(){
       req.end()
     })
 
-/*
+
     before(function(){
-      this.browser = new Browser({site :'http://localhost:8250', debug: true })
+      //this.browser = new Browser()
     })
-    it('should return the form to log in', function(done){
-      Browser.visit('http://localhost:8250/feed', { debug: true, runScripts: false }, function(err,browser){
+
+    it('should sign in, be redirected "/feed", then "GET /users" and not be redirected', function(done){
+      browser.visit('http://localhost:8250/sessions/new',  function(err){
         console.log('STATUS '+browser.statusCode)
+        console.log(browser.location)
+        console.log(browser.location.pathname)
+        browser.fill('uname','arzhed')
+          .fill('pwd','arzhed')
+          .pressButton('signinButton',function(){
+            console.log('Button pressed!!')
+            assert.equal(browser.statusCode,200)
+            assert.equal(browser.location.pathname,'/feed')
+            browser.visit('http://localhost:8250/users',  function(){
+              assert.equal(browser.statusCode,200);
+              assert.equal(browser.location.pathname,'/users')
+              done()
+            })
+          })
         //console.log(browser.statusCode)
         //console.log(browser.location)
-
+/*
         fs.writeFile("./logTest", browser.resources.dump(), function(err) {
           if(err) {
               console.log(err);
@@ -93,8 +109,13 @@ describe('/sessions/new', function(){
               console.log("The file was saved!");
           }
         }); 
+
+{ debug: true, runScripts: false },
+
+*/
       })
-    });*/
+    });
+
   });
 });
 
