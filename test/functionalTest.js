@@ -4,15 +4,15 @@ var myconn = require('../routes/dbConnection');
 
 
 describe('Routing', function() {
-	var url = 'http://localhost:8250';
+	//var url = 'http://localhost:8250';
 	// within before() you can run all the operations that are needed to setup your tests. In this case
 	// I want to create a connection with the database, and when I'm done, I call done().
-	before(function(done) {
+	/*before(function(done) {
 		// In our tests we use the test db
 		conn = myconn.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 		done();
 		conn.end();
-	});
+	});*/
 
 	// use describe to give a title to your test suite, in this case the tile is "Account"
 	// and then specify a function in which we are going to declare all the tests
