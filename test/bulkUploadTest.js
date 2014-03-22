@@ -1,8 +1,8 @@
-var assert = require("assert");
+/*var assert = require("assert");
 var http = require('http');
 var fs = require('fs');
 
-/*
+
 //make a function into bulk.js for inserting users into DB
 //test for file existing
 //test for .json extension
@@ -10,10 +10,10 @@ var fs = require('fs');
 //test for error when trying to insert username that already exists
 //test for error when trying to follow a uid that does not exist
 //test for records well inserted into database
-*/
+
 
 describe("Test for Bulk Upload Functionality", function(){
-/*
+
 	it("Passes if database is cleared", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -47,7 +47,7 @@ describe("Test for Bulk Upload Functionality", function(){
 			method: 'POST'
 		};
 
- */
+
 		var req = http.request(options, function(res) {
 			res.setEncoding('utf8');
 			res.on('data', function (chunk) {
@@ -68,7 +68,7 @@ describe("Test for Bulk Upload Functionality", function(){
 		//console.log(req);
 		req.end();
 	});
-/*
+
 	it("Passes if database is updated with stream JSON", function(){
 		var options = {
 			hostname: '127.0.0.1',
@@ -100,3 +100,5 @@ describe("Test for Bulk Upload Functionality", function(){
 	});
 
 });
+
+*/
