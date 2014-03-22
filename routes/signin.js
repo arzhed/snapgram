@@ -40,10 +40,9 @@ exports.signin = function(req, res){
 				res.redirect('/sessions/new');
 				//res.render('index', { title: 'Snapgram', wrongSignIn: 'Wrong password' });
 			}
-
+			conn.end();
 		});
 
-		conn.end();
 	} else {
 		res.redirect(302, '/feed');
 	}

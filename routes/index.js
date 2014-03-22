@@ -49,5 +49,6 @@ exports.formSignIn = function(req,res){
 		else{
 			res.redirect(302, '/feed');
 		}
+		conn.end()
 	})
 };

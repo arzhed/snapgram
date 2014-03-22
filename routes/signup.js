@@ -45,11 +45,11 @@ exports.signup = function(req, res){
 							req.session.sessionId = sessionId;
 				  			res.redirect('/feed');
 		  				}
+		  				connPwd.end();
 		  			});
-		  			connPwd.end();
 		  		}
+		  		conn.end();
 			});
-			conn.end();
 		}
 		else {
 			req.session.errorMessage = 'Missing field';
