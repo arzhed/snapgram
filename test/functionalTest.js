@@ -1,81 +1,186 @@
-var request = require("supertest");
-var should = require('should');
-var myconn = require('../routes/dbConnection');
-
-
-describe('Routing', function() {
-	//var url = 'http://localhost:8250';
-	// within before() you can run all the operations that are needed to setup your tests. In this case
-	// I want to create a connection with the database, and when I'm done, I call done().
-	/*before(function(done) {
-		// In our tests we use the test db
-		conn = myconn.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-		done();
-		conn.end();
-	});*/
-
-	// use describe to give a title to your test suite, in this case the tile is "Account"
-	// and then specify a function in which we are going to declare all the tests
-	// we want to run. Each test starts with the function it() and as a first argument
-	// we have to provide a meaningful title for it, whereas as the second argument we
-	// specify a function that takes a single parameter, "done", that we will use
-	// to specify when our test is completed, and that's what makes easy
-	// to perform async test!
-	describe('Account', function() {
-		it('should return error if trying to save duplicated username', function(done) {
-			var profile = {
-				username:'prmoreira',
-				lname:'Moreira',
-				fname:'Paulo',
-				password:'123456'
-
-			};
-			// once we have specified the info we want to send to the server via POST verb,
-			// we need to actually perform the action on the resource, in this case we want to
-			// POST on /api/profiles and we want to send some info
-			// We do this using the request object, requiring supertest!
-			request(url)
-				.post('./routes/user')
-				.send(profile)
-				// end handles the response
-				.end(function(err, res) {
-					if (err) {
-						throw err;
-					}
-					// this is should.js syntax, very clear
-					res.should.have.status(200);
-					done();
-				});
-		});
+var assert = require("assert")
+var http = require('http')
+var Browser = require("zombie")
+//var fs = require('fs')
 
 
 
-		it('should sign in', function(done) {
-			var profile = {
-				username:'prmoreira',
-				password:'123456',
-			};
-			// once we have specified the info we want to send to the server via POST verb,
-			// we need to actually perform the action on the resource, in this case we want to
-			// POST on /api/profiles and we want to send some info
-			// We do this using the request object, requiring supertest!
-			request(url)
-				.post('./routes/signin')
-				.send(profile)
-				// end handles the response
-				.end(function(err, res) {
-					if (err) {
-						throw err;
-					}
-					// this is should.js syntax, very clear
-					res.should.have.status(302);
-					console.log("yea");
-					done();
-				});
-		});
+describe('/sessions/new', function(){
+  describe('not logged in', function() {
+    it('should redirect from /feed to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/feed',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
+    it('should redirect from /photos/new to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/photos/new',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
+    it('should redirect from /users/1 to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/users/1',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
+    it('should redirect from /users/200/follow to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/users/200/follow',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
+
+    it('should redirect from /users/3000/unfollow to /sessions/new',function(done){
+      var options = {
+        host: 'localhost',
+        port: 8250,
+        path: '/users/3000/unfollow',
+      };
+      var req = http.get(options, function(res) {
+        assert.equal(res.statusCode,302)
+        assert.equal(res.headers.location,'/sessions/new')
+        done()
+      });
+      req.end()
+    })
 
 
+    before(function(){
+      this.browser = new Browser();
+    })
+    it('should sign in (check username/password), be redirected to "/feed", then "GET /users" and not be redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/sessions/new',  function(err){
+        if(err)
+          console.log(err)
+        browser.fill('uname','arzhed')
+          .fill('pwd','arzhed')
+          .pressButton('signinButton',function(err){
+            if(err)
+              console.log(err)
+            assert.equal(browser.statusCode,200)
+            assert.equal(browser.location.pathname,'/feed')
+            browser.visit('http://localhost:8250/users',  function(err){
+              if(err)
+                console.log(err)
+              assert.equal(browser.statusCode,200);
+              assert.equal(browser.location.pathname,'/users')
+              done()
+            })
+          })
+      })
+    });
 
-	});
+    it('cookie stored in Zombie browser : "GET /sessions/new redirected to /feed', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/sessions/new',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/feed')
+        done()
+      })
+    });
 
-})
+    it('cookie stored in Zombie browser : "GET /feed not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/feed',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/feed')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/2" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/2',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/users/2')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/2/follow" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/2/follow',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/users/2')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/2/unfollow" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/2/unfollow',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/users/2')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /photos/new" not redirected', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/photos/new',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,200);
+        assert.equal(browser.location.pathname,'/photos/new')
+        done()
+      })
+    });
+
+    it('cookie stored in Zombie browser : "GET /users/100000" 404', function(done){
+      var browser = this.browser
+      browser.visit('http://localhost:8250/users/100000',  function(err){
+        if(err)
+          console.log(err)
+        assert.equal(browser.statusCode,404);
+        assert.equal(browser.location.pathname,'/notFound')
+        done()
+      })
+    });     
+
+  });
+});
+

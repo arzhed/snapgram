@@ -89,10 +89,12 @@ exports.feed = function(req,res) {
 };
 
 exports.upload = function(req,res) {
+	console.log('upload')
 	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
+		console.log('upload2')
 		mysql = require('mysql');
 		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
@@ -103,9 +105,10 @@ exports.upload = function(req,res) {
 		var queryPath = 'pictures/' + req.session.uid +'/'+name;
 
 		if(type=='image/jpeg' || type=='image/png') {
+			console.log('upload3')
 			var user = req.session.user
-			var toInsert = [user,queryPath];
-			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES((SELECT uid FROM user WHERE username=?),now(),?)'
+			var toInsert = [req.session.uid,queryPath];
+			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES(?,now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
 					console.log(err);
@@ -113,6 +116,7 @@ exports.upload = function(req,res) {
 					res.redirect('/internalError');
 				}
 				else {
+					console.log('upload4')
 					fs.copy(req.files.photoFile.path, localPath);
 				}
 			});

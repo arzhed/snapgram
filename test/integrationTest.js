@@ -1,51 +1,38 @@
 var assert = require("assert");
 var http = require('http');
 var Browser = require("zombie")
-var browser = new Browser();
 
 //RUN TEST WITH:
 //$ mocha --timeout 10000 integrationTest.js
 //Because the test takes in average 2s to run
 
 describe('Integration testing', function() {
-	it('Test a scenario where an user log in, upload picture and visit users page', function(done) {
-
-		// load server and redirect it to new session
-		var options = {
-			host: 'localhost',
-			port: 8250,
-			path: '/sessions/new'
-		};
-		var reqFormSignIn = http.get(options, function(res) {
-			assert.equal(res.statusCode,200);
-			assert.equal(res.location,undefined);
-
-			var uname = "uname: prmoreira";
-			var pwd = "pwd: 123456";
-
-			var optionsLogIn = {
-				host: 'localhost',
-				port: 8250,
-				path: '/sessions/create',
-				method: 'POST',
-				body: "uname=prmoreira,pwd=123456"
-			};
-			browser.visit('http://localhost:8250/sessions/new',  function(err){
-		        browser.fill('uname','prmoreira')
-		          	.fill('pwd','123456')
-		          	.pressButton('signinButton',function(){
-		            	assert.equal(browser.statusCode,200);
-						assert.equal(browser.location.pathname,'/feed');
-						browser.visit('http://localhost:8250/users',  function(){
-              				assert.equal(browser.statusCode,200);
-              				assert.equal(browser.location.pathname,'/users');
-              				done();
-              			});
-					});
-			});
-
+	before(function(){
+      this.browser = new Browser();
+    })
+	it('Test a scenario where a user logs in, upload picture and check that redirected to feed where new picture is displayed', function(done) {
+		var browser = this.browser;
+		browser.visit('http://localhost:8250/sessions/new',  function(err){
+	        browser.fill('uname','prmoreira')
+	          	.fill('pwd','123456')
+	          	.pressButton('signinButton',function(){
+	            	assert.equal(browser.statusCode,200);
+					assert.equal(browser.location.pathname,'/feed');
+					browser.visit('http://localhost:8250/photos/new',  function(){
+          				assert.equal(browser.statusCode,200);
+          				assert.equal(browser.location.pathname,'/photos/new');
+          				console.log('DIRNAME '+__dirname)
+          				browser.attach('photoFile', __dirname+'/integrationTest.jpg')
+          					.pressButton('uploadButton', function(){
+          						assert.equal(browser.statusCode,200)
+	      						assert.equal(browser.location.pathname,'/feed')
+          						assert(browser.html('.imgBox').match(/<img src=\"pictures\/101\/integrationTest\.jpg\" width=\"400\" alt=\"image ici\" \/><\/a><br \/><a href=\"101\"><br \/>prmoreira<\/a><br \/><span class=\"time\">a few seconds ago<\/span>/))
+	      						done();
+      						})
+          			});
+				});
 		});
-		reqFormSignIn.end()
+
 	});
 
 })
