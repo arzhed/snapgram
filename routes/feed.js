@@ -29,7 +29,7 @@ exports.getTimeAgo = getTimeAgo;
 
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 	var uid = req.session.uid;
 	var pwd = req.session.pwd;
 
@@ -94,7 +94,7 @@ exports.upload = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
 		var type = req.files.photoFile.headers['content-type'];
@@ -112,7 +112,7 @@ exports.upload = function(req,res) {
 		  			res.status(500);
 					res.redirect('/internalError');
 				}
-				else {
+				else {	
 					fs.copy(req.files.photoFile.path, localPath);
 				}
 			});
@@ -128,7 +128,7 @@ exports.stream = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 		var parsed = req.url.split('/');
 		var followeeUid = parsed[parsed.length-1];

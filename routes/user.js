@@ -7,7 +7,7 @@ exports.list = function(req, res){
 	}
 	else {
 		mysql = require('mysql');
-	  var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	  var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 
 		var queryImage = 'SELECT username, uid FROM user';
@@ -37,7 +37,7 @@ exports.follow = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]
@@ -62,7 +62,7 @@ exports.unfollow = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]

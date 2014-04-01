@@ -15,7 +15,7 @@ exports.clear = function(req,res){
 
 	mysql = require('mysql');
 
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 	//truncate all tables
 	var queryString1 = 'TRUNCATE TABLE s513_apsbanva.user';
@@ -52,7 +52,7 @@ exports.users = function(req,res){
 
 	mysql = require('mysql');
 
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 	var type = req.headers['content-type'];
 	if (type=='application/json'){
@@ -110,7 +110,7 @@ exports.streams = function(req,res){
 
 	mysql = require('mysql');
 
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 	var type = req.headers['content-type'];
 
