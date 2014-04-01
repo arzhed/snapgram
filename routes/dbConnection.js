@@ -7,38 +7,15 @@
 		 user: user,
 		 password: password,
 		 database: database,
-		 connectTimeout: 15,
-		 globalTimeout: 15
+		 connectTimeout: 300000,
+		 globalTimeout: 300000
 	 });
 
-	 //db.end();
 	 db.connect(function(err){
-	 	/*if(err){
-	 		if(err.code === 'ENOTFOUND'){
-	 			callback('Wrong Host');
-	 		} else{
-	 			throw err;
-	 		}
-	 	} else if(err === null) {
-	 		callback(db);
-	 	}*/
-	 	/*if(err){
-	 		
-	 		console.log(err);
-	 		throw err;
-	 	}*/
+
 	 });
 	 return db;
 };
 
-/*var conn = mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-console.log(conn);*/
-
-/*mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva',function(returnVal){
-	console.log(returnVal);
-	return;
-});*/
-
-var dbconnection = mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
  exports.mySqlConnection = mySqlConnection;
