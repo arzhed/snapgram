@@ -8,6 +8,8 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
+var access_logfile = fs.createWriteStream('./access.log', {flags: 'a'});
 
 var signin = require('./routes/signin');
 var signup = require('./routes/signup');
@@ -26,7 +28,8 @@ app.set('port', process.env.PORT || 8250);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
-app.use(express.logger('dev'));
+app.use(express.logger('short'));
+app.use(express.logger({stream: access_logfile }));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.multipart());
@@ -35,6 +38,10 @@ app.use(express.cookieParser('S3CRE7'));
 app.use(express.cookieSession({ path: '/', httpOnly: true, maxAge: 3600000 }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+/*app.use(function(req, res, next){
+  console.log('%s %s', req.method, req.url);
+  next();
+});*/
 app.use(function(req, res){
 	res.status(404);
 	res.redirect('/notFound');

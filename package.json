@@ -13,6 +13,7 @@
     "moment":"*",
     "mysql":"*",
     "password-hash":"*",
-    "zombie":"*"
+    "zombie":"*",
+    "forever":"*"
   }
 }
