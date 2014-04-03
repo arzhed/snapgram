@@ -2,15 +2,15 @@ var sessions = require('./sessionIds');
 var dbconnection = require('./dbConnection');
 
 exports.signup = function(req, res){
-	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0){
+	if (sessions.sessionIds.indexOf(req.cookies.sid) < 0){
 		var passwordHash = require('password-hash');
 		var fs = require('fs')
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 		var fname = req.body.fname;
 		var lname = req.body.lname;
-		var user = req.body.uname;
-		var password = req.body.pwd;
+		var user = req.body.username;
+		var password = req.body.password;
 		var hashedPassword = passwordHash.generate(password);
 
 		if(fname && lname && user && password) {
@@ -28,7 +28,7 @@ exports.signup = function(req, res){
 		  			}
 		  		}
 		  		else {
-					var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+					var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 						//if(typeof(conn) != 'string'){
 		  			connPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
 		  				if (err) {
@@ -37,12 +37,12 @@ exports.signup = function(req, res){
 							res.redirect('/internalError');
 		  				} else {
 				  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
-							req.session.user = user;
-		  					req.session.uid = result.insertId;
-		  					req.session.pwd = hashedPassword;
 		  					var sessionId = Math.round(Math.random()*10000);
 							sessions.sessionIds.push(sessionId);
-							req.session.sessionId = sessionId;
+							res.cookie('sid', sessionId);
+							res.cookie('user', user);//, { maxAge: 3600000 });
+							res.cookie('uid', rows[0].uid);//, { maxAge: 3600000 });
+							res.cookie('pwd', rows[0].pwd);//, { maxAge: 3600000 });
 				  			res.redirect('/feed');
 		  				}
 		  				connPwd.end();

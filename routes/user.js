@@ -2,12 +2,12 @@ var sessions = require('./sessionIds');
 var dbconnection = require('./dbConnection');
 
 exports.list = function(req, res){
-  if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
+  if (!(sessions.sessionIds.indexOf(req.cookies.sid) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
-	  var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	  var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 
 
 		var queryImage = 'SELECT username, uid FROM user';
@@ -32,18 +32,18 @@ exports.list = function(req, res){
 }
 
 exports.follow = function(req,res) {
-	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
+	if (!(sessions.sessionIds.indexOf(req.cookies.sid) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]
 
 		var insertFollow = 'INSERT INTO follows(follower,followee,start) VALUES(?,?,now())';
-		var usersId = [req.session.uid,followeeId]
+		var usersId = [req.cookies.uid,followeeId]
 		conn.query(insertFollow, usersId, function(err,rows) {
 			if (err) {
 				console.log(err);
@@ -57,18 +57,18 @@ exports.follow = function(req,res) {
 }
 
 exports.unfollow = function(req,res) {
-	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
+	if (!(sessions.sessionIds.indexOf(req.cookies.sid) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]
 
 		var insertUnfollowTime = 'UPDATE follows SET end=now() WHERE follower=? AND followee=? ';
-		var usersId = [req.session.uid,followeeId]
+		var usersId = [req.cookies.uid,followeeId]
 		conn.query(insertUnfollowTime, usersId, function(err,rows) {		
 			if (err) {
 				console.log(err);

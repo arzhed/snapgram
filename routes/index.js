@@ -5,7 +5,7 @@ var dbconnection = require('./dbConnection');
  */
 
 exports.index = function(req, res){
-	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0){
+	if (sessions.sessionIds.indexOf(req.cookies.sid) < 0){
 		//res.writeHead(200);
 		res.render('index', {title: 'SNAPGRAM'});
 	}
@@ -15,7 +15,7 @@ exports.index = function(req, res){
 };
 
 exports.formSignUp = function(req,res){
-	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0){
+	if (sessions.sessionIds.indexOf(req.cookies.sid) < 0){
 		var errorMsg = req.session.errorMessage;
 		delete req.session.errorMessage;
 		res.render('signup', {title: 'SNAPGRAM', wrongSignUp: errorMsg });
@@ -27,10 +27,10 @@ exports.formSignUp = function(req,res){
 
 exports.formSignIn = function(req,res){
 	var mysql = require('mysql');
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 
-	var uid = req.session.uid;
-	var pwd = req.session.pwd;
+	var uid = req.cookies.uid;
+	var pwd = req.cookies.pwd;
 
 	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?',[uid,pwd], function(err,result) {
 		if(err){
@@ -38,12 +38,9 @@ exports.formSignIn = function(req,res){
   			res.status(500);
 			res.redirect('/internalError');
 		}
-		else if (sessions.sessionIds.indexOf(req.session.sessionId)< 0 || result.length < 1){
+		else if (sessions.sessionIds.indexOf(req.cookies.sid)< 0 || result.length < 1){
 			var errorMsg = req.session.errorMessage;
 			delete req.session.errorMessage;
-			//res.set('Status','200');
-			//res.writeHead(200);
-			
 			res.render('signin', {title: 'SNAPGRAM', wrongSignIn: errorMsg });
 		}
 		else{

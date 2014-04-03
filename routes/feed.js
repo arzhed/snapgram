@@ -29,9 +29,9 @@ exports.getTimeAgo = getTimeAgo;
 
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-	var uid = req.session.uid;
-	var pwd = req.session.pwd;
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
+	var uid = req.cookies.uid;
+	var pwd = req.cookies.pwd;
 
 	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
 		if(err){
@@ -39,7 +39,7 @@ exports.feed = function(req,res) {
   			res.status(500);
 			res.redirect('/internalError');
 		}
-		else if (sessions.sessionIds.indexOf(req.session.sessionId) < 0 || result.length < 1 ){
+		else if (sessions.sessionIds.indexOf(req.cookies.sid) < 0 || result.length < 1 ){
 			res.redirect(302,'/sessions/new');
 		}
 		else {
@@ -59,7 +59,7 @@ exports.feed = function(req,res) {
 				+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
 				+'ORDER BY time_uploaded DESC '
 				+'LIMIT 0,?';
-			conn.query(queryImage,[req.session.uid, req.session.uid, limit], function(err,pictures) {
+			conn.query(queryImage,[req.cookies.uid, req.cookies.uid, limit], function(err,pictures) {
 				if(err){
 					console.log(err);
 		  			res.status(500);
@@ -79,7 +79,7 @@ exports.feed = function(req,res) {
 					}
 					var page = limit/30+1
 					feedPhotos += '<br><a href="/feed?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>'
-					res.render('feed', { title: 'SNAPGRAM', name: req.session.user, html : feedPhotos});
+					res.render('feed', { title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos});
 				}
 			});
 		}
@@ -89,22 +89,26 @@ exports.feed = function(req,res) {
 };
 
 exports.upload = function(req,res) {
-	if (!(sessions.sessionIds.indexOf(req.session.sessionId) > -1)) {
+	if (!(sessions.sessionIds.indexOf(req.cookies.sid) > -1)) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
-
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
+		console.log('1');
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
+		console.log('2');
 		var type = req.files.photoFile.headers['content-type'];
+		console.log('3');
 		var name = req.files.photoFile.headers['content-disposition'].split("=")[2].replace(/"/g, '');
-		var localPath = __dirname + '/../public/pictures/' + req.session.uid +'/'+name;
-		var queryPath = 'pictures/' + req.session.uid +'/'+name;
-
+		console.log('4');
+		var localPath = __dirname + '/../public/pictures/' + req.cookies.uid +'/'+name;
+		console.log('5');
+		var queryPath = 'pictures/' + req.cookies.uid +'/'+name;
+		console.log('6');
 		if(type=='image/jpeg' || type=='image/png') {
-			var user = req.session.user
-			var toInsert = [req.session.uid,queryPath];
+			var user = req.cookies.user
+			var toInsert = [req.cookies.uid,queryPath];
 			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES(?,now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
 				if(err){
@@ -123,20 +127,20 @@ exports.upload = function(req,res) {
 }
 
 exports.stream = function(req,res) {
-	if (sessions.sessionIds.indexOf(req.session.sessionId) < 0) {
+	if (sessions.sessionIds.indexOf(req.cookies.sid) < 0) {
 		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 
 		var parsed = req.url.split('/');
 		var followeeUid = parsed[parsed.length-1];
 		var followButton = ''
 
-		if(parseInt(followeeUid)!=req.session.uid) {
+		if(parseInt(followeeUid)!=req.cookies.uid) {
 			followButton = '<a href="'+followeeUid;
-			var attributes = [req.session.uid,followeeUid]
+			var attributes = [req.cookies.uid,followeeUid]
 			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end';
 			conn.query(unfollowQuery,attributes,function(err,rows){
 				if(err){
@@ -180,7 +184,7 @@ exports.stream = function(req,res) {
 									+'<span class="time">'+time+'</span>'+'</div>';
 					}	
 				}
-				res.render('feed', {title: 'SNAPGRAM', name: req.session.user, html : feedPhotos, follow:followButton});
+				res.render('feed', {title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos, follow:followButton});
 			}
 		});
 		conn.end();

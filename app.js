@@ -24,7 +24,7 @@ var upload = require('./routes/upload');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 8250);
+app.set('port', process.env.PORT || 8254);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
