@@ -29,8 +29,8 @@ body
 					form.form-signin(action='/sessions/create', method='post', id='childWidth')
 						h2.form-signin-heading Sign in
 						p.wrong= wrongSignIn
-						input.input-block-level(type='text', placeholder='Username' name='uname')
-						input.input-block-level(type='password', placeholder='Password' name='pwd')
+						input.input-block-level(type='text', placeholder='Username' name='username')
+						input.input-block-level(type='password', placeholder='Password' name='password')
 						- var btnClass = ['btn', 'btn-large', 'btn-primary', 'btn-block']
 						button(class=btnClass, type='submit' name='signinButton') Sign in
 				div.center-block
