@@ -90,6 +90,7 @@ exports.feed = function(req,res) {
 
 exports.upload = function(req,res) {
 	if (!(sessions.sessionIds.indexOf(req.cookies.sid) > -1)) {
+		console.log('not logged in');
 		res.redirect(302, '/sessions/new');
 	}
 	else {
@@ -99,9 +100,9 @@ exports.upload = function(req,res) {
 		console.log('1');
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
 		console.log('2');
-		var type = req.files.photoFile.headers['content-type'];
+		var type = req.files.image.headers['content-type'];
 		console.log('3');
-		var name = req.files.photoFile.headers['content-disposition'].split("=")[2].replace(/"/g, '');
+		var name = req.files.image.headers['content-disposition'].split("=")[2].replace(/"/g, '');
 		console.log('4');
 		var localPath = __dirname + '/../public/pictures/' + req.cookies.uid +'/'+name;
 		console.log('5');
@@ -118,12 +119,13 @@ exports.upload = function(req,res) {
 					res.redirect('/internalError');
 				}
 				else {	
-					fs.copy(req.files.photoFile.path, localPath);
+					fs.copy(req.files.image.path, localPath);
+					conn.end();
+					res.redirect(303,'/feed');
 				}
 			});
 		}
-		conn.end();
-		res.redirect('/feed');
+		
 	}
 }
 
