@@ -7,7 +7,7 @@ exports.signin = function(req, res){
 		var passwordHash = require('password-hash');
 
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 		var user = req.body.uname;
 		var password = req.body.pwd;
