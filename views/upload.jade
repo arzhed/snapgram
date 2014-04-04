@@ -6,7 +6,7 @@ body
 					div#uploadDiv
 						form(action="/photos/create", method="post", enctype="multipart/form-data")
 							p.wrong= wrongFile
-							input(id='uploadInput',type='file', name='photoFile')
+							input(id='uploadInput',type='file', name='image')
 							- var btnClass = ['btn', 'btn-large', 'btn-primary']
 							br
 							button(class=btnClass, type='submit', name='uploadButton') Upload

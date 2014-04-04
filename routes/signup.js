@@ -6,7 +6,9 @@ exports.signup = function(req, res){
 		var passwordHash = require('password-hash');
 		var fs = require('fs')
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
+
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
+
 		var fname = req.body.fname;
 		var lname = req.body.lname;
 		var user = req.body.username;
@@ -28,7 +30,9 @@ exports.signup = function(req, res){
 		  			}
 		  		}
 		  		else {
-					var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
+
+					var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
+
 						//if(typeof(conn) != 'string'){
 		  			connPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
 		  				if (err) {

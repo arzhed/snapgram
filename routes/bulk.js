@@ -12,13 +12,13 @@ exports.bulk = function(req, res){
 };
 
 exports.clear = function(req,res){
-	connectionDB = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	connectionDB = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 	mysql = require('mysql');
 
 	//truncate all tables
-	var queryString1 = 'TRUNCATE TABLE s513_apsbanva.user';
-	var queryString2 = 'TRUNCATE TABLE s513_apsbanva.follows';
-	var queryString3 = 'TRUNCATE TABLE s513_apsbanva.photos';
+	var queryString1 = 'TRUNCATE TABLE s513_simona.user';
+	var queryString2 = 'TRUNCATE TABLE s513_simona.follows';
+	var queryString3 = 'TRUNCATE TABLE s513_simona.photos';
 
 	connectionDB.query(queryString1, function(err,result){
 		if(err){
@@ -48,7 +48,6 @@ exports.clear = function(req,res){
 		}
 	});
 
-	res.send(200, 'DB cleared')
 }
 
 exports.users = function(req,res){
@@ -60,7 +59,6 @@ exports.users = function(req,res){
 		var passwordHash = require('password-hash');
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
 
-		var flagJsonScanned = false;
 		for(var index2 = 0; index2 < jsonContent.length; index2++){
 			(function(index){
 				// USER TABLE		
@@ -124,7 +122,6 @@ exports.streams = function(req,res){
 		var moment = require('moment');
 
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
 		for(var index2 = 0; index2 < jsonContent.length; index2++){
 			(function(index) {

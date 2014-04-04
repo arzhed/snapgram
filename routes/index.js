@@ -27,7 +27,7 @@ exports.formSignUp = function(req,res){
 
 exports.formSignIn = function(req,res){
 	var mysql = require('mysql');
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 	var uid = req.cookies.uid;
 	var pwd = req.cookies.pwd;

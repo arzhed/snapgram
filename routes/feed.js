@@ -29,7 +29,7 @@ exports.getTimeAgo = getTimeAgo;
 
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 	var uid = req.cookies.uid;
 	var pwd = req.cookies.pwd;
 	var siduid = req.cookies.sid.split(':')[1];
@@ -98,14 +98,15 @@ exports.feed = function(req,res) {
 
 exports.upload = function(req,res) {
 	if (!(sessions.sessionIds.indexOf(req.cookies.sid) > -1)) {
+		console.log('not logged in');
 		res.redirect(302, '/sessions/new');
 	}
 	else {
 		mysql = require('mysql');
 		gm = require('gm');
 
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 		var uidForUploading = req.cookies.sid.split(':')[1];
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
 
@@ -115,6 +116,7 @@ exports.upload = function(req,res) {
 		var localPath = __dirname + '/../public/photos/' + uidForUploading +'/'+name;
 		var thumbPath = __dirname + '/../public/photos/thumbnail/' + uidForUploading +'/'+name;
 		var queryPath = 'photos/' + uidForUploading +'/'+name;
+
 		if(type=='image/jpeg' || type=='image/png') {
 			//var user = req.cookies.user
 			var toInsert = [uidForUploading,queryPath];
@@ -153,7 +155,7 @@ exports.stream = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 		var parsed = req.url.split('/');
 		var followeeUid = parsed[parsed.length-1];
 		var followButton = ''
