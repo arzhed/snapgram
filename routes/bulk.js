@@ -12,15 +12,13 @@ exports.bulk = function(req, res){
 };
 
 exports.clear = function(req,res){
-	connectionDB = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
+	connectionDB = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 	mysql = require('mysql');
 
-	//var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
-
 	//truncate all tables
-	var queryString1 = 'TRUNCATE TABLE s513_rbesson.user';
-	var queryString2 = 'TRUNCATE TABLE s513_rbesson.follows';
-	var queryString3 = 'TRUNCATE TABLE s513_rbesson.photos';
+	var queryString1 = 'TRUNCATE TABLE s513_apsbanva.user';
+	var queryString2 = 'TRUNCATE TABLE s513_apsbanva.follows';
+	var queryString3 = 'TRUNCATE TABLE s513_apsbanva.photos';
 
 	connectionDB.query(queryString1, function(err,result){
 		if(err){
@@ -49,74 +47,74 @@ exports.clear = function(req,res){
 			});
 		}
 	});
+
+	res.send(200, 'DB cleared')
 }
 
 exports.users = function(req,res){
 	mysql = require('mysql');
 
-	//var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
-
 	var type = req.headers['content-type'];
 	if (type=='application/json'){
 		var fs = require('fs-extra');
 		var passwordHash = require('password-hash');
-
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
 
-		var index;
+		var flagJsonScanned = false;
+		for(var index2 = 0; index2 < jsonContent.length; index2++){
+			(function(index){
+				// USER TABLE		
+				var uid = jsonContent[index]["id"];
+				var username = jsonContent[index]["name"];
+				var fname = jsonContent[index]["name"];
+				var lname = jsonContent[index]["name"];
+				var follows = jsonContent[index]["follows"];
 
-		for(index = 0; index < jsonContent.length; index++){
+				var password = jsonContent[index]["password"];
+				var hashedPassword = passwordHash.generate(password);
 
-			// USER TABLE
-			var id = jsonContent[index]["id"];
-			var username = jsonContent[index]["name"];
-			var fname = jsonContent[index]["name"];
-			var lname = jsonContent[index]["name"];
+				var toInsert =[uid, username, lname, fname, hashedPassword];
+				var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
 
-			var password = jsonContent[index]["password"];
-			var hashedPassword = passwordHash.generate(password);
+				if(!fs.existsSync(__dirname + '/../public/photos/'+uid)){
+					fs.mkdirSync(__dirname + '/../public/photos/'+uid);
+				}
 
-			var toInsert =[id, username, lname, fname, hashedPassword];
-			var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
+				if(!fs.existsSync(__dirname + '/../public/photos/thumbnail/'+uid)){
+					fs.mkdirSync(__dirname + '/../public/photos/thumbnail/'+uid);
+				}
 
-			if(!fs.existsSync(__dirname + '/../public/pictures/'+id)){
-				fs.mkdirSync(__dirname + '/../public/pictures/'+id);
-			}
-			//console.log("INSERT INTO user(uid,username,lname,fname,pwd) VALUES(" + id + ",'" + username + "','" + lname + "','" + fname + "','" + hashedPassword + "'");
-			connectionDB.query(queryString,toInsert, function(err,result, fields){
-				//console.log('inserted: ' + result.insertId);
-				if(err){
-					console.log('USERS : ' + err);
-				} else{
-					var insertId = result.insertId;
-					var follows = jsonContent[insertId - 1]["follows"];
-					var i;
-					for(i = 0; i < follows.length; i++){
-						var queryString = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
-						var toInsert =[insertId, follows[i]];
-						connectionDB.query(queryString,toInsert, function(err,rows, fields){
-							if(err){
-								console.log('FOLLOWS : ' + err);
-							}
-							else{
-								if(insertId === 100){
+				connectionDB.query(queryString,toInsert, function(err,result){
+					if(err)
+						console.log(err);
+					console.log('index '+index)
+
+					// FOLLOWS TABLE
+					for(var j = 0; j < follows.length; j++){
+						(function (i,followsLength, flag) {
+							var toInsert2 =[uid, follows[i]];
+							var queryString2 = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
+							connectionDB.query(queryString2,toInsert2, function(err,result){
+								if(err)
+									console.log(err);
+								console.log('follows.length (index) '+followsLength)
+								console.log('i '+i)
+								if(index == jsonContent.length - 1 && i== followsLength - 1) {
+									console.log('END of ENDS !!!')
 									res.send(200,"users upload successful");
 								}
-							}
-						});
-					}
-				}
-			});
+							});
+						}(j, follows.length,flagJsonScanned));
+					};
+				});	
+			}(index2))
 		}
-		console.log('upload users successful');
 	}
 }
 
 exports.streams = function(req,res){
 	//console.log(connectionDB);
 	mysql = require('mysql');
-
-	//var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_rbesson','10141389','s513_rbesson');
 
 	var type = req.headers['content-type'];
 
@@ -126,42 +124,40 @@ exports.streams = function(req,res){
 		var moment = require('moment');
 
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_apsbanva','10037085','s513_apsbanva');
 
-		var index;
+		for(var index2 = 0; index2 < jsonContent.length; index2++){
+			(function(index) {
+					// USER TABLE
+					var pid = jsonContent[index]["id"];
+					var uid = jsonContent[index]["user_id"];
+					var path = jsonContent[index]["path"];
+					var timestamp = jsonContent[index]["timestamp"];
+					var datetime = moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
 
-		for(index = 0; index < jsonContent.length; index++){
+					var pathSplit = path.split('/');
+					var filename = pathSplit[pathSplit.length-1];
+					var localPath = 'photos/' + uid +'/'+filename;
+					__dirname + '/../public/photos/' + uid +'/'+filename;
+					var toInsert =[pid, uid, datetime, localPath];
+					var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,path) VALUES(?,?,?,?)';
 
-			// USER TABLE
-			var pid = jsonContent[index]["id"];
-			pid += 1;
-			var uid = jsonContent[index]["user_id"];
-			var path = jsonContent[index]["path"];
-			var timestamp = jsonContent[index]["timestamp"];
-			var datetime = moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
-
-			var pathSplit = path.split('/');
-			var filename = pathSplit[pathSplit.length-1];
-			var localPath = 'pictures/' + uid +'/'+filename;
-			__dirname + '/../public/pictures/' + uid +'/'+filename;
-			var toInsert =[pid, uid, datetime, localPath];
-			var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,path) VALUES(?,?,?,?)';
-			if(!fs.existsSync(__dirname + '/../public/pictures/'+uid)){
-				fs.mkdirSync(__dirname + '/../public/pictures/'+uid);
-			}
-			fs.copy(path, localPath);
-			//console.log('id: ' + pid + ' uid : '+ uid + ' date: ' + datetime + ' localPath : ' + localPath);
-			connectionDB.query(queryString,toInsert, function(err,result){
-				if(err){
-					console.log('PHOTOS : ' + err);
-				} else {
-					if(result.insertId === 500){
-						res.send(200,"upload streams successful");
-						console.log('upload streams successful');
+					if(!fs.existsSync(__dirname + '/../public/photos/'+uid)){
+						fs.mkdirSync(__dirname + '/../public/photos/'+uid);
 					}
-				}
-			});
-
+					//fs.copy(path, localPath);
+					
+					connectionDB.query(queryString,toInsert, function(err,result){
+						if(err){
+							console.log(err);
+						}
+						if(index == jsonContent.length - 1) {
+							res.send(200,"upload streams successful");
+							console.log('upload streams successful');
+							connectionDB.end();
+						}
+					})
+			}(index2));
 		}
-		connectionDB.end();
 	}
 }
