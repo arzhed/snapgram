@@ -78,12 +78,12 @@ exports.feed = function(req,res) {
 							+'<span class="time">'+time+'</span>'+'</div>';
 					}
 					var page = limit/30+1
-					feedPhotos += '<br><a href="/feed?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>'
+					feedPhotos += '<br><a href="/feed?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>';
+					conn.end();
 					res.render('feed', { title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos});
 				}
 			});
 		}
-		conn.end();
 	});
 	
 };
@@ -109,10 +109,12 @@ exports.upload = function(req,res) {
 		var queryPath = 'pictures/' + req.cookies.uid +'/'+name;
 		console.log('6');
 		if(type=='image/jpeg' || type=='image/png') {
+			console.log('7');
 			var user = req.cookies.user
 			var toInsert = [req.cookies.uid,queryPath];
 			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES(?,now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
+				console.log('8');
 				if(err){
 					console.log(err);
 		  			res.status(500);
@@ -120,9 +122,9 @@ exports.upload = function(req,res) {
 				}
 				else {	
 					fs.copy(req.files.image.path, localPath);
-					conn.end();
 					res.redirect(303,'/feed');
 				}
+				conn.end();
 			});
 		}
 		
