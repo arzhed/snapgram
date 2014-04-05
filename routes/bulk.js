@@ -89,7 +89,7 @@ exports.users = function(req,res){
 
 					// FOLLOWS TABLE
 					for(var j = 0; j < follows.length; j++){
-						(function (i,followsLength, flag) {
+						(function (i,followsLength) {
 							var toInsert2 =[uid, follows[i]];
 							var queryString2 = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
 							connectionDB.query(queryString2,toInsert2, function(err,result){
@@ -102,7 +102,7 @@ exports.users = function(req,res){
 									res.send(200,"users upload successful");
 								}
 							});
-						}(j, follows.length,flagJsonScanned));
+						}(j, follows.length));
 					};
 				});	
 			}(index2))
