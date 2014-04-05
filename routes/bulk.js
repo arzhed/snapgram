@@ -48,7 +48,6 @@ exports.clear = function(req,res){
 		}
 	});
 
-	res.send(200, 'DB cleared')
 }
 
 exports.users = function(req,res){
@@ -60,7 +59,6 @@ exports.users = function(req,res){
 		var passwordHash = require('password-hash');
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
 
-		var flagJsonScanned = false;
 		for(var index2 = 0; index2 < jsonContent.length; index2++){
 			(function(index){
 				// USER TABLE		
@@ -76,8 +74,12 @@ exports.users = function(req,res){
 				var toInsert =[uid, username, lname, fname, hashedPassword];
 				var queryString = 'INSERT INTO user(uid,username,lname,fname,pwd) VALUES(?,?,?,?,?)';
 
-				if(!fs.existsSync(__dirname + '/../public/pictures/'+uid)){
-					fs.mkdirSync(__dirname + '/../public/pictures/'+uid);
+				if(!fs.existsSync(__dirname + '/../public/photos/'+uid)){
+					fs.mkdirSync(__dirname + '/../public/photos/'+uid);
+				}
+
+				if(!fs.existsSync(__dirname + '/../public/photos/thumbnail/'+uid)){
+					fs.mkdirSync(__dirname + '/../public/photos/thumbnail/'+uid);
 				}
 
 				connectionDB.query(queryString,toInsert, function(err,result){
@@ -120,7 +122,6 @@ exports.streams = function(req,res){
 		var moment = require('moment');
 
 		var jsonContent = JSON.parse(JSON.stringify(req.body));
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 
 		for(var index2 = 0; index2 < jsonContent.length; index2++){
 			(function(index) {
@@ -133,13 +134,13 @@ exports.streams = function(req,res){
 
 					var pathSplit = path.split('/');
 					var filename = pathSplit[pathSplit.length-1];
-					var localPath = 'pictures/' + uid +'/'+filename;
-					__dirname + '/../public/pictures/' + uid +'/'+filename;
+					var localPath = 'photos/' + uid +'/'+filename;
+					__dirname + '/../public/photos/' + uid +'/'+filename;
 					var toInsert =[pid, uid, datetime, localPath];
 					var queryString = 'INSERT INTO photos(pid,uid,time_uploaded,path) VALUES(?,?,?,?)';
 
-					if(!fs.existsSync(__dirname + '/../public/pictures/'+uid)){
-						fs.mkdirSync(__dirname + '/../public/pictures/'+uid);
+					if(!fs.existsSync(__dirname + '/../public/photos/'+uid)){
+						fs.mkdirSync(__dirname + '/../public/photos/'+uid);
 					}
 					//fs.copy(path, localPath);
 					

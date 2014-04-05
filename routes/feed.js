@@ -32,23 +32,28 @@ exports.feed = function(req,res) {
 	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
 	var uid = req.cookies.uid;
 	var pwd = req.cookies.pwd;
+	var siduid = req.cookies.sid.split(':')[1];
+	uid = siduid;
 
-	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?', [uid,pwd], function(err,result) {
+	conn.query('SELECT uid FROM user WHERE uid=?', [siduid], function(err,result) {
+
 		if(err){
 			console.log(err);
-  			res.status(500);
+			res.status(500);
 			res.redirect('/internalError');
 		}
 		else if (sessions.sessionIds.indexOf(req.cookies.sid) < 0 || result.length < 1 ){
 			res.redirect(302,'/sessions/new');
 		}
 		else {
+			console.log(siduid);
+			var limit
 			var url = require('url')
 			var urlc = url.parse(req.url)
 			if(urlc.query)
-				var limit = parseInt(urlc.query.split('=')[1]*30);
+				limit = parseInt(urlc.query.split('=')[1]*30);
 			else
-				var limit = 30
+				limit = 30
 
 			var queryImage = 'SELECT DISTINCT p.path, p.uid, p.time_uploaded, u.username FROM follows f '
 				+'JOIN photos p ON f.followee = p.uid JOIN user u ON u.uid = f.followee '
@@ -59,25 +64,29 @@ exports.feed = function(req,res) {
 				+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
 				+'ORDER BY time_uploaded DESC '
 				+'LIMIT 0,?';
-			conn.query(queryImage,[req.cookies.uid, req.cookies.uid, limit], function(err,pictures) {
+			conn.query(queryImage,[uid, uid, limit], function(err,photos) {
 				if(err){
 					console.log(err);
-		  			res.status(500);
+					res.status(500);
 					res.redirect('/internalError');
 				}
-				else {					
+				else {
 					var feedPhotos = '';
-					for(var i=0;i<pictures.length;i++) {						
-						var filePath = pictures[i].path;
-						var time = getTimeAgo(new Date(), pictures[i].time_uploaded)				
-						feedPhotos += '<div class="imgBox">'
-							+'<a href="' + filePath + '">'
-							+'<img src="' + filePath +'" width = 400 alt="image ici"/></a></br>'
-							+'<a href="'+pictures[i].uid+'"></br>'
-							+pictures[i].username+'</a></br>'
-							+'<span class="time">'+time+'</span>'+'</div>';
+					for(var i=0;i<photos.length;i++) {
+						if(!(photos[i].pid === null)){
+							var filePath = photos[i].path;
+							var thumbPath = filePath.replace('photos', 'photos/thumbnail')
+							var time = getTimeAgo(new Date(), photos[i].time_uploaded)
+							feedPhotos += '<div class="imgBox">'
+								+'<a href="/' + filePath + '">'
+								+'<img src = "/' + thumbPath +'" width = 400 alt="image ici"/></a></br>'
+								+'<a href="/users/'+photos[i].uid+'"></br>'
+								+photos[i].username+i+'</a></br>'
+								+'<span class="time">'+time+'</span>'+'</div>';
+						}
 					}
 					var page = limit/30+1
+
 					feedPhotos += '<br><a href="/feed?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>';
 					conn.end();
 					res.render('feed', { title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos});
@@ -85,7 +94,7 @@ exports.feed = function(req,res) {
 			});
 		}
 	});
-	
+
 };
 
 exports.upload = function(req,res) {
@@ -95,23 +104,23 @@ exports.upload = function(req,res) {
 	}
 	else {
 		mysql = require('mysql');
-		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
+		gm = require('gm');
 
-		console.log('1');
+
+		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
+		var uidForUploading = req.cookies.sid.split(':')[1];
 		var fs= require('fs-extra') //FIRST: $npm install fs-extra
-		console.log('2');
+
 		var type = req.files.image.headers['content-type'];
-		console.log('3');
 		var name = req.files.image.headers['content-disposition'].split("=")[2].replace(/"/g, '');
-		console.log('4');
-		var localPath = __dirname + '/../public/pictures/' + req.cookies.uid +'/'+name;
-		console.log('5');
-		var queryPath = 'pictures/' + req.cookies.uid +'/'+name;
-		console.log('6');
+
+		var localPath = __dirname + '/../public/photos/' + uidForUploading +'/'+name;
+		var thumbPath = __dirname + '/../public/photos/thumbnail/' + uidForUploading +'/'+name;
+		var queryPath = 'photos/' + uidForUploading +'/'+name;
+
 		if(type=='image/jpeg' || type=='image/png') {
-			console.log('7');
-			var user = req.cookies.user
-			var toInsert = [req.cookies.uid,queryPath];
+			//var user = req.cookies.user
+			var toInsert = [uidForUploading,queryPath];
 			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES(?,now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
 				console.log('8');
@@ -120,8 +129,17 @@ exports.upload = function(req,res) {
 		  			res.status(500);
 					res.redirect('/internalError');
 				}
-				else {	
+				else {
+
+					//write photo to filesystem
 					fs.copy(req.files.image.path, localPath);
+					//write thumbnail to filesystem
+					gm(req.files.image.path).resize(400).stream(function(err, stdout, stderr) {
+						var writeStream = fs.createWriteStream(thumbPath, {
+							encoding: 'base64'
+						});
+						stdout.pipe(writeStream);
+					});
 					res.redirect(303,'/feed');
 				}
 				conn.end();
@@ -141,6 +159,14 @@ exports.stream = function(req,res) {
 		var parsed = req.url.split('/');
 		var followeeUid = parsed[parsed.length-1];
 		var followButton = ''
+
+		var limit
+		var url = require('url')
+		var urlc = url.parse(req.url)
+		if(urlc.query)
+			limit = parseInt(urlc.query.split('=')[1]*30);
+		else
+			limit = 30
 
 		if(parseInt(followeeUid)!=req.cookies.uid) {
 			followButton = '<a href="'+followeeUid;
@@ -164,8 +190,9 @@ exports.stream = function(req,res) {
 
 		var queryImage = 'SELECT p.path, u.uid, u.username, p.time_uploaded '
 							+'FROM photos p RIGHT JOIN user u ON p.uid = u.uid WHERE u.uid=?'
-							+'ORDER BY time_uploaded DESC';
-		conn.query(queryImage,[followeeUid], function(err,rows) {
+							+'ORDER BY time_uploaded DESC '
+							+'LIMIT 0,?';
+		conn.query(queryImage,[followeeUid, limit], function(err,rows) {
 			if(err){
 				console.log(err);
 	  			res.status(500);
@@ -178,17 +205,26 @@ exports.stream = function(req,res) {
 				var feedPhotos = '';
 				if(!(rows[0].pid === null)){
 					for(var i=0; i<rows.length; i++) {
-						var filePath = rows[i].path;
-						var time = getTimeAgo(new Date(), rows[i].time_uploaded);
-						feedPhotos += '<div class="imgBox">'
-									+'<a href="../' + filePath + '">'
-									+'<img src="../' + filePath +'" width = 400 alt="image ici"/></a></br>'
-									+'<a href="'+rows[i].uid+'"></br>'
-									+rows[i].username+'</a></br>'
-									+'<span class="time">'+time+'</span>'+'</div>';
-					}	
+						if(!(rows[i].path === null)){
+							var filePath = rows[i].path;
+							var thumbPath = filePath.replace('photos', 'photos/thumbnail')
+							var time = getTimeAgo(new Date(), rows[i].time_uploaded);
+							feedPhotos += '<div class="imgBox">'
+										+'<a href="../' + filePath + '">'
+										+'<img src ="../' + thumbPath +'"width="400" alt="image ici"/></a></br>'
+										+'<a href="'+rows[i].uid+'"></br>'
+										+rows[i].username+i+'</a></br>'
+										+'<span class="time">'+time+'</span>'+'</div>';
+						}
+					}
 				}
+
+				//voodoo magic going on here, don't touch!!!!!
+				var page = limit/30+1;
+				feedPhotos += '<br><a href="/users/'+followeeUid+'?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>';
+				feedPhotos = feedPhotos.replace(('?page='+(page-1)), '');
 				res.render('feed', {title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos, follow:followButton});
+
 			}
 		});
 		conn.end();
