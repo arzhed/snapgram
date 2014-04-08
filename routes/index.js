@@ -26,26 +26,12 @@ exports.formSignUp = function(req,res){
 };
 
 exports.formSignIn = function(req,res){
-	var mysql = require('mysql');
-	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
-
-	var uid = req.cookies.uid;
-	var pwd = req.cookies.pwd;
-
-	conn.query('SELECT uid, pwd FROM user WHERE uid=? AND pwd=?',[uid,pwd], function(err,result) {
-		if(err){
-			console.log(err);
-  			res.status(500);
-			res.redirect('/internalError');
-		}
-		else if (sessions.sessionIds.indexOf(req.cookies.sid)< 0 || result.length < 1){
-			var errorMsg = req.session.errorMessage;
-			delete req.session.errorMessage;
-			res.render('signin', {title: 'SNAPGRAM', wrongSignIn: errorMsg });
-		}
-		else{
-			res.redirect(302, '/feed');
-		}
-		conn.end()
-	})
+	if (sessions.sessionIds.indexOf(req.cookies.sid) < 0){
+		var errorMsg = req.session.errorMessage;
+		delete req.session.errorMessage;
+		res.render('signin', {title: 'SNAPGRAM', wrongSignUp: errorMsg });
+	}
+	else{
+		res.redirect(302, '/feed');
+	}
 };

@@ -30,27 +30,17 @@ exports.signup = function(req, res){
 		  			}
 		  		}
 		  		else {
-
-					var connPwd = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
-
-						//if(typeof(conn) != 'string'){
-		  			connPwd.query('Select pwd from user where uid=?', [result.insertId], function(err, rows, fields){
-		  				if (err) {
-		  					console.log(err);
-			  				res.status(500);
-							res.redirect('/internalError');
-		  				} else {
-				  			fs.mkdirSync(__dirname + '/../public/pictures/'+result.insertId);
-		  					var sessionId = Math.round(Math.random()*10000);
-							sessions.sessionIds.push(sessionId);
-							res.cookie('sid', sessionId);
-							res.cookie('user', user);//, { maxAge: 3600000 });
-							res.cookie('uid', rows[0].uid);//, { maxAge: 3600000 });
-							res.cookie('pwd', rows[0].pwd);//, { maxAge: 3600000 });
-				  			res.redirect('/feed');
-		  				}
-		  				connPwd.end();
-		  			});
+		  			fs.mkdirSync(__dirname + '/../public/photos/'+result.insertId);
+		  			fs.mkdirSync(__dirname + '/../public/photos/thumbnail/'+result.insertId);
+  					var sessionId = Math.round(Math.random()*10000);
+					
+					var sessionIdConcat = sessionId + ':' + result.insertId + ':' + user + ':' + hashedPassword;
+					sessions.sessionIds.push(sessionIdConcat);
+					res.cookie('sid', sessionIdConcat);
+					//res.cookie('user', user);//, { maxAge: 3600000 });
+					//res.cookie('uid', rows[0].uid);//, { maxAge: 3600000 });
+					//res.cookie('pwd', rows[0].pwd);//, { maxAge: 3600000 });
+		  			res.redirect('/feed');
 		  		}
 		  		conn.end();
 			});

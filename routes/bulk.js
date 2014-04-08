@@ -84,8 +84,8 @@ exports.users = function(req,res){
 
 				connectionDB.query(queryString,toInsert, function(err,result){
 					if(err)
-						console.log(err);
-					console.log('index '+index)
+						console.log('USERS : ' + err);
+					//console.log('index '+index)
 
 					// FOLLOWS TABLE
 					for(var j = 0; j < follows.length; j++){
@@ -94,9 +94,9 @@ exports.users = function(req,res){
 							var queryString2 = 'INSERT INTO follows(follower,followee,start,end) VALUES(?,?,now(),0)';
 							connectionDB.query(queryString2,toInsert2, function(err,result){
 								if(err)
-									console.log(err);
-								console.log('follows.length (index) '+followsLength)
-								console.log('i '+i)
+									console.log('STREAMS : ' + err);
+								//console.log('follows.length (index) '+followsLength)
+								//console.log('i '+i)
 								if(index == jsonContent.length - 1 && i== followsLength - 1) {
 									console.log('END of ENDS !!!')
 									res.send(200,"users upload successful");
@@ -142,11 +142,11 @@ exports.streams = function(req,res){
 					if(!fs.existsSync(__dirname + '/../public/photos/'+uid)){
 						fs.mkdirSync(__dirname + '/../public/photos/'+uid);
 					}
-					//fs.copy(path, localPath);
+					fs.copy(path, localPath);
 					
 					connectionDB.query(queryString,toInsert, function(err,result){
 						if(err){
-							console.log(err);
+							console.log('PHOTOS: ' + err);
 						}
 						if(index == jsonContent.length - 1) {
 							res.send(200,"upload streams successful");

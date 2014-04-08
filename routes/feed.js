@@ -30,10 +30,7 @@ exports.getTimeAgo = getTimeAgo;
 exports.feed = function(req,res) {
 	var mysql = require('mysql');
 	var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
-	var uid = req.cookies.uid;
-	var pwd = req.cookies.pwd;
-	var siduid = req.cookies.sid.split(':')[1];
-	uid = siduid;
+	var siduid = uid = req.cookies.sid.split(':')[1];
 
 	conn.query('SELECT uid FROM user WHERE uid=?', [siduid], function(err,result) {
 
@@ -43,10 +40,13 @@ exports.feed = function(req,res) {
 			res.redirect('/internalError');
 		}
 		else if (sessions.sessionIds.indexOf(req.cookies.sid) < 0 || result.length < 1 ){
+			console.log(req.cookies.sid);
+			console.log(sessions.sessionIds);
+			console.log(result.length);
 			res.redirect(302,'/sessions/new');
 		}
 		else {
-			console.log(siduid);
+			//console.log(siduid);
 			var limit
 			var url = require('url')
 			var urlc = url.parse(req.url)
@@ -55,12 +55,12 @@ exports.feed = function(req,res) {
 			else
 				limit = 30
 
-			var queryImage = 'SELECT DISTINCT p.path, p.uid, p.time_uploaded, u.username FROM follows f '
+			var queryImage = 'SELECT DISTINCT p.pid, p.path, p.uid, p.time_uploaded, u.username FROM follows f '
 				+'JOIN photos p ON f.followee = p.uid JOIN user u ON u.uid = f.followee '
 				+'WHERE f.follower=? AND ((p.time_uploaded<f.end AND p.time_uploaded>f.start) '
 				+'OR (f.end="0000-00-00 00:00:00" AND p.time_uploaded>f.start)) '
 				+'UNION '
-				+'SELECT q.path, q.uid, q.time_uploaded, u.username FROM photos q '
+				+'SELECT q.pid, q.path, q.uid, q.time_uploaded, u.username FROM photos q '
 				+'JOIN user u ON u.uid = q.uid WHERE u.uid=? '
 				+'ORDER BY time_uploaded DESC '
 				+'LIMIT 0,?';
@@ -72,6 +72,7 @@ exports.feed = function(req,res) {
 				}
 				else {
 					var feedPhotos = '';
+					//console.log(photos.length);
 					for(var i=0;i<photos.length;i++) {
 						if(!(photos[i].pid === null)){
 							var filePath = photos[i].path;
@@ -89,7 +90,7 @@ exports.feed = function(req,res) {
 
 					feedPhotos += '<br><a href="/feed?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>';
 					conn.end();
-					res.render('feed', { title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos});
+					res.render('feed', { title: 'SNAPGRAM', name: req.cookies.sid.split(':')[2], html : feedPhotos});
 				}
 			});
 		}
@@ -123,7 +124,8 @@ exports.upload = function(req,res) {
 			var toInsert = [uidForUploading,queryPath];
 			var queryString = 'INSERT INTO photos(uid,time_uploaded,path) VALUES(?,now(),?)'
 			conn.query(queryString,toInsert, function(err,result){
-				console.log('8');
+				//
+				//console.log('8');
 				if(err){
 					console.log(err);
 		  			res.status(500);
@@ -168,9 +170,9 @@ exports.stream = function(req,res) {
 		else
 			limit = 30
 
-		if(parseInt(followeeUid)!=req.cookies.uid) {
+		if(parseInt(followeeUid)!=req.cookies.sid.split(':')[1]) {
 			followButton = '<a href="'+followeeUid;
-			var attributes = [req.cookies.uid,followeeUid]
+			var attributes = [req.cookies.sid.split(':')[1],followeeUid]
 			var unfollowQuery = 'SELECT * FROM follows WHERE follower = ? AND followee = ? ORDER BY end';
 			conn.query(unfollowQuery,attributes,function(err,rows){
 				if(err){
@@ -223,7 +225,7 @@ exports.stream = function(req,res) {
 				var page = limit/30+1;
 				feedPhotos += '<br><a href="/users/'+followeeUid+'?page='+page+'"><button class="btn-links" type="submit"><h5>MORE</h5></button></a>';
 				feedPhotos = feedPhotos.replace(('?page='+(page-1)), '');
-				res.render('feed', {title: 'SNAPGRAM', name: req.cookies.user, html : feedPhotos, follow:followButton});
+				res.render('feed', {title: 'SNAPGRAM', name: req.cookies.sid.split(':')[2], html : feedPhotos, follow:followButton});
 
 			}
 		});

@@ -31,9 +31,6 @@ exports.signin = function(req, res){
 					sessions.sessionIds.push(sessionIdConcat);
 					console.log(sessionIdConcat);
 					res.cookie('sid', sessionIdConcat);
-					res.cookie('user', user);//, { maxAge: 3600000 });
-					res.cookie('uid', rows[0].uid);//, { maxAge: 3600000 });
-					res.cookie('pwd', rows[0].pwd);//, { maxAge: 3600000 });	
 					res.redirect('/feed');
 			}
 			else{

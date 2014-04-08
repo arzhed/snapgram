@@ -45,7 +45,7 @@ exports.follow = function(req,res) {
 		var followeeId = parsedUrl[parsedUrl.length - 2]
 
 		var insertFollow = 'INSERT INTO follows(follower,followee,start) VALUES(?,?,now())';
-		var usersId = [req.cookies.uid,followeeId]
+		var usersId = [req.cookies.sid.split(':')[1],followeeId]
 		conn.query(insertFollow, usersId, function(err,rows) {
 			if (err) {
 				console.log(err);
@@ -66,12 +66,13 @@ exports.unfollow = function(req,res) {
 		mysql = require('mysql');
 
 		var conn = dbconnection.mySqlConnection('web2.cpsc.ucalgary.ca','s513_simona','10141382','s513_simona');
+	
 
 		var parsedUrl = req.url.split('/');
 		var followeeId = parsedUrl[parsedUrl.length - 2]
 
 		var insertUnfollowTime = 'UPDATE follows SET end=now() WHERE follower=? AND followee=? ';
-		var usersId = [req.cookies.uid,followeeId]
+		var usersId = [req.cookies.sid.split(':')[1],followeeId]
 		conn.query(insertUnfollowTime, usersId, function(err,rows) {		
 			if (err) {
 				console.log(err);
